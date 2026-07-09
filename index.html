@@ -6,8 +6,6 @@
     <title>Partituras de Maria · Partituras</title>
     <link rel="manifest" id="manifestLink">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <!-- VERSIÓN COMPLETA DE ABCJS DESDE CDN CONFIABLE (jsdelivr) -->
-    <script src="https://cdn.jsdelivr.net/npm/abcjs@6.2.3/dist/abcjs-min.js"></script>
     <style>
         /* ===== RESET Y VARIABLES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -685,6 +683,44 @@
             stroke: #D43F5E;
             stroke-width: 1;
         }
+
+        /* Mensaje de carga de biblioteca */
+        .abcjs-loading {
+            color: var(--text-light);
+            font-size: 14px;
+            text-align: center;
+            padding: 20px;
+        }
+        .abcjs-loading .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(124,77,107,0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 0.8s linear infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .abcjs-loading .retry-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 6px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+        .abcjs-loading .retry-btn:hover {
+            background: var(--primary-dark);
+        }
     </style>
 </head>
 <body>
@@ -745,7 +781,7 @@
 
     <div class="footer">
         <span class="heart">❤️</span> Hecho con amor por <strong>Stephan Majano</strong> para <strong>Maria Osta</strong>
-        <br><span style="font-size: 11px; opacity:0.5;">Flauta María · v12.0 · estable</span>
+        <br><span style="font-size: 11px; opacity:0.5;">Flauta María · v13.0 · con múltiples CDNs</span>
     </div>
 
     <!-- Modal Añadir/Editar -->
@@ -825,6 +861,58 @@
 
     <script>
         // ============================================================
+        //  CARGA DE ABCJS CON MÚLTIPLES CDNs (FALLBACK)
+        // ============================================================
+        function loadABCJS() {
+            return new Promise((resolve, reject) => {
+                // Si ya está cargado, resolver inmediatamente
+                if (typeof ABCJS !== 'undefined' && ABCJS.renderAbc) {
+                    resolve();
+                    return;
+                }
+
+                const cdnUrls = [
+                    'https://cdn.jsdelivr.net/npm/abcjs@6.2.3/dist/abcjs-min.js',
+                    'https://unpkg.com/abcjs@6.2.3/dist/abcjs-min.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.2.3/abcjs.min.js'
+                ];
+
+                let currentIndex = 0;
+
+                function loadNext() {
+                    if (currentIndex >= cdnUrls.length) {
+                        reject(new Error('No se pudo cargar ABCJS desde ningún CDN. Verifica tu conexión a Internet.'));
+                        return;
+                    }
+                    const url = cdnUrls[currentIndex];
+                    console.log(`Intentando cargar ABCJS desde: ${url}`);
+                    const script = document.createElement('script');
+                    script.src = url;
+                    script.async = false;
+                    script.onload = () => {
+                        // Verificar que se cargó correctamente
+                        if (typeof ABCJS !== 'undefined' && ABCJS.renderAbc) {
+                            console.log('ABCJS cargado correctamente desde', url);
+                            resolve();
+                        } else {
+                            // Puede que se haya cargado pero no esté completo
+                            currentIndex++;
+                            loadNext();
+                        }
+                    };
+                    script.onerror = () => {
+                        console.warn(`Error cargando desde ${url}, intentando siguiente...`);
+                        currentIndex++;
+                        loadNext();
+                    };
+                    document.head.appendChild(script);
+                }
+
+                loadNext();
+            });
+        }
+
+        // ============================================================
         //  GENERAR MANIFEST DINÁMICAMENTE
         // ============================================================
         function generateManifest() {
@@ -888,7 +976,7 @@
             const swCode = `
                 self.addEventListener('install', e => {
                     e.waitUntil(
-                        caches.open('flautaMaria-v12').then(cache => {
+                        caches.open('flautaMaria-v13').then(cache => {
                             return cache.addAll(['/']);
                         })
                     );
@@ -1125,7 +1213,7 @@
         const STORAGE_KEY = 'flautaMaria_sheets';
         const FAV_KEY = 'flautaMaria_favs';
         const VERSION_KEY = 'flautaMaria_version';
-        const CURRENT_VERSION = '12.0';
+        const CURRENT_VERSION = '13.0';
 
         let sheets = [];
         let favorites = new Set();
@@ -1341,7 +1429,7 @@
             try {
                 // Verificar que ABCJS.synth existe
                 if (typeof ABCJS === 'undefined' || typeof ABCJS.synth === 'undefined' || typeof ABCJS.synth.Synth === 'undefined') {
-                    alert('El sintetizador de ABCJS no está disponible. Asegúrate de usar la versión completa de ABCJS.');
+                    alert('El sintetizador de ABCJS no está disponible. Asegúrate de que la biblioteca se haya cargado correctamente.');
                     return;
                 }
 
@@ -1386,21 +1474,6 @@
         }
 
         // ============================================================
-        //  VERIFICACIÓN DE CARGA DE ABCJS
-        // ============================================================
-        function waitForABCJS(callback, attempts = 0) {
-            if (typeof ABCJS !== 'undefined' && ABCJS.synth && ABCJS.synth.Synth) {
-                callback();
-                return;
-            }
-            if (attempts > 10) {
-                alert('No se pudo cargar la biblioteca ABCJS. Por favor, recarga la página o verifica tu conexión a Internet.');
-                return;
-            }
-            setTimeout(() => waitForABCJS(callback, attempts + 1), 500);
-        }
-
-        // ============================================================
         //  DETALLE CON VISOR ABC, ZOOM, ARRASTRE, ETIQUETAS Y REPRODUCCIÓN
         // ============================================================
         let currentDetailId = null;
@@ -1409,6 +1482,7 @@
         let panX = 0, panY = 0;
         let isDragging = false;
         let startX, startY, startPanX, startPanY;
+        let abcjsReady = false;
 
         function showDetail(id) {
             const s = getSheet(id);
@@ -1416,11 +1490,28 @@
 
             // Verificar que ABCJS esté cargado y completo
             if (typeof ABCJS === 'undefined' || typeof ABCJS.renderAbc === 'undefined') {
-                alert('La biblioteca ABCJS no se ha cargado. Reintentando...');
-                waitForABCJS(() => showDetail(id));
+                // Mostrar mensaje de carga y reintentar
+                const viewer = document.getElementById('sheetViewer');
+                if (viewer) {
+                    viewer.innerHTML = `
+                        <div class="abcjs-loading">
+                            <div class="spinner"></div>
+                            Cargando biblioteca de música...<br>
+                            <button class="retry-btn" onclick="location.reload()">Recargar página</button>
+                        </div>
+                    `;
+                }
+                // Intentar cargar nuevamente
+                loadABCJS().then(() => {
+                    abcjsReady = true;
+                    showDetail(id);
+                }).catch(err => {
+                    alert('No se pudo cargar la biblioteca musical. Verifica tu conexión a Internet y recarga la página.');
+                });
                 return;
             }
 
+            abcjsReady = true;
             currentDetailId = id;
             currentZoom = 1.0;
             panX = 0;
@@ -1719,19 +1810,18 @@
             loadData();
             render();
 
-            // Verificar que ABCJS esté disponible
-            if (typeof ABCJS === 'undefined' || typeof ABCJS.renderAbc === 'undefined') {
-                console.warn('ABCJS no cargado inicialmente, esperando...');
-                waitForABCJS(() => {
-                    console.log('ABCJS cargado correctamente.');
-                    // Si ya hay una partitura abierta, recargar su vista
-                    if (currentDetailId) {
-                        showDetail(currentDetailId);
-                    }
-                });
-            } else {
+            // Cargar ABCJS desde múltiples CDNs
+            loadABCJS().then(() => {
+                abcjsReady = true;
                 console.log('ABCJS cargado correctamente.');
-            }
+                // Si hay un detalle abierto, recargarlo
+                if (currentDetailId) {
+                    showDetail(currentDetailId);
+                }
+            }).catch(err => {
+                console.error(err);
+                alert('No se pudo cargar la biblioteca musical. Verifica tu conexión a Internet y recarga la página.');
+            });
 
             document.getElementById('searchInput').addEventListener('input', render);
             document.getElementById('categoryFilter').addEventListener('change', render);
@@ -1747,7 +1837,7 @@
             });
             document.getElementById('closeDetail').addEventListener('click', closeModal);
 
-            console.log('✅ App lista. Versión estable con ABCJS desde CDN jsdelivr.');
+            console.log('✅ App lista. Versión con múltiples CDNs.');
         });
     </script>
 
