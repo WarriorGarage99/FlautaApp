@@ -6,8 +6,8 @@
     <title>Partituras de Maria · Partituras</title>
     <link rel="manifest" id="manifestLink">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <!-- VERSIÓN COMPLETA DE ABCJS (incluye sintetizador) -->
-    <script src="https://cdn.jsdelivr.net/npm/abcjs@6.2.3/dist/abcjs-min.js"></script>
+    <!-- VERSIÓN COMPLETA DE ABCJS DESDE CDN CONFIABLE -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.2.3/abcjs.min.js"></script>
     <style>
         /* ===== RESET Y VARIABLES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -745,7 +745,7 @@
 
     <div class="footer">
         <span class="heart">❤️</span> Hecho con amor por <strong>Stephan Majano</strong> para <strong>Maria Osta</strong>
-        <br><span style="font-size: 11px; opacity:0.5;">Flauta María · v10.0 · con reproducción y notas funcionales</span>
+        <br><span style="font-size: 11px; opacity:0.5;">Flauta María · v11.0 · estable</span>
     </div>
 
     <!-- Modal Añadir/Editar -->
@@ -888,7 +888,7 @@
             const swCode = `
                 self.addEventListener('install', e => {
                     e.waitUntil(
-                        caches.open('flautaMaria-v10').then(cache => {
+                        caches.open('flautaMaria-v11').then(cache => {
                             return cache.addAll(['/']);
                         })
                     );
@@ -1125,7 +1125,7 @@
         const STORAGE_KEY = 'flautaMaria_sheets';
         const FAV_KEY = 'flautaMaria_favs';
         const VERSION_KEY = 'flautaMaria_version';
-        const CURRENT_VERSION = '10.0';
+        const CURRENT_VERSION = '11.0';
 
         let sheets = [];
         let favorites = new Set();
@@ -1276,7 +1276,7 @@
 
         function addNoteLabels(svgElement) {
             // Buscar todos los elementos que representan notas (cabeza de nota, etc.)
-            const notes = svgElement.querySelectorAll('.abcjs-note, .abcjs-note-head, .abcjs-note-accidental');
+            const notes = svgElement.querySelectorAll('.abcjs-note, .abcjs-note-head, .abcjs-note-stem');
             notes.forEach(note => {
                 let pitch = note.getAttribute('data-pitch');
                 if (!pitch) {
@@ -1386,6 +1386,21 @@
         }
 
         // ============================================================
+        //  VERIFICACIÓN DE CARGA DE ABCJS
+        // ============================================================
+        function waitForABCJS(callback, attempts = 0) {
+            if (typeof ABCJS !== 'undefined') {
+                callback();
+                return;
+            }
+            if (attempts > 10) {
+                alert('No se pudo cargar la biblioteca ABCJS. Por favor, recarga la página.');
+                return;
+            }
+            setTimeout(() => waitForABCJS(callback, attempts + 1), 500);
+        }
+
+        // ============================================================
         //  DETALLE CON VISOR ABC, ZOOM, ARRASTRE, ETIQUETAS Y REPRODUCCIÓN
         // ============================================================
         let currentDetailId = null;
@@ -1398,6 +1413,14 @@
         function showDetail(id) {
             const s = getSheet(id);
             if (!s) return;
+
+            // Verificar que ABCJS esté cargado
+            if (typeof ABCJS === 'undefined') {
+                alert('La biblioteca ABCJS no se ha cargado. Reintentando...');
+                waitForABCJS(() => showDetail(id));
+                return;
+            }
+
             currentDetailId = id;
             currentZoom = 1.0;
             panX = 0;
@@ -1468,7 +1491,7 @@
                         if (showNoteLabels) {
                             const svg = viewer.querySelector('svg');
                             if (svg) {
-                                setTimeout(() => addNoteLabels(svg), 100);
+                                setTimeout(() => addNoteLabels(svg), 300);
                             }
                         }
                         updateZoomAndPan();
@@ -1504,7 +1527,7 @@
                         svg.querySelectorAll('.note-label-group').forEach(el => el.remove());
                         if (showNoteLabels) {
                             // Esperar un poco para que el DOM se actualice
-                            setTimeout(() => addNoteLabels(svg), 50);
+                            setTimeout(() => addNoteLabels(svg), 100);
                         }
                     }
                 }
@@ -1692,8 +1715,17 @@
         //  INICIALIZACIÓN
         // ============================================================
         document.addEventListener('DOMContentLoaded', () => {
+            // Cargar datos y renderizar
             loadData();
             render();
+
+            // Verificar que ABCJS esté disponible
+            if (typeof ABCJS === 'undefined') {
+                console.warn('ABCJS no cargado inicialmente, esperando...');
+                waitForABCJS(() => console.log('ABCJS cargado correctamente.'));
+            } else {
+                console.log('ABCJS cargado correctamente.');
+            }
 
             document.getElementById('searchInput').addEventListener('input', render);
             document.getElementById('categoryFilter').addEventListener('change', render);
@@ -1709,7 +1741,7 @@
             });
             document.getElementById('closeDetail').addEventListener('click', closeModal);
 
-            console.log('✅ App lista con reproducción de audio y etiquetas de notas funcionales.');
+            console.log('✅ App lista. Versión estable con ABCJS desde CDN confiable.');
         });
     </script>
 
