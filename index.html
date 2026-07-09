@@ -459,7 +459,7 @@
             border-radius: 16px;
             border: 1px solid #ECDFE6;
             overflow: hidden;
-            touch-action: none; /* Para control táctil */
+            touch-action: none;
             box-shadow: inset 0 2px 8px rgba(0,0,0,0.02);
             cursor: grab;
             min-height: 200px;
@@ -744,7 +744,7 @@
 
     <div class="footer">
         <span class="heart">❤️</span> Hecho con amor por <strong>Stephan Majano</strong> para <strong>Maria Osta</strong>
-        <br><span style="font-size: 11px; opacity:0.5;">Flauta María · v9.0 · con reproducción de audio</span>
+        <br><span style="font-size: 11px; opacity:0.5;">Flauta María · v9.1 · con reproducción de audio corregida</span>
     </div>
 
     <!-- Modal Añadir/Editar -->
@@ -914,12 +914,12 @@
         }
 
         // ============================================================
-        //  GENERADOR DE REPERTORIO (incluye fáciles, One Piece, populares)
+        //  GENERADOR DE REPERTORIO (TODAS LAS PARTITURAS QUE TENÍAS)
         // ============================================================
         function generateRepertoire() {
             const pieces = [];
 
-            // ========== OBRAS CLÁSICAS Y FAMOSAS (con ABC real) ==========
+            // ========== OBRAS CLÁSICAS Y FAMOSAS ==========
             const famous = [
                 { title: 'Sonata en La menor (Wq 132)', composer: 'C.P.E. Bach', cat: 'Barroca', diff: 'Avanzada',
                     abc: 'X:1\nT:Sonata en La menor\nC:C.P.E. Bach\nM:3/8\nL:1/8\nK:Amin\nA,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|' },
@@ -1011,7 +1011,7 @@
                     abc: 'X:44\nT:Libertango\nC:A. Piazzolla\nM:4/4\nL:1/8\nK:Emin\nE2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|E2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|' },
             ];
 
-            // ========== NUEVAS PARTITURAS PARA PRINCIPIANTES, ONE PIECE Y POPULARES ==========
+            // ========== PARTITURAS PARA PRINCIPIANTES, ONE PIECE Y POPULARES ==========
             const newPieces = [
                 { title: 'Twinkle Twinkle Little Star', composer: 'Tradicional', cat: 'Infantil', diff: 'Fácil',
                     abc: 'X:101\nT:Twinkle Twinkle Little Star\nC:Tradicional\nM:4/4\nL:1/4\nK:C\nC C G G | A A G2 | F F E E | D D C2 |' },
@@ -1124,7 +1124,7 @@
         const STORAGE_KEY = 'flautaMaria_sheets';
         const FAV_KEY = 'flautaMaria_favs';
         const VERSION_KEY = 'flautaMaria_version';
-        const CURRENT_VERSION = '9.0';
+        const CURRENT_VERSION = '9.1';
 
         let sheets = [];
         let favorites = new Set();
@@ -1274,14 +1274,10 @@
         };
 
         function addNoteLabels(svgElement) {
-            // Buscar todos los elementos que representan notas (generalmente <path> o <use> con clases)
-            // ABCJS genera notas con clase 'abcjs-note' y atributo 'data-pitch' o 'data-midi'
             const notes = svgElement.querySelectorAll('.abcjs-note');
             notes.forEach(note => {
-                // Obtener el nombre de la nota desde el atributo data-pitch o data-midi
                 let pitch = note.getAttribute('data-pitch');
                 if (!pitch) {
-                    // Intentar obtener del texto o de la estructura
                     const text = note.textContent.trim();
                     if (text) {
                         const match = text.match(/[A-Ga-g]/);
@@ -1289,17 +1285,13 @@
                     }
                 }
                 if (!pitch) return;
-                // Convertir a nombre en español
                 const name = noteNames[pitch] || pitch;
-                // Obtener la posición de la nota
                 const bbox = note.getBBox();
                 if (bbox.width === 0 || bbox.height === 0) return;
                 const x = bbox.x + bbox.width / 2;
                 const y = bbox.y - 6;
-                // Crear un grupo para la etiqueta
                 const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
                 g.setAttribute('class', 'note-label-group');
-                // Fondo redondeado
                 const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
                 rect.setAttribute('x', x - 14);
                 rect.setAttribute('y', y - 10);
@@ -1309,20 +1301,18 @@
                 rect.setAttribute('ry', 4);
                 rect.setAttribute('class', 'note-label-bg');
                 g.appendChild(rect);
-                // Texto
                 const textEl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
                 textEl.setAttribute('x', x);
                 textEl.setAttribute('y', y + 2);
                 textEl.setAttribute('class', 'note-label');
                 textEl.textContent = name;
                 g.appendChild(textEl);
-                // Insertar después de la nota
                 note.parentNode.insertBefore(g, note.nextSibling);
             });
         }
 
         // ============================================================
-        //  FUNCIÓN DE REPRODUCCIÓN DE AUDIO
+        //  FUNCIÓN DE REPRODUCCIÓN CORREGIDA (usa ABCJS.synth)
         // ============================================================
         let synth = null;
         let isPlaying = false;
@@ -1337,7 +1327,7 @@
             if (isPlaying) {
                 // Detener reproducción
                 if (synth) {
-                    synth.stop();
+                    try { synth.stop(); } catch (e) {}
                     synth = null;
                 }
                 isPlaying = false;
@@ -1347,17 +1337,18 @@
             }
 
             try {
-                // Crear un contexto de audio si no existe
-                if (typeof ABCJS === 'undefined' || !ABCJS.synth) {
-                    alert('El sintetizador de ABCJS no está disponible.');
+                // Verificar que ABCJS.synth existe
+                if (typeof ABCJS === 'undefined' || typeof ABCJS.synth === 'undefined' || typeof ABCJS.synth.Synth === 'undefined') {
+                    alert('El sintetizador de ABCJS no está disponible. Asegúrate de usar la versión completa de ABCJS.');
                     return;
                 }
 
-                // Inicializar el sintetizador
+                // Crear el sintetizador
                 synth = new ABCJS.synth.Synth();
-                // Preparar el audio
+
+                // Inicializar el contexto de audio
                 synth.init({
-                    el: document.createElement('div') // contenedor ficticio
+                    el: document.createElement('div')
                 }).then(() => {
                     // Cargar el código ABC
                     return synth.load(abcCode);
@@ -1413,7 +1404,7 @@
 
             // Reiniciar el estado de reproducción si estaba activo
             if (isPlaying && synth) {
-                synth.stop();
+                try { synth.stop(); } catch (e) {}
                 synth = null;
                 isPlaying = false;
             }
@@ -1463,7 +1454,6 @@
                             return;
                         }
                         viewer.innerHTML = '';
-                        // Renderizar con add_classes para identificar notas
                         ABCJS.renderAbc('sheetViewer', s.abc, {
                             responsive: 'resize',
                             add_classes: true,
@@ -1472,7 +1462,6 @@
                             padding: 20,
                             engraver: 'svg'
                         });
-                        // Si las etiquetas están activadas, añadirlas
                         if (showNoteLabels) {
                             const svg = viewer.querySelector('svg');
                             if (svg) addNoteLabels(svg);
@@ -1503,12 +1492,10 @@
                     btn.classList.remove('active');
                     btn.textContent = '🎵 Notas';
                 }
-                // Re-renderizar la partitura para aplicar/eliminar etiquetas
                 const viewer = document.getElementById('sheetViewer');
                 if (viewer) {
                     const svg = viewer.querySelector('svg');
                     if (svg) {
-                        // Eliminar etiquetas existentes
                         svg.querySelectorAll('.note-label-group').forEach(el => el.remove());
                         if (showNoteLabels) {
                             addNoteLabels(svg);
@@ -1533,7 +1520,6 @@
             const viewer = document.getElementById('sheetViewer');
             if (!wrapper || !viewer) return;
 
-            // Zoom con botones
             document.getElementById('zoomInBtn').addEventListener('click', () => {
                 currentZoom = Math.min(currentZoom + 0.1, 3.0);
                 updateZoomAndPan();
@@ -1543,7 +1529,6 @@
                 updateZoomAndPan();
             });
 
-            // Arrastre con mouse/touch
             wrapper.addEventListener('mousedown', startDrag);
             wrapper.addEventListener('touchstart', startDragTouch, { passive: false });
             document.addEventListener('mousemove', drag);
@@ -1551,7 +1536,6 @@
             document.addEventListener('mouseup', endDrag);
             document.addEventListener('touchend', endDrag);
 
-            // Scroll con rueda (zoom)
             wrapper.addEventListener('wheel', (e) => {
                 e.preventDefault();
                 if (e.deltaY < 0) {
@@ -1562,7 +1546,6 @@
                 updateZoomAndPan();
             }, { passive: false });
 
-            // Doble clic para resetear zoom y posición
             wrapper.addEventListener('dblclick', () => {
                 currentZoom = 1.0;
                 panX = 0;
@@ -1659,9 +1642,8 @@
         }
 
         function closeModal() {
-            // Detener reproducción al cerrar el modal de detalle
             if (isPlaying && synth) {
-                synth.stop();
+                try { synth.stop(); } catch (e) {}
                 synth = null;
                 isPlaying = false;
                 const playBtn = document.getElementById('playBtn');
@@ -1721,9 +1703,9 @@
             });
             document.getElementById('closeDetail').addEventListener('click', closeModal);
 
-            console.log('✅ App lista con reproducción de audio y etiquetas de notas.');
+            console.log('✅ App lista con reproducción de audio corregida y todas las partituras.');
         });
     </script>
 
 </body>
-</html>
+                                                              </html>
