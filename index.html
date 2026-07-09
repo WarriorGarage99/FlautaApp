@@ -6,8 +6,6 @@
     <title>Partituras de Maria · Partituras</title>
     <link rel="manifest" id="manifestLink">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <!-- CARGA DESDE CDN CONFIABLE -->
-    <script src="https://cdn.jsdelivr.net/npm/abcjs@6.2.3/dist/abcjs-min.js"></script>
     <style>
         /* ===== RESET Y VARIABLES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -39,7 +37,6 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-        /* ===== MARCA DE AGUA ===== */
         .watermark {
             position: fixed;
             bottom: 24px;
@@ -62,8 +59,6 @@
             user-select: none;
         }
         .watermark strong { color: rgba(124,77,107,0.2); }
-
-        /* ===== HEADER ===== */
         .app-header {
             background: var(--surface);
             backdrop-filter: blur(12px);
@@ -110,8 +105,6 @@
             border: 1px solid rgba(124,77,107,0.1);
             backdrop-filter: blur(4px);
         }
-
-        /* ===== INSTALACIÓN MANUAL ===== */
         .install-wrapper {
             background: var(--surface);
             padding: 12px 20px;
@@ -139,8 +132,6 @@
             box-shadow: 0 6px 28px rgba(124,77,107,0.35);
         }
         .install-manual-btn:active { transform: scale(0.96); }
-
-        /* ===== BÚSQUEDA ===== */
         .search-section {
             padding: 16px 24px 12px;
             background: var(--surface);
@@ -234,8 +225,6 @@
         }
         .btn-add:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(124,77,107,0.35); }
         .btn-add:active { transform: scale(0.96); }
-
-        /* ===== LISTA DE PARTITURAS ===== */
         .sheet-list {
             padding: 20px 24px;
             display: grid;
@@ -343,7 +332,6 @@
             border-radius: 30px;
         }
         .sheet-card .actions .view-btn:hover { background: rgba(124,77,107,0.15); opacity: 1; }
-
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -352,8 +340,6 @@
         }
         .empty-state .icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
         .empty-state h3 { font-weight: 500; margin-bottom: 6px; }
-
-        /* ===== MODALES ===== */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -451,8 +437,6 @@
             box-shadow: 0 6px 28px rgba(124,77,107,0.35);
             transform: translateY(-1px);
         }
-
-        /* ===== DETALLE DE PARTITURA (con zoom y arrastre) ===== */
         .detail-content .sheet-viewer-wrapper {
             position: relative;
             margin-top: 20px;
@@ -495,8 +479,6 @@
             padding: 30px 20px;
         }
         .detail-content .sheet-viewer .abc-error { color: #D43F5E; }
-
-        /* Controles de zoom y reproducción */
         .zoom-controls {
             display: flex;
             gap: 8px;
@@ -575,7 +557,6 @@
         .play-btn.playing {
             background: #D43F5E;
         }
-
         .detail-content .detail-row {
             display: flex;
             justify-content: space-between;
@@ -607,7 +588,6 @@
             transition: var(--transition);
         }
         .detail-close-btn:hover { background: var(--primary-dark); }
-
         .edit-abc-btn {
             margin-top: 12px;
             background: var(--accent);
@@ -632,8 +612,6 @@
             margin-top: 8px;
             flex-wrap: wrap;
         }
-
-        /* ===== FOOTER ===== */
         .footer {
             text-align: center;
             padding: 30px 20px 16px;
@@ -645,8 +623,6 @@
             background: var(--bg);
         }
         .footer .heart { color: #D43F5E; }
-
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 640px) {
             .app-header { padding: 14px 16px 10px; }
             .app-header h1 { font-size: 20px; }
@@ -661,12 +637,9 @@
             .watermark { font-size: 10px; bottom: 12px; right: 12px; padding: 4px 12px; }
             .install-manual-btn { width: 100%; justify-content: center; }
         }
-
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 10px; }
-
-        /* Estilos para las etiquetas de notas (Do, Re, Mi...) */
         .note-label {
             font-size: 11px;
             font-weight: 700;
@@ -685,8 +658,6 @@
             stroke: #D43F5E;
             stroke-width: 1;
         }
-
-        /* Mensaje de carga de biblioteca */
         .abcjs-loading {
             color: var(--text-light);
             font-size: 14px;
@@ -742,7 +713,6 @@
         </div>
     </header>
 
-    <!-- BOTÓN DE INSTALACIÓN MANUAL -->
     <div class="install-wrapper">
         <button class="install-manual-btn" id="manualInstallBtn">📲 Instalar esta app en tu teléfono</button>
     </div>
@@ -783,7 +753,7 @@
 
     <div class="footer">
         <span class="heart">❤️</span> Hecho con amor por <strong>Stephan Majano</strong> para <strong>Maria Osta</strong>
-        <br><span style="font-size: 11px; opacity:0.5;">Flauta María · v15.0 · con CDN fiable</span>
+        <br><span style="font-size: 11px; opacity:0.5;">Flauta María · v16.0 · con reintentos de carga</span>
     </div>
 
     <!-- Modal Añadir/Editar -->
@@ -794,10 +764,8 @@
                 <input type="hidden" id="editId">
                 <label>Título *</label>
                 <input type="text" id="formTitle" required placeholder="Ej: Sonata en La menor">
-
                 <label>Compositor *</label>
                 <input type="text" id="formComposer" required placeholder="Ej: C.P.E. Bach">
-
                 <label>Categoría</label>
                 <select id="formCategory">
                     <option value="Clásica">Clásica</option>
@@ -812,23 +780,19 @@
                     <option value="Anime">Anime</option>
                     <option value="Otro">Otro</option>
                 </select>
-
                 <label>Dificultad</label>
                 <select id="formDifficulty">
                     <option value="Fácil">Fácil</option>
                     <option value="Media">Media</option>
                     <option value="Avanzada">Avanzada</option>
                 </select>
-
                 <label>Código ABC completo de la partitura</label>
                 <textarea id="formAbc" placeholder="Pega aquí el código ABC completo..."></textarea>
                 <div style="font-size:12px; color:var(--text-light); margin-top:4px;">
                     📖 <a href="https://abcnotation.com/" target="_blank" style="color:var(--primary);">Guía de ABC</a>
                 </div>
-
                 <label>Notas adicionales</label>
                 <textarea id="formNotes" placeholder="Observaciones, enlaces, etc."></textarea>
-
                 <div class="form-actions">
                     <button type="button" class="btn-cancel" id="cancelForm">Cancelar</button>
                     <button type="submit" class="btn-submit">Guardar</button>
@@ -863,25 +827,52 @@
 
     <script>
         // ============================================================
-        //  VERIFICACIÓN DE CARGA DE ABCJS (desde CDN)
+        //  CARGA DE ABCJS CON MÚLTIPLES CDNs Y REINTENTOS
         // ============================================================
-        function checkABCJS() {
-            if (typeof ABCJS === 'undefined' || typeof ABCJS.renderAbc === 'undefined') {
-                // Mostrar mensaje de error en la página
-                const viewer = document.getElementById('sheetViewer');
-                if (viewer) {
-                    viewer.innerHTML = `
-                        <div class="abcjs-loading">
-                            <div class="spinner"></div>
-                            Cargando biblioteca musical...<br>
-                            <button class="retry-btn" onclick="location.reload()">Reintentar</button>
-                        </div>
-                    `;
+        function loadABCJS() {
+            return new Promise((resolve, reject) => {
+                if (typeof ABCJS !== 'undefined' && ABCJS.renderAbc) {
+                    resolve();
+                    return;
                 }
-                alert('⚠️ La biblioteca musical no se ha cargado. Verifica tu conexión a Internet y pulsa "Reintentar".');
-                return false;
-            }
-            return true;
+
+                const cdnUrls = [
+                    'https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.2.3/abcjs.min.js',
+                    'https://unpkg.com/abcjs@6.2.3/dist/abcjs-min.js',
+                    'https://cdn.jsdelivr.net/npm/abcjs@6.2.3/dist/abcjs-min.js'
+                ];
+
+                let currentIndex = 0;
+
+                function loadNext() {
+                    if (currentIndex >= cdnUrls.length) {
+                        reject(new Error('No se pudo cargar ABCJS desde ningún CDN.'));
+                        return;
+                    }
+                    const url = cdnUrls[currentIndex];
+                    console.log(`Intentando cargar ABCJS desde: ${url}`);
+                    const script = document.createElement('script');
+                    script.src = url;
+                    script.async = false;
+                    script.onload = () => {
+                        if (typeof ABCJS !== 'undefined' && ABCJS.renderAbc) {
+                            console.log('ABCJS cargado correctamente desde', url);
+                            resolve();
+                        } else {
+                            currentIndex++;
+                            loadNext();
+                        }
+                    };
+                    script.onerror = () => {
+                        console.warn(`Error cargando desde ${url}, intentando siguiente...`);
+                        currentIndex++;
+                        loadNext();
+                    };
+                    document.head.appendChild(script);
+                }
+
+                loadNext();
+            });
         }
 
         // ============================================================
@@ -948,7 +939,7 @@
             const swCode = `
                 self.addEventListener('install', e => {
                     e.waitUntil(
-                        caches.open('flautaMaria-v15').then(cache => {
+                        caches.open('flautaMaria-v16').then(cache => {
                             return cache.addAll(['/']);
                         })
                     );
@@ -975,12 +966,11 @@
         }
 
         // ============================================================
-        //  GENERADOR DE REPERTORIO (TODAS LAS PARTITURAS QUE TENÍAS)
+        //  GENERADOR DE REPERTORIO (TODAS LAS PARTITURAS)
         // ============================================================
         function generateRepertoire() {
             const pieces = [];
-
-            // ========== OBRAS CLÁSICAS Y FAMOSAS ==========
+            // ========== OBRAS CLÁSICAS Y FAMOSAS (resumido por espacio) ==========
             const famous = [
                 { title: 'Sonata en La menor (Wq 132)', composer: 'C.P.E. Bach', cat: 'Barroca', diff: 'Avanzada',
                     abc: 'X:1\nT:Sonata en La menor\nC:C.P.E. Bach\nM:3/8\nL:1/8\nK:Amin\nA,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|' },
@@ -1072,7 +1062,6 @@
                     abc: 'X:44\nT:Libertango\nC:A. Piazzolla\nM:4/4\nL:1/8\nK:Emin\nE2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|E2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|' },
             ];
 
-            // ========== PARTITURAS PARA PRINCIPIANTES, ONE PIECE Y POPULARES ==========
             const newPieces = [
                 { title: 'Twinkle Twinkle Little Star', composer: 'Tradicional', cat: 'Infantil', diff: 'Fácil',
                     abc: 'X:101\nT:Twinkle Twinkle Little Star\nC:Tradicional\nM:4/4\nL:1/4\nK:C\nC C G G | A A G2 | F F E E | D D C2 |' },
@@ -1122,38 +1111,19 @@
                     abc: 'X:123\nT:Guantanamera\nC:Tradicional\nM:4/4\nL:1/8\nK:G\nG2 B | d2 g | f2 e | d2 B | G2 G | F2 E | D2 C | B,2 B, |' },
             ];
 
-            // Combinar todas
             const all = [...famous, ...newPieces];
 
-            // Generar variaciones adicionales para tener más de 150
+            // Añadir variaciones generadas
             const tonalities = ['C', 'G', 'D', 'A', 'E', 'B', 'F', 'Bb', 'Eb', 'Ab'];
             const categories = ['Clásica', 'Barroca', 'Romántica', 'Moderna', 'Popular', 'Folclórica', 'Jazz', 'Bandas Sonoras', 'Infantil', 'Anime'];
             const difficulties = ['Fácil', 'Media', 'Avanzada'];
-            const titles = [
-                'Sonata', 'Concerto', 'Fantasía', 'Capricho', 'Estudio', 'Preludio', 'Nocturno',
-                'Minueto', 'Gavota', 'Bourrée', 'Sarabanda', 'Aria', 'Canción', 'Danza',
-                'Rondó', 'Marcha', 'Vals', 'Polonesa', 'Mazurca', 'Balada', 'Improvisación'
-            ];
-            const composers = ['Anónimo', 'Tradicional', 'M. Praetorius', 'J. Dowland', 'G. Sanz', 'S.L. Weiss',
-                'D. Scarlatti', 'J.C. Bach', 'C.W. Gluck', 'J.N. Hummel', 'L. Spohr', 'F. Doppler', 'A. Dvořák',
-                'E. Grieg', 'J. Sibelius', 'C. Nielsen', 'E. Granados', 'M. de Falla', 'H. Villa-Lobos',
-                'A. Ginastera'
-            ];
+            const titles = ['Sonata', 'Concerto', 'Fantasía', 'Capricho', 'Estudio', 'Preludio', 'Nocturno', 'Minueto', 'Gavota', 'Bourrée', 'Sarabanda', 'Aria', 'Canción', 'Danza', 'Rondó', 'Marcha', 'Vals', 'Polonesa', 'Mazurca', 'Balada', 'Improvisación'];
+            const composers = ['Anónimo', 'Tradicional', 'M. Praetorius', 'J. Dowland', 'G. Sanz', 'S.L. Weiss', 'D. Scarlatti', 'J.C. Bach', 'C.W. Gluck', 'J.N. Hummel', 'L. Spohr', 'F. Doppler', 'A. Dvořák', 'E. Grieg', 'J. Sibelius', 'C. Nielsen', 'E. Granados', 'M. de Falla', 'H. Villa-Lobos', 'A. Ginastera'];
 
-            // Añadir las piezas nuevas
             all.forEach(p => {
-                pieces.push({
-                    id: 'p' + pieces.length,
-                    title: p.title,
-                    composer: p.composer,
-                    category: p.cat,
-                    difficulty: p.diff,
-                    abc: p.abc,
-                    notes: ''
-                });
+                pieces.push({ id: 'p' + pieces.length, title: p.title, composer: p.composer, category: p.cat, difficulty: p.diff, abc: p.abc, notes: '' });
             });
 
-            // Generar más variaciones para completar el repertorio
             for (let i = 0; i < 80; i++) {
                 const cat = categories[i % categories.length];
                 const ton = tonalities[i % tonalities.length];
@@ -1165,17 +1135,8 @@
                     'A2B|c2d|e2f|g2a|a2g|f2e|d2c|B2A|' +
                     'A2B|c2d|e2f|g2a|a2g|f2e|d2c|B2A|' +
                     'A2B|c2d|e2f|g2a|a2g|f2e|d2c|B2A|';
-                pieces.push({
-                    id: 'g' + i,
-                    title: title,
-                    composer: composer,
-                    category: cat,
-                    difficulty: diff,
-                    abc: abc,
-                    notes: 'Generado automáticamente'
-                });
+                pieces.push({ id: 'g' + i, title: title, composer: composer, category: cat, difficulty: diff, abc: abc, notes: 'Generado automáticamente' });
             }
-
             return pieces;
         }
 
@@ -1185,7 +1146,7 @@
         const STORAGE_KEY = 'flautaMaria_sheets';
         const FAV_KEY = 'flautaMaria_favs';
         const VERSION_KEY = 'flautaMaria_version';
-        const CURRENT_VERSION = '15.0';
+        const CURRENT_VERSION = '16.0';
 
         let sheets = [];
         let favorites = new Set();
@@ -1273,13 +1234,7 @@
 
             const list = document.getElementById('sheetList');
             if (filtered.length === 0) {
-                list.innerHTML = `
-                    <div class="empty-state">
-                        <div class="icon">🎶</div>
-                        <h3>No se encontraron partituras</h3>
-                        <p>Intenta con otros filtros o añade una nueva</p>
-                    </div>
-                `;
+                list.innerHTML = `<div class="empty-state"><div class="icon">🎶</div><h3>No se encontraron partituras</h3><p>Intenta con otros filtros o añade una nueva</p></div>`;
                 return;
             }
 
@@ -1327,15 +1282,11 @@
         }
 
         // ============================================================
-        //  FUNCIONES PARA AGREGAR ETIQUETAS DE NOTAS (Do, Re, Mi...)
+        //  ETIQUETAS DE NOTAS
         // ============================================================
-        const noteNames = {
-            'C': 'Do', 'D': 'Re', 'E': 'Mi', 'F': 'Fa', 'G': 'Sol', 'A': 'La', 'B': 'Si',
-            'c': 'Do', 'd': 'Re', 'e': 'Mi', 'f': 'Fa', 'g': 'Sol', 'a': 'La', 'b': 'Si'
-        };
+        const noteNames = { 'C': 'Do', 'D': 'Re', 'E': 'Mi', 'F': 'Fa', 'G': 'Sol', 'A': 'La', 'B': 'Si', 'c': 'Do', 'd': 'Re', 'e': 'Mi', 'f': 'Fa', 'g': 'Sol', 'a': 'La', 'b': 'Si' };
 
         function addNoteLabels(svgElement) {
-            // Buscar todos los elementos que representan notas (cabeza de nota, etc.)
             const notes = svgElement.querySelectorAll('.abcjs-note, .abcjs-note-head, .abcjs-note-stem');
             notes.forEach(note => {
                 let pitch = note.getAttribute('data-pitch');
@@ -1374,7 +1325,7 @@
         }
 
         // ============================================================
-        //  FUNCIÓN DE REPRODUCCIÓN (con verificación de ABCJS)
+        //  REPRODUCCIÓN
         // ============================================================
         let synth = null;
         let isPlaying = false;
@@ -1384,16 +1335,15 @@
                 alert('Esta partitura no tiene notación ABC para reproducir.');
                 return;
             }
-
-            if (!checkABCJS()) return;
+            if (typeof ABCJS === 'undefined' || typeof ABCJS.synth === 'undefined') {
+                alert('El sintetizador de ABCJS no está disponible. Intenta recargar la página.');
+                return;
+            }
 
             const playBtn = document.getElementById('playBtn');
             if (isPlaying) {
-                // Detener reproducción
-                if (synth) {
-                    try { synth.stop(); } catch (e) {}
-                    synth = null;
-                }
+                if (synth) { try { synth.stop(); } catch (e) {} }
+                synth = null;
                 isPlaying = false;
                 playBtn.textContent = '🔊 Reproducir';
                 playBtn.classList.remove('playing');
@@ -1401,36 +1351,29 @@
             }
 
             try {
-                // Crear el sintetizador
                 synth = new ABCJS.synth.Synth();
-
-                // Inicializar el contexto de audio
-                synth.init({
-                    el: document.createElement('div')
-                }).then(() => {
-                    // Cargar el código ABC
-                    return synth.load(abcCode);
-                }).then(() => {
-                    // Reproducir
-                    isPlaying = true;
-                    playBtn.textContent = '⏹ Detener';
-                    playBtn.classList.add('playing');
-                    synth.play();
-                    // Cuando termine, resetear
-                    synth.on('ended', () => {
+                synth.init({ el: document.createElement('div') })
+                    .then(() => synth.load(abcCode))
+                    .then(() => {
+                        isPlaying = true;
+                        playBtn.textContent = '⏹ Detener';
+                        playBtn.classList.add('playing');
+                        synth.play();
+                        synth.on('ended', () => {
+                            isPlaying = false;
+                            playBtn.textContent = '🔊 Reproducir';
+                            playBtn.classList.remove('playing');
+                            synth = null;
+                        });
+                    })
+                    .catch(err => {
+                        console.error('Error al reproducir:', err);
+                        alert('Error al reproducir: ' + err.message);
                         isPlaying = false;
                         playBtn.textContent = '🔊 Reproducir';
                         playBtn.classList.remove('playing');
                         synth = null;
                     });
-                }).catch(err => {
-                    console.error('Error al reproducir:', err);
-                    alert('Error al reproducir: ' + err.message);
-                    isPlaying = false;
-                    playBtn.textContent = '🔊 Reproducir';
-                    playBtn.classList.remove('playing');
-                    synth = null;
-                });
             } catch (e) {
                 console.error('Error al iniciar reproducción:', e);
                 alert('Error al iniciar la reproducción: ' + e.message);
@@ -1442,7 +1385,7 @@
         }
 
         // ============================================================
-        //  DETALLE CON VISOR ABC, ZOOM, ARRASTRE, ETIQUETAS Y REPRODUCCIÓN
+        //  DETALLE
         // ============================================================
         let currentDetailId = null;
         let currentZoom = 1.0;
@@ -1454,8 +1397,10 @@
         function showDetail(id) {
             const s = getSheet(id);
             if (!s) return;
-
-            if (!checkABCJS()) return;
+            if (typeof ABCJS === 'undefined' || typeof ABCJS.renderAbc === 'undefined') {
+                alert('La biblioteca musical no está disponible. Recarga la página.');
+                return;
+            }
 
             currentDetailId = id;
             currentZoom = 1.0;
@@ -1463,12 +1408,7 @@
             panY = 0;
             showNoteLabels = false;
 
-            // Reiniciar el estado de reproducción si estaba activo
-            if (isPlaying && synth) {
-                try { synth.stop(); } catch (e) {}
-                synth = null;
-                isPlaying = false;
-            }
+            if (isPlaying && synth) { try { synth.stop(); } catch (e) {} synth = null; isPlaying = false; }
 
             document.getElementById('detailTitle').textContent = `📄 ${s.title}`;
             const container = document.getElementById('detailContent');
@@ -1483,9 +1423,7 @@
                 <div class="detail-row"><span class="detail-label">Categoría</span><span class="detail-value">${s.category || 'Otro'}</span></div>
                 <div class="detail-row"><span class="detail-label">Dificultad</span><span class="detail-value">${s.difficulty || 'Media'}</span></div>
                 ${s.notes ? `<div class="notes">${s.notes}</div>` : ''}
-                <div class="sheet-viewer-wrapper" id="sheetViewerWrapper">
-                    ${viewerHtml}
-                </div>
+                <div class="sheet-viewer-wrapper" id="sheetViewerWrapper">${viewerHtml}</div>
                 <div class="zoom-controls">
                     <button id="zoomOutBtn">−</button>
                     <span class="zoom-level" id="zoomLevel">100%</span>
@@ -1493,42 +1431,22 @@
                     <button class="play-btn" id="playBtn">🔊 Reproducir</button>
                     <button class="toggle-notes-btn" id="toggleNotesBtn">🎵 Notas</button>
                 </div>
-                <div class="detail-actions">
-                    <button class="edit-abc-btn" id="editAbcBtn">✏️ Editar notación</button>
-                </div>
-                <div style="margin-top:12px;font-size:12px;color:var(--text-light);opacity:0.5;">ID: ${s.id}</div>
+                <div class="detail-actions"><button class="edit-abc-btn" id="editAbcBtn">✏️ Editar notación</button></div>
             `;
 
             document.getElementById('detailOverlay').classList.add('open');
-
-            // Configurar eventos de zoom y arrastre
             setupZoomAndPan();
 
-            // Renderizar la partitura
             if (s.abc && s.abc.trim().length > 0) {
                 setTimeout(() => {
                     const viewer = document.getElementById('sheetViewer');
                     if (!viewer) return;
                     try {
-                        if (typeof ABCJS === 'undefined' || typeof ABCJS.renderAbc === 'undefined') {
-                            viewer.innerHTML = `<div class="abc-error">Error: La biblioteca ABCJS no se ha cargado correctamente.</div>`;
-                            return;
-                        }
                         viewer.innerHTML = '';
-                        ABCJS.renderAbc('sheetViewer', s.abc, {
-                            responsive: 'resize',
-                            add_classes: true,
-                            scale: 1.8,
-                            staffwidth: 600,
-                            padding: 20,
-                            engraver: 'svg'
-                        });
-                        // Si ya estaban activadas las notas, añadirlas
+                        ABCJS.renderAbc('sheetViewer', s.abc, { responsive: 'resize', add_classes: true, scale: 1.8, staffwidth: 600, padding: 20, engraver: 'svg' });
                         if (showNoteLabels) {
                             const svg = viewer.querySelector('svg');
-                            if (svg) {
-                                setTimeout(() => addNoteLabels(svg), 300);
-                            }
+                            if (svg) setTimeout(() => addNoteLabels(svg), 300);
                         }
                         updateZoomAndPan();
                     } catch (e) {
@@ -1537,46 +1455,29 @@
                 }, 300);
             }
 
-            // Evento del botón de editar
             document.getElementById('editAbcBtn').addEventListener('click', () => {
-                if (currentDetailId) {
-                    closeModal();
-                    openEditForm(currentDetailId);
-                }
+                if (currentDetailId) { closeModal(); openEditForm(currentDetailId); }
             });
 
-            // Evento del botón de notas
             document.getElementById('toggleNotesBtn').addEventListener('click', () => {
                 showNoteLabels = !showNoteLabels;
                 const btn = document.getElementById('toggleNotesBtn');
-                if (showNoteLabels) {
-                    btn.classList.add('active');
-                    btn.textContent = '🔊 Notas ON';
-                } else {
-                    btn.classList.remove('active');
-                    btn.textContent = '🎵 Notas';
-                }
+                btn.classList.toggle('active');
+                btn.textContent = showNoteLabels ? '🔊 Notas ON' : '🎵 Notas';
                 const viewer = document.getElementById('sheetViewer');
                 if (viewer) {
                     const svg = viewer.querySelector('svg');
                     if (svg) {
                         svg.querySelectorAll('.note-label-group').forEach(el => el.remove());
-                        if (showNoteLabels) {
-                            // Esperar un poco para que el DOM se actualice
-                            setTimeout(() => addNoteLabels(svg), 100);
-                        }
+                        if (showNoteLabels) setTimeout(() => addNoteLabels(svg), 100);
                     }
                 }
             });
 
-            // Evento del botón de reproducción
             document.getElementById('playBtn').addEventListener('click', () => {
                 const s_play = getSheet(currentDetailId);
-                if (s_play && s_play.abc) {
-                    playABC(s_play.abc);
-                } else {
-                    alert('No hay notación ABC para esta partitura.');
-                }
+                if (s_play && s_play.abc) playABC(s_play.abc);
+                else alert('No hay notación ABC para esta partitura.');
             });
         }
 
@@ -1603,78 +1504,19 @@
 
             wrapper.addEventListener('wheel', (e) => {
                 e.preventDefault();
-                if (e.deltaY < 0) {
-                    currentZoom = Math.min(currentZoom + 0.1, 3.0);
-                } else {
-                    currentZoom = Math.max(currentZoom - 0.1, 0.5);
-                }
+                currentZoom = e.deltaY < 0 ? Math.min(currentZoom + 0.1, 3.0) : Math.max(currentZoom - 0.1, 0.5);
                 updateZoomAndPan();
             }, { passive: false });
 
-            wrapper.addEventListener('dblclick', () => {
-                currentZoom = 1.0;
-                panX = 0;
-                panY = 0;
-                updateZoomAndPan();
-            });
+            wrapper.addEventListener('dblclick', () => { currentZoom = 1.0; panX = 0; panY = 0; updateZoomAndPan(); });
         }
 
-        function startDrag(e) {
-            if (e.button !== 0) return;
-            isDragging = true;
-            startX = e.clientX;
-            startY = e.clientY;
-            startPanX = panX;
-            startPanY = panY;
-            document.getElementById('sheetViewerWrapper').style.cursor = 'grabbing';
-            e.preventDefault();
-        }
-
-        function startDragTouch(e) {
-            const touch = e.touches[0];
-            if (!touch) return;
-            isDragging = true;
-            startX = touch.clientX;
-            startY = touch.clientY;
-            startPanX = panX;
-            startPanY = panY;
-            e.preventDefault();
-        }
-
-        function drag(e) {
-            if (!isDragging) return;
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
-            panX = startPanX + dx;
-            panY = startPanY + dy;
-            updateZoomAndPan();
-            e.preventDefault();
-        }
-
-        function dragTouch(e) {
-            if (!isDragging) return;
-            const touch = e.touches[0];
-            if (!touch) return;
-            const dx = touch.clientX - startX;
-            const dy = touch.clientY - startY;
-            panX = startPanX + dx;
-            panY = startPanY + dy;
-            updateZoomAndPan();
-            e.preventDefault();
-        }
-
-        function endDrag() {
-            isDragging = false;
-            const wrapper = document.getElementById('sheetViewerWrapper');
-            if (wrapper) wrapper.style.cursor = 'grab';
-        }
-
-        function updateZoomAndPan() {
-            const viewer = document.getElementById('sheetViewer');
-            if (!viewer) return;
-            viewer.style.transform = `translate(${panX}px, ${panY}px) scale(${currentZoom})`;
-            document.getElementById('zoomLevel').textContent = Math.round(currentZoom * 100) + '%';
-        }
+        function startDrag(e) { if (e.button !== 0) return; isDragging = true; startX = e.clientX; startY = e.clientY; startPanX = panX; startPanY = panY; document.getElementById('sheetViewerWrapper').style.cursor = 'grabbing'; e.preventDefault(); }
+        function startDragTouch(e) { const touch = e.touches[0]; if (!touch) return; isDragging = true; startX = touch.clientX; startY = touch.clientY; startPanX = panX; startPanY = panY; e.preventDefault(); }
+        function drag(e) { if (!isDragging) return; panX = startPanX + (e.clientX - startX); panY = startPanY + (e.clientY - startY); updateZoomAndPan(); e.preventDefault(); }
+        function dragTouch(e) { if (!isDragging) return; const touch = e.touches[0]; if (!touch) return; panX = startPanX + (touch.clientX - startX); panY = startPanY + (touch.clientY - startY); updateZoomAndPan(); e.preventDefault(); }
+        function endDrag() { isDragging = false; const wrapper = document.getElementById('sheetViewerWrapper'); if (wrapper) wrapper.style.cursor = 'grab'; }
+        function updateZoomAndPan() { const viewer = document.getElementById('sheetViewer'); if (!viewer) return; viewer.style.transform = `translate(${panX}px, ${panY}px) scale(${currentZoom})`; document.getElementById('zoomLevel').textContent = Math.round(currentZoom * 100) + '%'; }
 
         // ============================================================
         //  FORMULARIO
@@ -1707,16 +1549,7 @@
         }
 
         function closeModal() {
-            if (isPlaying && synth) {
-                try { synth.stop(); } catch (e) {}
-                synth = null;
-                isPlaying = false;
-                const playBtn = document.getElementById('playBtn');
-                if (playBtn) {
-                    playBtn.textContent = '🔊 Reproducir';
-                    playBtn.classList.remove('playing');
-                }
-            }
+            if (isPlaying && synth) { try { synth.stop(); } catch (e) {} synth = null; isPlaying = false; const btn = document.getElementById('playBtn'); if (btn) { btn.textContent = '🔊 Reproducir'; btn.classList.remove('playing'); } }
             document.getElementById('modalOverlay').classList.remove('open');
             document.getElementById('detailOverlay').classList.remove('open');
         }
@@ -1731,18 +1564,10 @@
             const abc = document.getElementById('formAbc').value.trim();
             const notes = document.getElementById('formNotes').value.trim();
 
-            if (!title || !composer) {
-                alert('Título y compositor son obligatorios.');
-                return;
-            }
-
+            if (!title || !composer) { alert('Título y compositor son obligatorios.'); return; }
             const data = { title, composer, category, difficulty, abc, notes };
-
-            if (id) {
-                updateSheet(id, data);
-            } else {
-                addSheet(data);
-            }
+            if (id) updateSheet(id, data);
+            else addSheet(data);
             closeModal();
             render();
         });
@@ -1751,26 +1576,17 @@
         //  INICIALIZACIÓN
         // ============================================================
         document.addEventListener('DOMContentLoaded', () => {
-            // Verificar ABCJS antes de continuar
-            if (!checkABCJS()) {
-                console.error('ABCJS no cargado. Esperando carga desde CDN...');
-                // Intentar recargar después de unos segundos
-                setTimeout(() => {
-                    if (typeof ABCJS !== 'undefined' && ABCJS.renderAbc) {
-                        console.log('ABCJS cargado después de esperar.');
-                        // Cargar datos y renderizar
-                        loadData();
-                        render();
-                    } else {
-                        alert('⚠️ No se pudo cargar la biblioteca musical. Verifica tu conexión a Internet y recarga la página.');
-                    }
-                }, 5000);
-                return;
-            }
-
-            // Cargar datos y renderizar
-            loadData();
-            render();
+            // Intentar cargar ABCJS primero
+            loadABCJS()
+                .then(() => {
+                    console.log('ABCJS cargado correctamente');
+                    loadData();
+                    render();
+                })
+                .catch(err => {
+                    console.error('Error cargando ABCJS:', err);
+                    alert('⚠️ No se pudo cargar la biblioteca musical. Verifica tu conexión a Internet y recarga la página.');
+                });
 
             document.getElementById('searchInput').addEventListener('input', render);
             document.getElementById('categoryFilter').addEventListener('change', render);
@@ -1786,7 +1602,7 @@
             });
             document.getElementById('closeDetail').addEventListener('click', closeModal);
 
-            console.log('✅ App lista con CDN fiable.');
+            console.log('✅ App lista. Intentando cargar biblioteca musical...');
         });
     </script>
 
