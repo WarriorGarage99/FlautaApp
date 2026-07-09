@@ -6,7 +6,8 @@
     <title>Partituras de Maria · Partituras</title>
     <link rel="manifest" id="manifestLink">
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/abcjs@6.2.3/dist/abcjs-basic-min.js"></script>
+    <!-- VERSIÓN COMPLETA DE ABCJS (incluye sintetizador) -->
+    <script src="https://cdn.jsdelivr.net/npm/abcjs@6.2.3/dist/abcjs-min.js"></script>
     <style>
         /* ===== RESET Y VARIABLES ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -744,7 +745,7 @@
 
     <div class="footer">
         <span class="heart">❤️</span> Hecho con amor por <strong>Stephan Majano</strong> para <strong>Maria Osta</strong>
-        <br><span style="font-size: 11px; opacity:0.5;">Flauta María · v9.1 · con reproducción de audio corregida</span>
+        <br><span style="font-size: 11px; opacity:0.5;">Flauta María · v10.0 · con reproducción y notas funcionales</span>
     </div>
 
     <!-- Modal Añadir/Editar -->
@@ -887,7 +888,7 @@
             const swCode = `
                 self.addEventListener('install', e => {
                     e.waitUntil(
-                        caches.open('flautaMaria-v9').then(cache => {
+                        caches.open('flautaMaria-v10').then(cache => {
                             return cache.addAll(['/']);
                         })
                     );
@@ -1124,7 +1125,7 @@
         const STORAGE_KEY = 'flautaMaria_sheets';
         const FAV_KEY = 'flautaMaria_favs';
         const VERSION_KEY = 'flautaMaria_version';
-        const CURRENT_VERSION = '9.1';
+        const CURRENT_VERSION = '10.0';
 
         let sheets = [];
         let favorites = new Set();
@@ -1274,7 +1275,8 @@
         };
 
         function addNoteLabels(svgElement) {
-            const notes = svgElement.querySelectorAll('.abcjs-note');
+            // Buscar todos los elementos que representan notas (cabeza de nota, etc.)
+            const notes = svgElement.querySelectorAll('.abcjs-note, .abcjs-note-head, .abcjs-note-accidental');
             notes.forEach(note => {
                 let pitch = note.getAttribute('data-pitch');
                 if (!pitch) {
@@ -1462,15 +1464,18 @@
                             padding: 20,
                             engraver: 'svg'
                         });
+                        // Si ya estaban activadas las notas, añadirlas
                         if (showNoteLabels) {
                             const svg = viewer.querySelector('svg');
-                            if (svg) addNoteLabels(svg);
+                            if (svg) {
+                                setTimeout(() => addNoteLabels(svg), 100);
+                            }
                         }
                         updateZoomAndPan();
                     } catch (e) {
                         viewer.innerHTML = `<div class="abc-error">Error al renderizar: ${e.message}</div>`;
                     }
-                }, 200);
+                }, 300);
             }
 
             // Evento del botón de editar
@@ -1498,7 +1503,8 @@
                     if (svg) {
                         svg.querySelectorAll('.note-label-group').forEach(el => el.remove());
                         if (showNoteLabels) {
-                            addNoteLabels(svg);
+                            // Esperar un poco para que el DOM se actualice
+                            setTimeout(() => addNoteLabels(svg), 50);
                         }
                     }
                 }
@@ -1703,9 +1709,9 @@
             });
             document.getElementById('closeDetail').addEventListener('click', closeModal);
 
-            console.log('✅ App lista con reproducción de audio corregida y todas las partituras.');
+            console.log('✅ App lista con reproducción de audio y etiquetas de notas funcionales.');
         });
     </script>
 
 </body>
-                                                              </html>
+</html>
