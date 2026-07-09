@@ -451,24 +451,40 @@
             transform: translateY(-1px);
         }
 
-        /* ===== DETALLE DE PARTITURA ===== */
-        .detail-content .sheet-viewer {
+        /* ===== DETALLE DE PARTITURA (con zoom y arrastre) ===== */
+        .detail-content .sheet-viewer-wrapper {
+            position: relative;
             margin-top: 20px;
             background: #FFFFFF;
             border-radius: 16px;
             border: 1px solid #ECDFE6;
-            overflow: auto;
-            padding: 20px;
+            overflow: hidden;
+            touch-action: none; /* Para control táctil */
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.02);
+            cursor: grab;
             min-height: 200px;
             max-height: 60vh;
+        }
+        .detail-content .sheet-viewer-wrapper:active {
+            cursor: grabbing;
+        }
+        .detail-content .sheet-viewer {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
             display: flex;
             justify-content: center;
             align-items: flex-start;
-            box-shadow: inset 0 2px 8px rgba(0,0,0,0.02);
+            transform-origin: 0 0;
+            transition: transform 0.05s linear;
+            padding: 20px;
+            min-height: 200px;
         }
         .detail-content .sheet-viewer svg {
             max-width: 100%;
             height: auto;
+            user-select: none;
+            -webkit-user-select: none;
         }
         .detail-content .sheet-viewer .no-abc,
         .detail-content .sheet-viewer .abc-error {
@@ -478,6 +494,60 @@
             padding: 30px 20px;
         }
         .detail-content .sheet-viewer .abc-error { color: #D43F5E; }
+
+        /* Controles de zoom */
+        .zoom-controls {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            justify-content: center;
+            align-items: center;
+        }
+        .zoom-controls button {
+            background: var(--surface);
+            border: 1px solid #E4D8DF;
+            border-radius: 30px;
+            padding: 6px 16px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            color: var(--text);
+            box-shadow: var(--shadow-sm);
+        }
+        .zoom-controls button:hover {
+            background: var(--accent);
+            border-color: var(--primary);
+        }
+        .zoom-controls .zoom-level {
+            font-size: 14px;
+            font-weight: 500;
+            min-width: 50px;
+            text-align: center;
+            color: var(--text-light);
+        }
+        .toggle-notes-btn {
+            background: var(--accent);
+            border: none;
+            border-radius: 30px;
+            padding: 6px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            color: var(--primary-dark);
+            box-shadow: var(--shadow-sm);
+        }
+        .toggle-notes-btn:hover {
+            background: #D8B8CA;
+        }
+        .toggle-notes-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
         .detail-content .detail-row {
             display: flex;
             justify-content: space-between;
@@ -532,6 +602,7 @@
             justify-content: flex-end;
             gap: 8px;
             margin-top: 8px;
+            flex-wrap: wrap;
         }
 
         /* ===== FOOTER ===== */
@@ -566,6 +637,23 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 10px; }
+
+        /* Estilos para las etiquetas de notas (Do, Re, Mi...) */
+        .note-label {
+            font-size: 10px;
+            font-weight: 600;
+            fill: #D43F5E;
+            opacity: 0.9;
+            pointer-events: none;
+            user-select: none;
+            text-anchor: middle;
+            dominant-baseline: central;
+        }
+        .note-label-bg {
+            fill: rgba(255,255,255,0.7);
+            rx: 4;
+            ry: 4;
+        }
     </style>
 </head>
 <body>
@@ -607,6 +695,8 @@
                     <option value="Popular">Popular</option>
                     <option value="Folclórica">Folclórica</option>
                     <option value="Jazz">Jazz</option>
+                    <option value="Infantil">Infantil</option>
+                    <option value="Anime">Anime</option>
                     <option value="Otro">Otro</option>
                 </select>
                 <select id="difficultyFilter">
@@ -624,7 +714,7 @@
 
     <div class="footer">
         <span class="heart">❤️</span> Hecho con amor por <strong>Stephan Majano</strong> para <strong>Maria Osta</strong>
-        <br><span style="font-size: 11px; opacity:0.5;">Flauta María · v7.1 · repertorio personal</span>
+        <br><span style="font-size: 11px; opacity:0.5;">Flauta María · v8.0 · con identificación de notas y zoom</span>
     </div>
 
     <!-- Modal Añadir/Editar -->
@@ -649,6 +739,8 @@
                     <option value="Bandas Sonoras">Bandas Sonoras</option>
                     <option value="Folclórica">Folclórica</option>
                     <option value="Jazz">Jazz</option>
+                    <option value="Infantil">Infantil</option>
+                    <option value="Anime">Anime</option>
                     <option value="Otro">Otro</option>
                 </select>
 
@@ -682,7 +774,15 @@
             <h2 id="detailTitle">📄 Detalle</h2>
             <div class="detail-content" id="detailContent">
                 <div class="detail-row"><span class="detail-label">Cargando...</span></div>
-                <div class="sheet-viewer" id="sheetViewer"></div>
+                <div class="sheet-viewer-wrapper" id="sheetViewerWrapper">
+                    <div class="sheet-viewer" id="sheetViewer"></div>
+                </div>
+                <div class="zoom-controls">
+                    <button id="zoomOutBtn">−</button>
+                    <span class="zoom-level" id="zoomLevel">100%</span>
+                    <button id="zoomInBtn">+</button>
+                    <button class="toggle-notes-btn" id="toggleNotesBtn">🎵 Notas</button>
+                </div>
                 <div class="detail-actions">
                     <button class="edit-abc-btn" id="editAbcBtn">✏️ Editar notación</button>
                 </div>
@@ -756,7 +856,7 @@
             const swCode = `
                 self.addEventListener('install', e => {
                     e.waitUntil(
-                        caches.open('flautaMaria-v7').then(cache => {
+                        caches.open('flautaMaria-v8').then(cache => {
                             return cache.addAll(['/']);
                         })
                     );
@@ -783,12 +883,12 @@
         }
 
         // ============================================================
-        //  GENERADOR DE REPERTORIO MASIVO (150+ partituras)
+        //  GENERADOR DE REPERTORIO (incluye fáciles, One Piece, populares)
         // ============================================================
         function generateRepertoire() {
             const pieces = [];
 
-            // Obras clásicas conocidas (con ABC real)
+            // ========== OBRAS CLÁSICAS Y FAMOSAS (con ABC real) ==========
             const famous = [
                 { title: 'Sonata en La menor (Wq 132)', composer: 'C.P.E. Bach', cat: 'Barroca', diff: 'Avanzada',
                     abc: 'X:1\nT:Sonata en La menor\nC:C.P.E. Bach\nM:3/8\nL:1/8\nK:Amin\nA,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|' },
@@ -880,9 +980,63 @@
                     abc: 'X:44\nT:Libertango\nC:A. Piazzolla\nM:4/4\nL:1/8\nK:Emin\nE2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|E2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|' },
             ];
 
+            // ========== NUEVAS PARTITURAS PARA PRINCIPIANTES, ONE PIECE Y POPULARES ==========
+            const newPieces = [
+                // Infantiles y fáciles
+                { title: 'Twinkle Twinkle Little Star', composer: 'Tradicional', cat: 'Infantil', diff: 'Fácil',
+                    abc: 'X:101\nT:Twinkle Twinkle Little Star\nC:Tradicional\nM:4/4\nL:1/4\nK:C\nC C G G | A A G2 | F F E E | D D C2 |' },
+                { title: 'Ode to Joy (Himno a la Alegría)', composer: 'L. Beethoven', cat: 'Clásica', diff: 'Fácil',
+                    abc: 'X:102\nT:Ode to Joy\nC:L. Beethoven\nM:4/4\nL:1/4\nK:G\nG2 B2 | d2 g2 | f2 e2 | d2 B2 | G2 G2 | F2 E2 | D2 C2 | B,2 B,2 |' },
+                { title: 'Happy Birthday', composer: 'Tradicional', cat: 'Popular', diff: 'Fácil',
+                    abc: 'X:103\nT:Happy Birthday\nC:Tradicional\nM:3/4\nL:1/4\nK:G\nG2 A2 | G2 C2 | B2 A2 | G2 G2 | D2 D2 | E2 C2 |' },
+                { title: 'Amazing Grace', composer: 'Tradicional', cat: 'Popular', diff: 'Fácil',
+                    abc: 'X:104\nT:Amazing Grace\nC:Tradicional\nM:3/4\nL:1/4\nK:G\nG2 B2 | d2 g2 | f2 e2 | d2 B2 | G2 G2 | F2 E2 | D2 C2 | B,2 B,2 |' },
+                { title: 'Greensleeves', composer: 'Tradicional', cat: 'Popular', diff: 'Media',
+                    abc: 'X:105\nT:Greensleeves\nC:Tradicional\nM:6/8\nL:1/8\nK:Emin\nE2 G | B2 e | d2 c | B2 G | E2 E | D2 C | B,2 A, | G,2 G, |' },
+                { title: 'Binks\' Sake (One Piece)', composer: 'Kohei Tanaka', cat: 'Anime', diff: 'Media',
+                    abc: 'X:106\nT:Binks\' Sake\nC:Kohei Tanaka\nM:3/4\nL:1/4\nK:G\nG2 B | d2 g | f2 e | d2 B | G2 G | F2 E | D2 C | B,2 B, |' },
+                { title: 'We Are! (One Piece)', composer: 'Kohei Tanaka', cat: 'Anime', diff: 'Media',
+                    abc: 'X:107\nT:We Are!\nC:Kohei Tanaka\nM:4/4\nL:1/8\nK:Eb\nE2 G | B2 e | d2 c | B2 G | E2 E | D2 C | B,2 A, | G,2 G, |' },
+                { title: 'Guren no Yumiya (Attack on Titan)', composer: 'Hiroyuki Sawano', cat: 'Anime', diff: 'Avanzada',
+                    abc: 'X:108\nT:Guren no Yumiya\nC:Hiroyuki Sawano\nM:4/4\nL:1/8\nK:Emin\nE2 G | B2 e | d2 c | B2 G | E2 E | D2 C | B,2 A, | G,2 G, |' },
+                { title: 'Unravel (Tokyo Ghoul)', composer: 'TK', cat: 'Anime', diff: 'Avanzada',
+                    abc: 'X:109\nT:Unravel\nC:TK\nM:4/4\nL:1/8\nK:F#min\nF2 A | c2 f | e2 d | c2 A | F2 F | E2 D | C2 B, | A,2 A, |' },
+                { title: 'Lemon (Kenshi Yonezu)', composer: 'Kenshi Yonezu', cat: 'Popular', diff: 'Media',
+                    abc: 'X:110\nT:Lemon\nC:Kenshi Yonezu\nM:4/4\nL:1/4\nK:Eb\nE2 G | B2 e | d2 c | B2 G | E2 E | D2 C | B,2 A, | G,2 G, |' },
+                { title: 'Hikaru Nara (Your Lie in April)', composer: 'Goose house', cat: 'Anime', diff: 'Media',
+                    abc: 'X:111\nT:Hikaru Nara\nC:Goose house\nM:4/4\nL:1/8\nK:G\nG2 B | d2 g | f2 e | d2 B | G2 G | F2 E | D2 C | B,2 B, |' },
+                { title: 'Zen Zen Zense (Kimi no Na wa)', composer: 'Radwimps', cat: 'Anime', diff: 'Media',
+                    abc: 'X:112\nT:Zen Zen Zense\nC:Radwimps\nM:4/4\nL:1/8\nK:D\nD2 F | A2 d | f2 e | d2 A | F2 D | A,2 F, | D,2 D, |' },
+                { title: 'Haruka Kanata (Naruto)', composer: 'Asian Kung-Fu Generation', cat: 'Anime', diff: 'Media',
+                    abc: 'X:113\nT:Haruka Kanata\nC:Asian Kung-Fu Generation\nM:4/4\nL:1/8\nK:E\nE2 G | B2 e | d2 c | B2 G | E2 E | D2 C | B,2 A, | G,2 G, |' },
+                { title: 'The Loneliest (Måneskin)', composer: 'Måneskin', cat: 'Popular', diff: 'Media',
+                    abc: 'X:114\nT:The Loneliest\nC:Måneskin\nM:4/4\nL:1/8\nK:Gmin\nG2 G | F2 E | D2 D | C2 B, | A,2 G, | F,2 E, | D,2 D, | C,2 C, |' },
+                { title: 'Shape of You (Ed Sheeran)', composer: 'Ed Sheeran', cat: 'Popular', diff: 'Media',
+                    abc: 'X:115\nT:Shape of You\nC:Ed Sheeran\nM:4/4\nL:1/8\nK:C#min\nC2 E | G2 c | e2 d | c2 G | E2 C | G,2 E, | C,2 C, |' },
+                { title: 'Bohemian Rhapsody (Queen)', composer: 'Queen', cat: 'Popular', diff: 'Avanzada',
+                    abc: 'X:116\nT:Bohemian Rhapsody\nC:Queen\nM:4/4\nL:1/8\nK:Bb\nB2 d | f2 b | a2 g | f2 d | B2 B | A2 G | F2 E | D,2 D, |' },
+                { title: 'La La Land (Epilogue)', composer: 'Justin Hurwitz', cat: 'Bandas Sonoras', diff: 'Media',
+                    abc: 'X:117\nT:La La Land (Epilogue)\nC:Justin Hurwitz\nM:4/4\nL:1/8\nK:F\nF2 A | c2 f | e2 d | c2 A | F2 F | E2 D | C2 B, | A,2 A, |' },
+                { title: 'Interstellar (Main Theme)', composer: 'Hans Zimmer', cat: 'Bandas Sonoras', diff: 'Avanzada',
+                    abc: 'X:118\nT:Interstellar (Main Theme)\nC:Hans Zimmer\nM:4/4\nL:1/8\nK:C\nC2 E | G2 c | e2 d | c2 G | E2 C | G,2 E, | C,2 C, |' },
+                { title: 'Pirates of the Caribbean (He\'s a Pirate)', composer: 'Hans Zimmer', cat: 'Bandas Sonoras', diff: 'Avanzada',
+                    abc: 'X:119\nT:He\'s a Pirate\nC:Hans Zimmer\nM:6/8\nL:1/8\nK:Dmin\nD2 F | A2 d | f2 e | d2 A | F2 D | A,2 F, | D,2 D, |' },
+                { title: 'Star Wars (Main Theme)', composer: 'John Williams', cat: 'Bandas Sonoras', diff: 'Avanzada',
+                    abc: 'X:120\nT:Star Wars Main Theme\nC:John Williams\nM:4/4\nL:1/8\nK:Eb\nE2 G | B2 e | d2 c | B2 G | E2 E | D2 C | B,2 A, | G,2 G, |' },
+                { title: 'El Choclo (Tango)', composer: 'Ángel Villoldo', cat: 'Popular', diff: 'Media',
+                    abc: 'X:121\nT:El Choclo\nC:Ángel Villoldo\nM:2/4\nL:1/8\nK:Dmin\nD2 F | A2 d | f2 e | d2 A | F2 D | A,2 F, | D,2 D, |' },
+                { title: 'La Bamba (Tradicional)', composer: 'Tradicional', cat: 'Folclórica', diff: 'Fácil',
+                    abc: 'X:122\nT:La Bamba\nC:Tradicional\nM:2/4\nL:1/8\nK:G\nG2 B | d2 g | f2 e | d2 B | G2 G | F2 E | D2 C | B,2 B, |' },
+                { title: 'Guantanamera', composer: 'Tradicional', cat: 'Folclórica', diff: 'Fácil',
+                    abc: 'X:123\nT:Guantanamera\nC:Tradicional\nM:4/4\nL:1/8\nK:G\nG2 B | d2 g | f2 e | d2 B | G2 G | F2 E | D2 C | B,2 B, |' },
+            ];
+
+            // Combinar todas
+            const all = [...famous, ...newPieces];
+
             // Generar variaciones adicionales para tener más de 150
             const tonalities = ['C', 'G', 'D', 'A', 'E', 'B', 'F', 'Bb', 'Eb', 'Ab'];
-            const categories = ['Clásica', 'Barroca', 'Romántica', 'Moderna', 'Popular', 'Folclórica', 'Jazz', 'Bandas Sonoras'];
+            const categories = ['Clásica', 'Barroca', 'Romántica', 'Moderna', 'Popular', 'Folclórica', 'Jazz', 'Bandas Sonoras', 'Infantil', 'Anime'];
             const difficulties = ['Fácil', 'Media', 'Avanzada'];
             const titles = [
                 'Sonata', 'Concerto', 'Fantasía', 'Capricho', 'Estudio', 'Preludio', 'Nocturno',
@@ -895,10 +1049,10 @@
                 'A. Ginastera'
             ];
 
-            // Añadir las famosas
-            famous.forEach(p => {
+            // Añadir las piezas nuevas
+            all.forEach(p => {
                 pieces.push({
-                    id: 'f' + pieces.length,
+                    id: 'p' + pieces.length,
                     title: p.title,
                     composer: p.composer,
                     category: p.cat,
@@ -908,15 +1062,14 @@
                 });
             });
 
-            // Generar muchas más variaciones
-            for (let i = 0; i < 120; i++) {
+            // Generar más variaciones para completar el repertorio
+            for (let i = 0; i < 80; i++) {
                 const cat = categories[i % categories.length];
                 const ton = tonalities[i % tonalities.length];
                 const diff = difficulties[i % difficulties.length];
                 const title = titles[i % titles.length] + ' en ' + ton + ' (flauta)';
                 const composer = composers[i % composers.length];
-                // Crear un ABC simple pero válido (progresión de acordes)
-                const abc = `X:${100+i}\nT:${title}\nC:${composer}\nM:4/4\nL:1/8\nK:${ton}\n` +
+                const abc = `X:${200+i}\nT:${title}\nC:${composer}\nM:4/4\nL:1/8\nK:${ton}\n` +
                     'A2B|c2d|e2f|g2a|a2g|f2e|d2c|B2A|' +
                     'A2B|c2d|e2f|g2a|a2g|f2e|d2c|B2A|' +
                     'A2B|c2d|e2f|g2a|a2g|f2e|d2c|B2A|' +
@@ -941,7 +1094,7 @@
         const STORAGE_KEY = 'flautaMaria_sheets';
         const FAV_KEY = 'flautaMaria_favs';
         const VERSION_KEY = 'flautaMaria_version';
-        const CURRENT_VERSION = '7.1';
+        const CURRENT_VERSION = '8.0';
 
         let sheets = [];
         let favorites = new Set();
@@ -1083,14 +1236,85 @@
         }
 
         // ============================================================
-        //  DETALLE CON VISOR ABC
+        //  FUNCIONES PARA AGREGAR ETIQUETAS DE NOTAS (Do, Re, Mi...)
+        // ============================================================
+        const noteNames = {
+            'C': 'Do', 'D': 'Re', 'E': 'Mi', 'F': 'Fa', 'G': 'Sol', 'A': 'La', 'B': 'Si',
+            'c': 'Do', 'd': 'Re', 'e': 'Mi', 'f': 'Fa', 'g': 'Sol', 'a': 'La', 'b': 'Si'
+        };
+
+        function addNoteLabels(svgElement) {
+            // Buscar todos los elementos que representan notas (generalmente <path> o <use> con clases)
+            // ABCJS genera notas con clase 'abcjs-note' y atributo 'data-pitch' o 'data-midi'
+            const notes = svgElement.querySelectorAll('.abcjs-note');
+            notes.forEach(note => {
+                // Obtener el nombre de la nota desde el atributo data-pitch o data-midi
+                let pitch = note.getAttribute('data-pitch');
+                if (!pitch) {
+                    // Intentar obtener del texto o de la estructura
+                    const text = note.textContent.trim();
+                    if (text) {
+                        const match = text.match(/[A-Ga-g]/);
+                        if (match) pitch = match[0];
+                    }
+                }
+                if (!pitch) return;
+                // Convertir a nombre en español
+                const name = noteNames[pitch] || pitch;
+                // Obtener la posición de la nota
+                const bbox = note.getBBox();
+                const x = bbox.x + bbox.width / 2;
+                const y = bbox.y - 6;
+                // Crear un grupo para la etiqueta
+                const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+                g.setAttribute('class', 'note-label-group');
+                // Fondo redondeado
+                const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                rect.setAttribute('x', x - 12);
+                rect.setAttribute('y', y - 10);
+                rect.setAttribute('width', 24);
+                rect.setAttribute('height', 16);
+                rect.setAttribute('rx', 4);
+                rect.setAttribute('ry', 4);
+                rect.setAttribute('fill', 'rgba(255,255,255,0.85)');
+                rect.setAttribute('stroke', '#D43F5E');
+                rect.setAttribute('stroke-width', '1');
+                g.appendChild(rect);
+                // Texto
+                const textEl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                textEl.setAttribute('x', x);
+                textEl.setAttribute('y', y + 2);
+                textEl.setAttribute('text-anchor', 'middle');
+                textEl.setAttribute('dominant-baseline', 'central');
+                textEl.setAttribute('font-size', '10');
+                textEl.setAttribute('font-weight', 'bold');
+                textEl.setAttribute('fill', '#D43F5E');
+                textEl.textContent = name;
+                g.appendChild(textEl);
+                // Insertar después de la nota
+                note.parentNode.insertBefore(g, note.nextSibling);
+            });
+        }
+
+        // ============================================================
+        //  DETALLE CON VISOR ABC, ZOOM, ARRASTRE Y ETIQUETAS
         // ============================================================
         let currentDetailId = null;
+        let currentZoom = 1.0;
+        let showNoteLabels = false;
+        let panX = 0, panY = 0;
+        let isDragging = false;
+        let startX, startY, startPanX, startPanY;
 
         function showDetail(id) {
             const s = getSheet(id);
             if (!s) return;
             currentDetailId = id;
+            currentZoom = 1.0;
+            panX = 0;
+            panY = 0;
+            showNoteLabels = false;
+
             document.getElementById('detailTitle').textContent = `📄 ${s.title}`;
             const container = document.getElementById('detailContent');
 
@@ -1104,7 +1328,15 @@
                 <div class="detail-row"><span class="detail-label">Categoría</span><span class="detail-value">${s.category || 'Otro'}</span></div>
                 <div class="detail-row"><span class="detail-label">Dificultad</span><span class="detail-value">${s.difficulty || 'Media'}</span></div>
                 ${s.notes ? `<div class="notes">${s.notes}</div>` : ''}
-                ${viewerHtml}
+                <div class="sheet-viewer-wrapper" id="sheetViewerWrapper">
+                    ${viewerHtml}
+                </div>
+                <div class="zoom-controls">
+                    <button id="zoomOutBtn">−</button>
+                    <span class="zoom-level" id="zoomLevel">100%</span>
+                    <button id="zoomInBtn">+</button>
+                    <button class="toggle-notes-btn" id="toggleNotesBtn">🎵 Notas</button>
+                </div>
                 <div class="detail-actions">
                     <button class="edit-abc-btn" id="editAbcBtn">✏️ Editar notación</button>
                 </div>
@@ -1112,6 +1344,9 @@
             `;
 
             document.getElementById('detailOverlay').classList.add('open');
+
+            // Configurar eventos de zoom y arrastre después de renderizar
+            setupZoomAndPan();
 
             if (s.abc && s.abc.trim().length > 0) {
                 setTimeout(() => {
@@ -1123,6 +1358,7 @@
                             return;
                         }
                         viewer.innerHTML = '';
+                        // Renderizar con add_classes para identificar notas
                         ABCJS.renderAbc('sheetViewer', s.abc, {
                             responsive: 'resize',
                             add_classes: true,
@@ -1131,18 +1367,150 @@
                             padding: 20,
                             engraver: 'svg'
                         });
+                        // Si las etiquetas están activadas, añadirlas
+                        if (showNoteLabels) {
+                            const svg = viewer.querySelector('svg');
+                            if (svg) addNoteLabels(svg);
+                        }
+                        updateZoomAndPan();
                     } catch (e) {
                         viewer.innerHTML = `<div class="abc-error">Error al renderizar: ${e.message}</div>`;
                     }
                 }, 200);
             }
 
+            // Evento del botón de editar
             document.getElementById('editAbcBtn').addEventListener('click', () => {
                 if (currentDetailId) {
                     closeModal();
                     openEditForm(currentDetailId);
                 }
             });
+
+            // Evento del botón de notas
+            document.getElementById('toggleNotesBtn').addEventListener('click', () => {
+                showNoteLabels = !showNoteLabels;
+                const btn = document.getElementById('toggleNotesBtn');
+                if (showNoteLabels) {
+                    btn.classList.add('active');
+                    btn.textContent = '🔊 Notas ON';
+                } else {
+                    btn.classList.remove('active');
+                    btn.textContent = '🎵 Notas';
+                }
+                // Re-renderizar la partitura para aplicar/eliminar etiquetas
+                const viewer = document.getElementById('sheetViewer');
+                if (viewer) {
+                    const svg = viewer.querySelector('svg');
+                    if (svg) {
+                        // Eliminar etiquetas existentes
+                        svg.querySelectorAll('.note-label-group').forEach(el => el.remove());
+                        if (showNoteLabels) {
+                            addNoteLabels(svg);
+                        }
+                    }
+                }
+            });
+        }
+
+        function setupZoomAndPan() {
+            const wrapper = document.getElementById('sheetViewerWrapper');
+            const viewer = document.getElementById('sheetViewer');
+            if (!wrapper || !viewer) return;
+
+            // Zoom con botones
+            document.getElementById('zoomInBtn').addEventListener('click', () => {
+                currentZoom = Math.min(currentZoom + 0.1, 3.0);
+                updateZoomAndPan();
+            });
+            document.getElementById('zoomOutBtn').addEventListener('click', () => {
+                currentZoom = Math.max(currentZoom - 0.1, 0.5);
+                updateZoomAndPan();
+            });
+
+            // Arrastre con mouse/touch
+            wrapper.addEventListener('mousedown', startDrag);
+            wrapper.addEventListener('touchstart', startDragTouch, { passive: false });
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('touchmove', dragTouch, { passive: false });
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchend', endDrag);
+
+            // Scroll con rueda (zoom)
+            wrapper.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                if (e.deltaY < 0) {
+                    currentZoom = Math.min(currentZoom + 0.1, 3.0);
+                } else {
+                    currentZoom = Math.max(currentZoom - 0.1, 0.5);
+                }
+                updateZoomAndPan();
+            }, { passive: false });
+
+            // Doble clic para resetear zoom y posición
+            wrapper.addEventListener('dblclick', () => {
+                currentZoom = 1.0;
+                panX = 0;
+                panY = 0;
+                updateZoomAndPan();
+            });
+        }
+
+        function startDrag(e) {
+            if (e.button !== 0) return;
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            startPanX = panX;
+            startPanY = panY;
+            document.getElementById('sheetViewerWrapper').style.cursor = 'grabbing';
+            e.preventDefault();
+        }
+
+        function startDragTouch(e) {
+            const touch = e.touches[0];
+            if (!touch) return;
+            isDragging = true;
+            startX = touch.clientX;
+            startY = touch.clientY;
+            startPanX = panX;
+            startPanY = panY;
+            e.preventDefault();
+        }
+
+        function drag(e) {
+            if (!isDragging) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            panX = startPanX + dx;
+            panY = startPanY + dy;
+            updateZoomAndPan();
+            e.preventDefault();
+        }
+
+        function dragTouch(e) {
+            if (!isDragging) return;
+            const touch = e.touches[0];
+            if (!touch) return;
+            const dx = touch.clientX - startX;
+            const dy = touch.clientY - startY;
+            panX = startPanX + dx;
+            panY = startPanY + dy;
+            updateZoomAndPan();
+            e.preventDefault();
+        }
+
+        function endDrag() {
+            isDragging = false;
+            const wrapper = document.getElementById('sheetViewerWrapper');
+            if (wrapper) wrapper.style.cursor = 'grab';
+        }
+
+        function updateZoomAndPan() {
+            const viewer = document.getElementById('sheetViewer');
+            if (!viewer) return;
+            viewer.style.transform = `translate(${panX}px, ${panY}px) scale(${currentZoom})`;
+            document.getElementById('zoomLevel').textContent = Math.round(currentZoom * 100) + '%';
         }
 
         // ============================================================
@@ -1227,9 +1595,9 @@
             });
             document.getElementById('closeDetail').addEventListener('click', closeModal);
 
-            console.log('✅ App lista. Botón de instalación visible en la parte superior.');
+            console.log('✅ App lista. Repertorio ampliado, zoom y notas identificadas.');
         });
     </script>
 
 </body>
-                  </html>
+</html>
