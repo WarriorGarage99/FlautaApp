@@ -429,22 +429,22 @@ body.no-scroll{position:fixed;overflow:hidden;width:100%;left:0;right:0}
 
 <script>
 /* =========================================================
-   ABCJS
+   ABCJS — versión COMPLETA (incluye sintetizador)
    ========================================================= */
 const CDNS = [
-  'https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.2.3/abcjs-basic-min.js',
-  'https://unpkg.com/abcjs@6.2.3/dist/abcjs-basic-min.js',
-  'https://cdn.jsdelivr.net/npm/abcjs@6.2.3/dist/abcjs-basic-min.js'
+  'https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.2.3/abcjs.min.js',
+  'https://unpkg.com/abcjs@6.2.3/dist/abcjs.min.js',
+  'https://cdn.jsdelivr.net/npm/abcjs@6.2.3/dist/abcjs.min.js'
 ];
 function loadABCJS() {
   return new Promise((res, rej) => {
-    if (window.ABCJS && ABCJS.renderAbc) return res();
+    if (window.ABCJS && ABCJS.renderAbc && ABCJS.synth) return res();
     let i = 0;
     (function next() {
       if (i >= CDNS.length) return rej(new Error('No ABCJS'));
       const s = document.createElement('script');
       s.src = CDNS[i++];
-      s.onload = () => (window.ABCJS && ABCJS.renderAbc) ? res() : next();
+      s.onload = () => (window.ABCJS && ABCJS.renderAbc && ABCJS.synth) ? res() : next();
       s.onerror = next;
       document.head.appendChild(s);
     })();
@@ -469,7 +469,7 @@ function unlockBody() {
 }
 
 /* =========================================================
-   SOLFEO → ABC  (%%MIDI program 73 colocado ANTES de K:)
+   SOLFEO → ABC
    ========================================================= */
 const MAP = { do:'C', re:'D', mi:'E', fa:'F', sol:'G', la:'A', si:'B' };
 function solfeoToAbc(solfeo, meta = {}) {
@@ -776,46 +776,49 @@ function stopAudio() {
 async function togglePlay(s) {
   const btn = document.getElementById('playBtn');
 
-  // Si ya está sonando → detener
   if (currentAudio) { stopAudio(); return; }
 
   if (!s.abc) { alert('Esta canción no tiene notas guardadas.'); return; }
 
+  if (!window.ABCJS || !ABCJS.synth || !ABCJS.synth.CreateSynth) {
+    alert('El sintetizador no está disponible. Recarga la página con internet.');
+    return;
+  }
+
   try {
     const visual = ABCJS.renderAbc('*', s.abc)[0];
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-    // ⚠️ CLAVE en móvil: el navegador suspende el audio hasta que hay interacción
+    // Asignar el programa MIDI 73 (flauta) directamente al objeto visual
+    if (visual.setUpAudio) {
+      visual.setUpAudio({ program: 73 });
+    }
+
+    const AC = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AC();
+
+    // En móvil el AudioContext puede quedar suspendido
     if (ctx.state === 'suspended') {
-      try { await ctx.resume(); } catch (e) {}
+      await ctx.resume();
     }
 
     const synth = new ABCJS.synth.CreateSynth();
-
-    // Forma que SÍ funciona en ABCJS 6
     await synth.init({ audioContext: ctx, visualObj: visual });
     await synth.prime();
-
-    currentAudio = synth;
     synth.start();
 
+    currentAudio = synth;
     btn.classList.add('playing');
     btn.textContent = '⏹ Detener';
 
-    // Detección de fin sin depender de onEnded (sondeo de tiempo)
-    const totalSec = (visual.getTotalTime && visual.getTotalTime()) ? visual.getTotalTime() : 60;
+    // Sondeo para resetear el botón cuando termine
+    const totalSec = (visual.getTotalTime && visual.getTotalTime()) || 60;
     const startTs = Date.now();
     const poll = () => {
-      if (currentAudio !== synth) return; // fue detenido o reemplazado
-      const elapsed = (Date.now() - startTs) / 1000;
-      if (elapsed >= totalSec + 1) {
-        stopAudio();
-      } else {
-        setTimeout(poll, 300);
-      }
+      if (currentAudio !== synth) return;
+      if ((Date.now() - startTs) / 1000 >= totalSec + 1) stopAudio();
+      else setTimeout(poll, 300);
     };
     poll();
-
   } catch (err) {
     console.error('Error de reproducción:', err);
     alert('No se pudo reproducir: ' + (err.message || err));
