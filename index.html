@@ -813,4 +813,125 @@ async function togglePlay(s) {
     btn.classList.add('playing');
     btn.textContent = '⏹ Detener';
 
-    // Fallback
+    // Fallback adicional: temporizador según duración estimada
+    const estimatedMs = (visual.getTotalTime ? visual.getTotalTime() * 1000 : 60000) + 800;
+    setTimeout(() => {
+      // Solo detener si sigue siendo el mismo synth y no fue detenido manualmente
+      if (currentAudio === synth) stopAudio();
+    }, estimatedMs);
+
+  } catch (err) {
+    console.error(err);
+    alert('No se pudo reproducir: ' + err.message);
+    stopAudio();
+  }
+}
+
+/* =========================================================
+   EDITAR / AÑADIR
+   ========================================================= */
+function openAdd() {
+  document.getElementById('editTitle').textContent = 'Añadir canción';
+  document.getElementById('editId').value = '';
+  document.getElementById('sheetForm').reset();
+  document.getElementById('fCategory').value = 'Popular';
+  document.getElementById('fDifficulty').value = 'Fácil';
+  document.getElementById('editModal').classList.add('open');
+  lockBody();
+  setTimeout(() => document.getElementById('fTitle').focus(), 250);
+}
+function openEdit(id) {
+  const s = getSheet(id);
+  if (!s) return;
+  document.getElementById('editTitle').textContent = 'Editar canción';
+  document.getElementById('editId').value = id;
+  document.getElementById('fTitle').value = s.title || '';
+  document.getElementById('fComposer').value = s.composer === '—' ? '' : (s.composer || '');
+  document.getElementById('fCategory').value = s.category || 'Popular';
+  document.getElementById('fDifficulty').value = s.difficulty || 'Fácil';
+  document.getElementById('fSolfeo').value = s.solfeo || '';
+  document.getElementById('fNotes').value = s.notes || '';
+  document.getElementById('editModal').classList.add('open');
+  lockBody();
+}
+function closeModals() {
+  stopAudio();
+  document.getElementById('editModal').classList.remove('open');
+  document.getElementById('detailModal').classList.remove('open');
+  document.getElementById('welcomeModal').classList.remove('open');
+  unlockBody();
+}
+
+document.getElementById('sheetForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const id = document.getElementById('editId').value;
+  const title = document.getElementById('fTitle').value.trim();
+  const composer = document.getElementById('fComposer').value.trim() || '—';
+  const category = document.getElementById('fCategory').value;
+  const difficulty = document.getElementById('fDifficulty').value;
+  const solfeo = document.getElementById('fSolfeo').value.trim();
+  const notes = document.getElementById('fNotes').value.trim();
+  if (!title || !solfeo) { alert('Título y notas en solfeo son obligatorios.'); return; }
+  const abc = solfeoToAbc(solfeo, { title, composer });
+  const data = { title, composer, category, difficulty, solfeo, notes, abc };
+  id ? updateSheet(id, data) : addSheet(data);
+  closeModals();
+});
+
+/* =========================================================
+   PWA
+   ========================================================= */
+let promptInstall = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  promptInstall = e;
+  document.getElementById('installBar').classList.add('show');
+});
+document.getElementById('installBtn').onclick = async () => {
+  if (promptInstall) {
+    promptInstall.prompt();
+    await promptInstall.userChoice;
+    promptInstall = null;
+    document.getElementById('installBar').classList.remove('show');
+  }
+};
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(e => console.warn('SW', e));
+  });
+}
+
+/* =========================================================
+   INIT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  load();
+  render();
+
+  document.getElementById('searchInput').addEventListener('input', render);
+  document.getElementById('addBtn').onclick = openAdd;
+  document.getElementById('cancelBtn').onclick = closeModals;
+  document.getElementById('cancelBtn2').onclick = closeModals;
+  document.getElementById('closeBtn').onclick = closeModals;
+  document.getElementById('editModal').onclick = e => { if (e.target === e.currentTarget) closeModals(); };
+  document.getElementById('detailModal').onclick = e => { if (e.target === e.currentTarget) closeModals(); };
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModals(); });
+
+  if (!localStorage.getItem(WELCOMED)) {
+    setTimeout(() => {
+      document.getElementById('welcomeModal').classList.add('open');
+      lockBody();
+    }, 400);
+  }
+  document.getElementById('welcomeBtn').onclick = () => {
+    localStorage.setItem(WELCOMED, '1');
+    closeModals();
+  };
+
+  loadABCJS().then(() => console.log('✅ Listo')).catch(() => {
+    alert('⚠️ No se pudo cargar la librería musical. Conéctate a internet una vez y recarga.');
+  });
+});
+</script>
+</body>
+</html>
