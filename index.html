@@ -12,59 +12,50 @@
 <link rel="apple-touch-icon" href="./icon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{overflow-x:hidden;scroll-behavior:smooth}
 :root{
-  --primary:#7C4D6B;
-  --primary-soft:#A77A96;
-  --primary-dark:#4F3343;
+  --primary:#7C4D6B;--primary-soft:#A77A96;--primary-dark:#4F3343;
   --gradient:linear-gradient(135deg,#7C4D6B 0%,#A77A96 100%);
-  --accent:#F2E4EC;
-  --accent-line:#E8D0DF;
-  --bg:#FAF7F9;
-  --surface:#FFFFFF;
-  --text:#241A21;
-  --text-soft:#6B5B65;
-  --text-faint:#9A8A93;
+  --accent:#F2E4EC;--accent-line:#E8D0DF;
+  --bg:#FAF7F9;--surface:#FFF;
+  --text:#241A21;--text-soft:#6B5B65;--text-faint:#9A8A93;
   --divider:rgba(124,77,107,.08);
-  --shadow-xs:0 1px 2px rgba(80,50,70,.04);
-  --shadow-sm:0 2px 6px rgba(80,50,70,.05);
   --shadow-md:0 6px 20px rgba(80,50,70,.08);
   --shadow-lg:0 20px 50px rgba(80,50,70,.14);
-  --r-sm:10px;
-  --r-md:14px;
-  --r-lg:20px;
-  --r-full:999px;
+  --r-sm:10px;--r-md:14px;--r-lg:20px;--r-full:999px;
   --t:.2s cubic-bezier(.4,0,.2,1);
   --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   --font-serif:'Fraunces',Georgia,serif;
 }
-html,body{height:100%}
 body{
   font-family:var(--font);
   background:var(--bg);
   color:var(--text);
-  font-size:15px;
-  line-height:1.5;
+  font-size:15px;line-height:1.5;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   padding-bottom:40px;
   min-height:100vh;
+  overflow-x:hidden;
+  max-width:100vw;
+  width:100%;
 }
 
-/* ================== HEADER ================== */
+/* HEADER */
 .app-header{
-  background:var(--surface);
+  background:rgba(255,255,255,.92);
   border-bottom:1px solid var(--divider);
   padding:18px 24px 16px;
   position:sticky;top:0;z-index:100;
   backdrop-filter:saturate(180%) blur(12px);
-  background:rgba(255,255,255,.92);
+  -webkit-backdrop-filter:saturate(180%) blur(12px);
 }
 .app-header .row{
   display:flex;align-items:center;justify-content:space-between;
-  gap:16px;max-width:1100px;margin:0 auto;
+  gap:16px;max-width:1100px;margin:0 auto;min-width:0;
 }
-.app-header .brand{display:flex;align-items:center;gap:12px;min-width:0}
+.app-header .brand{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
 .app-header .logo{
   width:38px;height:38px;border-radius:11px;
   background:var(--gradient);
@@ -75,26 +66,24 @@ body{
 .app-header h1{
   font-family:var(--font-serif);
   font-size:21px;font-weight:600;
-  color:var(--text);
-  letter-spacing:-.02em;
+  color:var(--text);letter-spacing:-.02em;
   line-height:1.15;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .app-header .subtitle{
-  font-size:12px;color:var(--text-faint);
-  font-weight:400;letter-spacing:.01em;
+  font-size:12px;color:var(--text-faint);font-weight:400;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 .app-header .badge{
   font-size:11px;font-weight:600;
   color:var(--primary);background:var(--accent);
   padding:6px 12px;border-radius:var(--r-full);
-  white-space:nowrap;letter-spacing:.02em;
+  white-space:nowrap;letter-spacing:.02em;flex-shrink:0;
   display:flex;align-items:center;gap:5px;
 }
-.app-header .badge::before{content:'♥';color:#D43F5E;font-size:12px;line-height:1}
+.app-header .badge::before{content:'♥';color:#D43F5E;font-size:12px}
 
-/* ================== TOOLBAR ================== */
+/* TOOLBAR */
 .toolbar{
   background:var(--surface);
   border-bottom:1px solid var(--divider);
@@ -103,27 +92,20 @@ body{
 }
 .toolbar-inner{
   max-width:1100px;margin:0 auto;
-  display:flex;gap:10px;align-items:center;
+  display:flex;gap:10px;align-items:center;min-width:0;
 }
-.search-field{
-  flex:1;position:relative;min-width:0;
-}
+.search-field{flex:1 1 auto;position:relative;min-width:0;max-width:100%}
 .search-field input{
   width:100%;
   padding:11px 16px 11px 42px;
-  font-family:var(--font);
-  font-size:14.5px;
-  background:#F5EEF2;
-  border:1px solid transparent;
-  border-radius:var(--r-md);
-  color:var(--text);
-  outline:none;
-  transition:var(--t);
+  font-family:var(--font);font-size:14.5px;
+  background:#F5EEF2;border:1px solid transparent;
+  border-radius:var(--r-md);color:var(--text);
+  outline:none;transition:var(--t);
 }
 .search-field input::placeholder{color:var(--text-faint)}
 .search-field input:focus{
-  background:#fff;
-  border-color:var(--primary-soft);
+  background:#fff;border-color:var(--primary-soft);
   box-shadow:0 0 0 4px rgba(124,77,107,.1);
 }
 .search-field .icon{
@@ -132,134 +114,108 @@ body{
 }
 .btn-primary{
   display:inline-flex;align-items:center;gap:7px;
-  background:var(--primary);color:#fff;
-  border:none;border-radius:var(--r-md);
-  padding:11px 18px;
+  background:var(--primary);color:#fff;border:none;
+  border-radius:var(--r-md);padding:11px 18px;
   font-family:var(--font);font-size:14px;font-weight:600;
-  cursor:pointer;white-space:nowrap;
+  cursor:pointer;white-space:nowrap;flex-shrink:0;
   transition:var(--t);
   box-shadow:0 3px 10px rgba(124,77,107,.22);
 }
-.btn-primary:hover{background:var(--primary-dark);box-shadow:0 5px 16px rgba(124,77,107,.32)}
+.btn-primary:hover{background:var(--primary-dark)}
 .btn-primary:active{transform:scale(.97)}
 .btn-primary .plus{font-size:16px;line-height:1;font-weight:500}
 
-/* ================== GRID ================== */
+/* CONTAINER + GRID */
 .container{
   max-width:1100px;margin:0 auto;
-  padding:24px;
+  padding:24px;width:100%;min-width:0;
 }
 .section-label{
   font-size:11px;font-weight:600;
   letter-spacing:.12em;text-transform:uppercase;
-  color:var(--text-faint);
-  margin-bottom:14px;
+  color:var(--text-faint);margin-bottom:14px;
 }
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-  gap:14px;
+  grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));
+  gap:14px;width:100%;min-width:0;
 }
+
+/* CARD */
 .card{
   background:var(--surface);
   border:1px solid var(--divider);
   border-radius:var(--r-md);
   padding:18px 20px 14px;
-  cursor:pointer;
-  transition:var(--t);
+  cursor:pointer;transition:var(--t);
   display:flex;flex-direction:column;
-  position:relative;
-  overflow:hidden;
+  position:relative;overflow:hidden;
+  min-width:0;width:100%;
+  max-width:100%;
 }
 .card::before{
-  content:'';
-  position:absolute;top:0;left:0;right:0;height:3px;
-  background:var(--gradient);
-  opacity:0;
-  transition:var(--t);
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--gradient);opacity:0;transition:var(--t);
 }
-.card:hover{
-  border-color:var(--accent-line);
-  box-shadow:var(--shadow-md);
-  transform:translateY(-2px);
-}
+.card:hover{border-color:var(--accent-line);box-shadow:var(--shadow-md);transform:translateY(-2px)}
 .card:hover::before{opacity:1}
-
 .card-head{
   display:flex;justify-content:space-between;
-  align-items:flex-start;gap:10px;
-  margin-bottom:6px;
+  align-items:flex-start;gap:10px;margin-bottom:6px;
+  min-width:0;
 }
 .card-title{
   font-family:var(--font-serif);
   font-size:17px;font-weight:600;
-  color:var(--text);
-  line-height:1.25;
-  letter-spacing:-.01em;
+  color:var(--text);line-height:1.25;letter-spacing:-.01em;
   flex:1;min-width:0;
-  overflow:hidden;
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  word-break:break-word;
+  overflow:hidden;overflow-wrap:anywhere;word-break:break-word;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
 }
 .card-fav{
   background:none;border:none;cursor:pointer;
-  font-size:16px;padding:2px 4px;
-  border-radius:var(--r-sm);
-  transition:var(--t);
-  opacity:.35;flex-shrink:0;line-height:1;
+  font-size:16px;padding:2px 4px;border-radius:var(--r-sm);
+  transition:var(--t);opacity:.35;flex-shrink:0;line-height:1;
 }
 .card-fav:hover{opacity:1;background:var(--accent)}
 .card-fav.active{opacity:1}
-
 .card-composer{
   font-size:13px;color:var(--text-soft);
   font-weight:400;margin-bottom:14px;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  min-width:0;max-width:100%;
 }
-
 .card-preview{
-  font-size:13px;
-  color:var(--text-soft);
-  line-height:1.5;
-  margin-bottom:14px;
-  font-style:italic;
-  overflow:hidden;
+  font-size:12.5px;color:var(--primary-dark);
+  line-height:1.55;margin-bottom:14px;
+  background:var(--accent);
+  padding:10px 12px;border-radius:var(--r-sm);
+  overflow:hidden;min-width:0;max-width:100%;
   display:-webkit-box;
   -webkit-line-clamp:2;
   -webkit-box-orient:vertical;
+  overflow-wrap:anywhere;
   word-break:break-word;
 }
 .card-preview::before{
-  content:'♪ ';
-  color:var(--primary-soft);
-  font-style:normal;
-  font-weight:600;
-  margin-right:2px;
+  content:'♪ ';color:var(--primary);font-weight:700;margin-right:2px;
 }
-
 .card-footer{
   display:flex;justify-content:space-between;align-items:center;
-  gap:8px;margin-top:auto;
-  padding-top:12px;
-  border-top:1px solid var(--divider);
+  gap:8px;margin-top:auto;padding-top:12px;
+  border-top:1px solid var(--divider);min-width:0;
 }
-.tags{display:flex;gap:6px;flex-wrap:wrap;min-width:0}
+.tags{display:flex;gap:6px;flex-wrap:wrap;min-width:0;flex:1}
 .tag{
   font-size:10.5px;font-weight:600;
-  padding:3px 10px;
-  border-radius:var(--r-full);
-  letter-spacing:.02em;
-  text-transform:uppercase;
+  padding:3px 10px;border-radius:var(--r-full);
+  letter-spacing:.02em;text-transform:uppercase;
   white-space:nowrap;
 }
 .tag.cat{color:var(--primary-dark);background:var(--accent)}
 .tag.diff{color:#2F5A82;background:#E2ECF5}
-
-.card-actions{
-  display:flex;gap:2px;align-items:center;flex-shrink:0;
-}
+.tag.custom{color:#6B5B65;background:#F0E8ED}
+.card-actions{display:flex;gap:2px;align-items:center;flex-shrink:0}
 .icon-btn{
   background:none;border:none;cursor:pointer;
   font-size:14px;color:var(--text-faint);
@@ -269,38 +225,27 @@ body{
 .icon-btn:hover{background:var(--accent);color:var(--primary)}
 .icon-btn.danger:hover{background:#FBE6EA;color:#C43A56}
 
-/* ================== EMPTY ================== */
+/* EMPTY */
 .empty{
-  grid-column:1/-1;
-  text-align:center;
-  padding:80px 20px;
-  color:var(--text-faint);
+  grid-column:1/-1;text-align:center;
+  padding:80px 20px;color:var(--text-faint);
 }
-.empty .ico{
-  font-size:44px;margin-bottom:14px;
-  opacity:.35;
-  filter:grayscale(.3);
-}
+.empty .ico{font-size:44px;margin-bottom:14px;opacity:.35;filter:grayscale(.3)}
 .empty h3{
-  font-family:var(--font-serif);
-  font-weight:500;font-size:18px;
-  color:var(--text-soft);
-  margin-bottom:6px;
-  letter-spacing:-.01em;
+  font-family:var(--font-serif);font-weight:500;
+  font-size:18px;color:var(--text-soft);margin-bottom:6px;
 }
 .empty p{font-size:14px;color:var(--text-faint)}
 
-/* ================== MODALES ================== */
+/* MODALES */
 .modal-bg{
   position:fixed;inset:0;
   background:rgba(36,26,33,.45);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  z-index:1000;
-  display:none;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  z-index:1000;display:none;
   align-items:center;justify-content:center;
-  padding:20px;
-  animation:fadeIn .2s ease;
+  padding:20px;animation:fadeIn .2s ease;
+  overflow-x:hidden;
 }
 .modal-bg.open{display:flex}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -308,149 +253,114 @@ body{
   from{opacity:0;transform:translateY(16px) scale(.98)}
   to{opacity:1;transform:translateY(0) scale(1)}
 }
-
 .modal{
-  background:var(--surface);
-  border-radius:var(--r-lg);
+  background:var(--surface);border-radius:var(--r-lg);
   width:100%;max-width:560px;
-  max-height:calc(100vh - 40px);
-  overflow-y:auto;
+  max-height:calc(100dvh - 40px);
+  overflow-y:auto;overflow-x:hidden;
   box-shadow:var(--shadow-lg);
   animation:slideUp .28s cubic-bezier(.16,1,.3,1);
-  position:relative;
+  position:relative;min-width:0;
 }
 .modal-header{
   padding:22px 26px 0;
   display:flex;justify-content:space-between;
-  align-items:flex-start;gap:12px;
+  align-items:flex-start;gap:12px;min-width:0;
 }
 .modal-title{
   font-family:var(--font-serif);
-  font-size:20px;font-weight:600;
-  color:var(--text);
-  letter-spacing:-.015em;
-  line-height:1.25;
-  flex:1;min-width:0;
+  font-size:20px;font-weight:600;color:var(--text);
+  letter-spacing:-.015em;line-height:1.25;
+  flex:1;min-width:0;overflow-wrap:anywhere;word-break:break-word;
 }
 .modal-close{
   background:none;border:none;cursor:pointer;
-  width:32px;height:32px;
-  border-radius:var(--r-sm);
+  width:32px;height:32px;border-radius:var(--r-sm);
   display:flex;align-items:center;justify-content:center;
   color:var(--text-faint);font-size:20px;line-height:1;
-  transition:var(--t);flex-shrink:0;
-  margin-top:-2px;
+  transition:var(--t);flex-shrink:0;margin-top:-2px;
 }
 .modal-close:hover{background:var(--accent);color:var(--primary-dark)}
-
-.modal-body{padding:20px 26px 26px}
+.modal-body{padding:20px 26px 26px;min-width:0}
 .modal-footer{
   padding:0 26px 22px;
   display:flex;gap:10px;justify-content:flex-end;
 }
 
-/* ================== FORM ================== */
-.field{margin-bottom:16px}
+/* FORM */
+.field{margin-bottom:16px;min-width:0}
 .field:last-child{margin-bottom:0}
 .field-label{
-  display:block;
-  font-size:12.5px;font-weight:600;
-  color:var(--text-soft);
-  margin-bottom:6px;
-  letter-spacing:.01em;
+  display:block;font-size:12.5px;font-weight:600;
+  color:var(--text-soft);margin-bottom:6px;
 }
 .field-label .req{color:#D43F5E;margin-left:2px}
 .field-label .opt{color:var(--text-faint);font-weight:400;font-size:11.5px}
-.field input,
-.field select,
-.field textarea{
-  width:100%;
-  padding:11px 14px;
-  font-family:var(--font);
-  font-size:15px;
-  background:#F7F1F4;
-  border:1.5px solid transparent;
-  border-radius:var(--r-sm);
-  color:var(--text);
-  outline:none;
-  transition:var(--t);
-  -webkit-appearance:none;
-  appearance:none;
+.field input,.field select,.field textarea{
+  width:100%;padding:11px 14px;
+  font-family:var(--font);font-size:15px;
+  background:#F7F1F4;border:1.5px solid transparent;
+  border-radius:var(--r-sm);color:var(--text);
+  outline:none;transition:var(--t);
+  -webkit-appearance:none;appearance:none;
+  max-width:100%;min-width:0;
 }
-.field textarea{resize:vertical;min-height:110px;line-height:1.6}
-.field textarea.mono{font-family:'Courier New',monospace;font-size:14px;letter-spacing:.02em;line-height:1.75}
-.field input:focus,
-.field select:focus,
-.field textarea:focus{
-  background:#fff;
-  border-color:var(--primary-soft);
+.field textarea{resize:vertical;min-height:110px;line-height:1.6;overflow-wrap:anywhere}
+.field textarea.mono{
+  font-family:'Courier New',monospace;
+  font-size:14px;letter-spacing:.02em;line-height:1.75;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  background:#fff;border-color:var(--primary-soft);
   box-shadow:0 0 0 4px rgba(124,77,107,.1);
 }
 .field select{
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B5B65' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;
-  background-position:right 14px center;
+  background-repeat:no-repeat;background-position:right 14px center;
   padding-right:36px;
 }
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;min-width:0}
 .hint{
-  font-size:12px;
-  color:var(--text-soft);
-  background:var(--accent);
-  padding:10px 12px;
-  border-radius:var(--r-sm);
-  margin-top:8px;
-  line-height:1.6;
+  font-size:12px;color:var(--text-soft);
+  background:var(--accent);padding:10px 12px;
+  border-radius:var(--r-sm);margin-top:8px;line-height:1.6;
 }
 .hint code{
-  background:#fff;
-  padding:1px 6px;
-  border-radius:5px;
-  font-family:'Courier New',monospace;
-  color:var(--primary-dark);
-  font-weight:600;
-  font-size:12px;
+  background:#fff;padding:1px 6px;border-radius:5px;
+  font-family:'Courier New',monospace;color:var(--primary-dark);
+  font-weight:600;font-size:12px;
 }
-.hint br + br{display:none}
 .btn-ghost{
-  background:#F0E8ED;color:var(--text-soft);
-  border:none;border-radius:var(--r-sm);
-  padding:12px 22px;
+  background:#F0E8ED;color:var(--text-soft);border:none;
+  border-radius:var(--r-sm);padding:12px 22px;
   font-family:var(--font);font-weight:600;font-size:14px;
   cursor:pointer;transition:var(--t);
 }
 .btn-ghost:hover{background:#E5D9E0;color:var(--text)}
 .btn-solid{
-  background:var(--primary);color:#fff;
-  border:none;border-radius:var(--r-sm);
-  padding:12px 24px;
+  background:var(--primary);color:#fff;border:none;
+  border-radius:var(--r-sm);padding:12px 24px;
   font-family:var(--font);font-weight:600;font-size:14px;
   cursor:pointer;transition:var(--t);
   box-shadow:0 3px 10px rgba(124,77,107,.22);
 }
-.btn-solid:hover{background:var(--primary-dark);box-shadow:0 5px 16px rgba(124,77,107,.32)}
+.btn-solid:hover{background:var(--primary-dark)}
 
-/* ================== DETALLE ================== */
+/* DETALLE */
 .detail-meta{
-  display:flex;flex-wrap:wrap;gap:8px;
-  margin-bottom:18px;
+  display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;
+  min-width:0;
 }
-.detail-meta .tag{font-size:11px;padding:4px 12px}
-
-.sheet-block{
-  margin-top:4px;
-}
+.detail-meta .tag{font-size:11px;padding:4px 12px;overflow-wrap:anywhere}
+.sheet-block{margin-top:4px;min-width:0}
 .sheet-block-label{
   display:flex;align-items:center;gap:8px;
   font-size:11px;font-weight:700;
   letter-spacing:.14em;text-transform:uppercase;
-  color:var(--primary);
-  margin-bottom:10px;
+  color:var(--primary);margin-bottom:10px;
 }
 .sheet-block-label::after{
-  content:'';
-  flex:1;height:1px;
-  background:var(--accent-line);
+  content:'';flex:1;height:1px;background:var(--accent-line);
 }
 .sheet-notes{
   background:linear-gradient(180deg,#FDFBFC 0%,#FAF3F7 100%);
@@ -458,62 +368,41 @@ body{
   border-radius:var(--r-md);
   padding:20px 22px;
   font-family:'Courier New',monospace;
-  font-size:15px;
-  line-height:2;
+  font-size:15px;line-height:2;
   color:var(--primary-dark);
-  letter-spacing:.03em;
-  font-weight:600;
+  letter-spacing:.03em;font-weight:600;
   white-space:pre-wrap;
-  word-break:break-word;
-  position:relative;
+  overflow-wrap:anywhere;word-break:break-word;
+  position:relative;min-width:0;
 }
 .sheet-notes::before{
-  content:'♪';
-  position:absolute;
-  top:14px;right:18px;
-  font-size:40px;
-  color:rgba(124,77,107,.06);
-  font-family:var(--font-serif);
-  line-height:1;
-  pointer-events:none;
+  content:'♪';position:absolute;top:14px;right:18px;
+  font-size:40px;color:rgba(124,77,107,.06);
+  font-family:var(--font-serif);line-height:1;pointer-events:none;
 }
 .sheet-notes .bar{
-  color:var(--primary-soft);
-  font-weight:400;
-  opacity:.7;
-  padding:0 4px;
+  color:var(--primary-soft);font-weight:400;opacity:.7;padding:0 4px;
 }
-
 .detail-notes{
-  margin-top:16px;
-  font-size:13.5px;
-  line-height:1.65;
-  color:var(--text-soft);
-  background:#F5EEF2;
-  padding:14px 16px;
-  border-radius:var(--r-sm);
-  white-space:pre-wrap;
+  margin-top:16px;font-size:13.5px;line-height:1.65;
+  color:var(--text-soft);background:#F5EEF2;
+  padding:14px 16px;border-radius:var(--r-sm);
+  white-space:pre-wrap;overflow-wrap:anywhere;
 }
 .detail-notes strong{
-  display:block;
-  font-size:11px;font-weight:700;
+  display:block;font-size:11px;font-weight:700;
   letter-spacing:.12em;text-transform:uppercase;
-  color:var(--primary);
-  margin-bottom:6px;
+  color:var(--primary);margin-bottom:6px;
 }
-
 .actions-row{
   display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;
 }
 .btn-action{
-  flex:1;
-  min-width:150px;
+  flex:1;min-width:0;
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  background:var(--surface);
-  color:var(--text);
+  background:var(--surface);color:var(--text);
   border:1.5px solid var(--accent-line);
-  border-radius:var(--r-md);
-  padding:12px 18px;
+  border-radius:var(--r-md);padding:12px 18px;
   font-family:var(--font);font-weight:600;font-size:14px;
   cursor:pointer;transition:var(--t);
 }
@@ -525,65 +414,54 @@ body{
 .btn-action.primary:hover{background:var(--primary-dark);border-color:var(--primary-dark)}
 .btn-action.playing{background:#D43F5E;border-color:#D43F5E;color:#fff}
 .btn-action.playing:hover{background:#B8314D;border-color:#B8314D}
-
 .score-container{
-  margin-top:16px;
-  background:#fff;
+  margin-top:16px;background:#fff;
   border:1px solid var(--accent-line);
   border-radius:var(--r-md);
-  padding:18px 14px;
-  overflow-x:auto;
-  animation:slideUp .25s ease;
+  padding:14px 8px;overflow-x:auto;
+  animation:slideUp .25s ease;min-width:0;
+  -webkit-overflow-scrolling:touch;
 }
 .score-container svg{max-width:100%;height:auto;display:block;margin:0 auto}
 
-/* ================== INSTALL BAR ================== */
+/* INSTALL BAR */
 .install-bar{
-  display:none;
-  background:var(--accent);
-  color:var(--primary-dark);
-  padding:11px 20px;
-  font-size:13px;font-weight:500;
-  text-align:center;
-  border-bottom:1px solid var(--accent-line);
+  display:none;background:var(--accent);color:var(--primary-dark);
+  padding:11px 20px;font-size:13px;font-weight:500;
+  text-align:center;border-bottom:1px solid var(--accent-line);
 }
 .install-bar.show{display:block}
 .install-bar button{
-  background:var(--primary);color:#fff;
-  border:none;border-radius:var(--r-full);
-  padding:6px 14px;
-  font-size:12px;font-weight:600;
-  margin-left:10px;cursor:pointer;
-  font-family:var(--font);transition:var(--t);
+  background:var(--primary);color:#fff;border:none;
+  border-radius:var(--r-full);padding:6px 14px;
+  font-size:12px;font-weight:600;margin-left:10px;
+  cursor:pointer;font-family:var(--font);transition:var(--t);
 }
 .install-bar button:hover{background:var(--primary-dark)}
 
-/* ================== FOOTER ================== */
+/* FOOTER */
 .footer{
-  text-align:center;
-  padding:32px 24px 20px;
-  color:var(--text-faint);
-  font-size:12px;
-  letter-spacing:.02em;
+  text-align:center;padding:32px 24px 20px;
+  color:var(--text-faint);font-size:12px;letter-spacing:.02em;
 }
 .footer strong{color:var(--text-soft);font-weight:600}
 .footer .heart{color:#D43F5E}
 
-/* ================== RESPONSIVE ================== */
+/* RESPONSIVE */
 @media (max-width:640px){
   .app-header{padding:14px 16px 12px}
   .app-header .logo{width:34px;height:34px;font-size:18px}
   .app-header h1{font-size:17px}
   .app-header .subtitle{font-size:11px}
   .app-header .badge{display:none}
-  .toolbar{padding:10px 16px;top:60px}
+  .toolbar{padding:10px 16px;top:58px}
   .toolbar-inner{flex-direction:column;align-items:stretch}
-  .btn-primary{justify-content:center}
+  .btn-primary{justify-content:center;width:100%}
   .container{padding:16px}
   .grid{grid-template-columns:1fr;gap:10px}
   .card{padding:16px 18px 12px}
   .card-title{font-size:16px}
-  .modal{border-radius:var(--r-md);max-height:95vh}
+  .modal{border-radius:var(--r-md);max-height:95dvh}
   .modal-header{padding:18px 20px 0}
   .modal-title{font-size:18px}
   .modal-body{padding:16px 20px 20px}
@@ -593,8 +471,6 @@ body{
   .actions-row{flex-direction:column}
   .btn-action{width:100%}
 }
-
-/* Scrollbar refinada */
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:rgba(124,77,107,.18);border-radius:8px}
@@ -603,12 +479,11 @@ body{
 </head>
 <body>
 
-<!-- ===== HEADER ===== -->
 <header class="app-header">
   <div class="row">
     <div class="brand">
       <div class="logo">🎵</div>
-      <div style="min-width:0">
+      <div style="min-width:0;flex:1">
         <h1>Partituras de María</h1>
         <div class="subtitle">Repertorio personal · funciona sin internet</div>
       </div>
@@ -621,7 +496,6 @@ body{
   ¿Instalar la app en tu teléfono?<button id="installBtn">Instalar</button>
 </div>
 
-<!-- ===== TOOLBAR ===== -->
 <div class="toolbar">
   <div class="toolbar-inner">
     <div class="search-field">
@@ -632,7 +506,6 @@ body{
   </div>
 </div>
 
-<!-- ===== LISTA ===== -->
 <div class="container">
   <div class="section-label" id="sectionLabel">Tu repertorio</div>
   <div class="grid" id="list"></div>
@@ -642,7 +515,6 @@ body{
   Hecho con <span class="heart">♥</span> por <strong>Stephan</strong> para <strong>María</strong>
 </div>
 
-<!-- ===== MODAL EDITAR ===== -->
 <div class="modal-bg" id="editModal">
   <div class="modal">
     <div class="modal-header">
@@ -652,17 +524,14 @@ body{
     <div class="modal-body">
       <form id="sheetForm">
         <input type="hidden" id="editId">
-
         <div class="field">
           <label class="field-label" for="fTitle">Título <span class="req">*</span></label>
           <input type="text" id="fTitle" required placeholder="Ej: El Titanic">
         </div>
-
         <div class="field">
           <label class="field-label" for="fComposer">Compositor <span class="opt">(opcional)</span></label>
           <input type="text" id="fComposer" placeholder="Ej: James Horner">
         </div>
-
         <div class="field-row">
           <div class="field">
             <label class="field-label" for="fCategory">Categoría</label>
@@ -685,7 +554,6 @@ body{
             </select>
           </div>
         </div>
-
         <div class="field">
           <label class="field-label" for="fSolfeo">Notas en solfeo <span class="req">*</span></label>
           <textarea id="fSolfeo" class="mono" required placeholder="Do Re Mi Fa / Sol La Si Do*"></textarea>
@@ -694,7 +562,6 @@ body{
             Usa <code>/</code> o <code>|</code> para separar compases · <code>Do*</code> para agudo · <code>Do,</code> para grave.
           </div>
         </div>
-
         <div class="field">
           <label class="field-label" for="fNotes">Notas / observaciones <span class="opt">(opcional)</span></label>
           <textarea id="fNotes" placeholder="Enlaces a videos, tempo, anotaciones..."></textarea>
@@ -708,7 +575,6 @@ body{
   </div>
 </div>
 
-<!-- ===== MODAL DETALLE ===== -->
 <div class="modal-bg" id="detailModal">
   <div class="modal">
     <div class="modal-header">
@@ -720,9 +586,6 @@ body{
 </div>
 
 <script>
-/* =========================================================
-   CARGA DE ABCJS
-   ========================================================= */
 const CDNS = [
   'https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.2.3/abcjs-basic-min.js',
   'https://unpkg.com/abcjs@6.2.3/dist/abcjs-basic-min.js',
@@ -743,9 +606,6 @@ function loadABCJS() {
   });
 }
 
-/* =========================================================
-   SOLFEO → ABC
-   ========================================================= */
 const MAP = { do:'C', re:'D', mi:'E', fa:'F', sol:'G', la:'A', si:'B' };
 
 function solfeoToAbc(solfeo, meta = {}) {
@@ -763,11 +623,9 @@ function solfeoToAbc(solfeo, meta = {}) {
 
   for (const t of tokens) {
     if (t === '|' || t === '/') { notes.push('|'); continue; }
-
     const hi = t.includes('*') || t.includes("'");
     const lo = t.includes(',') || t.endsWith('.');
     const base = t.replace(/[*',.]/g, '');
-
     let letter = MAP[base];
     if (!letter) {
       for (const [k, v] of Object.entries(MAP)) {
@@ -775,46 +633,55 @@ function solfeoToAbc(solfeo, meta = {}) {
       }
     }
     if (!letter) continue;
-
     if (hi) letter = letter.toLowerCase();
     else if (lo) letter = letter + ',';
-
     notes.push(letter);
   }
 
-  const body = notes.join(' ');
-  return `X:1\nT:${title}\nC:${composer}\nM:4/4\nL:1/4\nQ:1/4=95\nK:${key}\n%%MIDI program 73\n${body} |`;
+  return `X:1\nT:${title}\nC:${composer}\nM:4/4\nL:1/4\nQ:1/4=95\nK:${key}\n%%MIDI program 73\n${notes.join(' ')} |`;
 }
 
 /* =========================================================
-   REPERTORIO INICIAL
+   REPERTORIO — VERSIONES COMPLETAS
    ========================================================= */
 const SEED = [
   { title:'Estrellita', composer:'Tradicional', category:'Infantil', difficulty:'Fácil',
     solfeo:'Do Do Sol Sol La La Sol / Fa Fa Mi Mi Re Re Do / Sol Sol Fa Fa Mi Mi Re / Sol Sol Fa Fa Mi Mi Re / Do Do Sol Sol La La Sol / Fa Fa Mi Mi Re Re Do' },
+
   { title:'Himno a la Alegría', composer:'L. van Beethoven', category:'Clásica', difficulty:'Fácil',
-    solfeo:'Mi Mi Fa Sol / Sol Fa Mi Re / Do Do Re Mi / Mi Re Re / Mi Mi Fa Sol / Sol Fa Mi Re / Do Do Re Mi / Re Do Do' },
+    solfeo:'Mi Mi Fa Sol / Sol Fa Mi Re / Do Do Re Mi / Mi Re Re / Mi Mi Fa Sol / Sol Fa Mi Re / Do Do Re Mi / Re Do Do / Re Re Mi Do / Re Mi Fa Mi Do / Re Mi Fa Mi Re Do Re Sol, / Mi Mi Fa Sol / Sol Fa Mi Re / Do Do Re Mi / Re Do Do' },
+
   { title:'Cumpleaños Feliz', composer:'Tradicional', category:'Popular', difficulty:'Fácil',
     solfeo:'Sol Sol La Sol Do Si / Sol Sol La Sol Re Do / Sol Sol Sol* Mi Do Si La / Fa Fa Mi Do Re Do' },
+
   { title:'Campanita del Lugar', composer:'Tradicional francesa', category:'Infantil', difficulty:'Fácil',
     solfeo:'Do Re Mi Do / Do Re Mi Do / Mi Fa Sol / Mi Fa Sol / Sol La Sol Fa Mi Do / Sol La Sol Fa Mi Do / Do Sol, Do / Do Sol, Do' },
+
   { title:'Mary Had a Little Lamb', composer:'Tradicional', category:'Infantil', difficulty:'Fácil',
     solfeo:'Mi Re Do Re / Mi Mi Mi / Re Re Re / Mi Sol Sol / Mi Re Do Re / Mi Mi Mi Mi / Re Re Mi Re / Do' },
+
   { title:'Jingle Bells', composer:'J. Pierpont', category:'Popular', difficulty:'Fácil',
-    solfeo:'Mi Mi Mi / Mi Mi Mi / Mi Sol Do Re Mi / Fa Fa Fa Fa Fa Mi Mi / Mi Re Re Mi Re Sol / Mi Mi Mi / Mi Mi Mi / Mi Sol Do Re Mi / Fa Fa Fa Fa Fa Mi Mi / Sol Sol Fa Re Do' },
+    solfeo:'Mi Mi Mi / Mi Mi Mi / Mi Sol Do Re Mi / Fa Fa Fa Fa Fa Mi Mi / Mi Re Re Mi Re Sol / Mi Mi Mi / Mi Mi Mi / Mi Sol Do Re Mi / Fa Fa Fa Fa Fa Mi Mi / Sol Sol Fa Re Do / Do Re Mi Re Mi Do Re Mi Re Mi Do Mi Sol, / Do Re Mi Re Mi Do Mi / La Sol Fa Re Do' },
+
   { title:'Noche de Paz', composer:'F. Gruber', category:'Popular', difficulty:'Fácil',
-    solfeo:'Sol La Sol Mi / Sol La Sol Mi / Re* Re* Si / Do* Do* Sol / La La Do* Si La / Sol La Sol Mi' },
+    solfeo:'Sol La Sol Mi / Sol La Sol Mi / Re* Re* Si / Do* Do* Sol / La La Do* Si La / Sol La Sol Mi / Sol La Sol Mi / Re* Re* Si / Do* Do* Sol / La La Do* Si La / Sol La Sol Mi' },
+
   { title:'Cuando los Santos Marchan', composer:'Tradicional', category:'Popular', difficulty:'Fácil',
-    solfeo:'Do Mi Fa Sol / Do Mi Fa Sol / Do Mi Fa Sol Mi Do Mi Re / Mi Mi Re Do Do Mi Sol Sol / Fa Mi Do Mi Re Do' },
+    solfeo:'Do Mi Fa Sol / Do Mi Fa Sol / Do Mi Fa Sol Mi Do Mi Re / Mi Mi Re Do Do Mi Sol Sol / Fa Mi Do Mi Re Do / Do Mi Fa Sol / Do Mi Fa Sol / Do Mi Fa Sol Mi Do Mi Re / Mi Mi Re Do Do Mi Sol Sol / Fa Mi Do Mi Re Do' },
+
   { title:'Au Clair de la Lune', composer:'Tradicional francesa', category:'Clásica', difficulty:'Fácil',
-    solfeo:'Do Do Do Re / Mi Mi Re / Do Re Mi Do / Do Si, Do' },
+    solfeo:'Do Do Do Re / Mi Mi Re / Do Re Mi Do / Do Si, Do / Do Do Do Re / Mi Mi Re / Do Re Mi Do / Do Si, Do / Do Do Do Re / Mi Mi Re / Do Re Mi Do / Do Si, Do' },
+
   { title:'La Cucaracha', composer:'Tradicional mexicana', category:'Folclórica', difficulty:'Fácil',
-    solfeo:'Do Do Do Re / Mi Mi Re / Do Do Do Re / Mi Mi Re / Do Do La, Sol, / Do Re Mi Do' },
+    solfeo:'Do Do Do Re / Mi Mi Re / Do Do Do Re / Mi Mi Re / Do Do La, Sol, / Do Re Mi Do / Do Do Do Re / Mi Mi Re / Do Do Do Re / Mi Mi Re / Do Do La, Sol, / Do Re Mi Do' },
+
   { title:'El Puente de Londres', composer:'Tradicional inglesa', category:'Infantil', difficulty:'Fácil',
-    solfeo:'Sol La Sol Fa Mi Fa Sol / Re Mi Fa / Mi Fa Sol / Sol La Sol Fa Mi Fa Sol / Re Sol, Mi, Do' },
+    solfeo:'Sol La Sol Fa Mi Fa Sol / Re Mi Fa / Mi Fa Sol / Sol La Sol Fa Mi Fa Sol / Re Sol, Mi, Do / Sol La Sol Fa Mi Fa Sol / Re Sol, Mi, Do' },
+
   { title:'El Titanic', composer:'James Horner', category:'Bandas Sonoras', difficulty:'Fácil',
     solfeo:'Fa Sol La / Sol Fa Sol Do* / Do* La Fa Re Do / Fa Sol La / Sol Fa Sol Do* / Sol La Sol Do* / Do* Re* Re* Do* Sol',
     notes:'Transcrita del cuaderno de María ✨' },
+
   { title:'Canción del cuaderno', composer:'—', category:'Otro', difficulty:'Fácil',
     solfeo:'Fa Fa Fa Fa Mi Fa / Fa Mi Fa / Sol La Sol / Fa Fa Fa Fa Mi Fa Fa Do / Fa Fa Fa Fa Mi Fa Fa Mi Fa / Sol La Sol / Fa Fa Fa Fa Mi Fa Fa Do / Sol Do* Do* / La Sol / Fa La Sol Fa Mi Fa Fa Re Do',
     notes:'Segunda canción del cuaderno de María ♥' }
@@ -823,9 +690,9 @@ const SEED = [
 /* =========================================================
    ESTADO
    ========================================================= */
-const KEY = 'flautaMaria_v4_sheets';
-const SEEDED = 'flautaMaria_v4_seeded';
-const FAV = 'flautaMaria_v4_favs';
+const KEY = 'flautaMaria_v5_sheets';
+const SEEDED = 'flautaMaria_v5_seeded';
+const FAV = 'flautaMaria_v5_favs';
 
 let sheets = [];
 let favorites = new Set();
@@ -838,10 +705,9 @@ function seedAll() {
     abc: solfeoToAbc(s.solfeo, s)
   }));
 }
-
 function load() {
-  const hasSeed = localStorage.getItem(SEEDED);
-  if (!hasSeed) {
+  const has = localStorage.getItem(SEEDED);
+  if (!has) {
     sheets = seedAll();
     localStorage.setItem(SEEDED, '1');
     save();
@@ -856,12 +722,10 @@ function save() {
   localStorage.setItem(FAV, JSON.stringify([...favorites]));
 }
 function getSheet(id) { return sheets.find(s => s.id === id); }
-
-function addSheet(data) {
-  data.id = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
-  data.createdAt = Date.now();
-  sheets.unshift(data);
-  save(); render();
+function addSheet(d) {
+  d.id = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+  d.createdAt = Date.now();
+  sheets.unshift(d); save(); render();
 }
 function updateSheet(id, patch) {
   const i = sheets.findIndex(s => s.id === id);
@@ -870,40 +734,32 @@ function updateSheet(id, patch) {
 function deleteSheet(id) {
   if (!confirm('¿Eliminar esta canción?')) return;
   sheets = sheets.filter(s => s.id !== id);
-  favorites.delete(id);
-  save(); render();
+  favorites.delete(id); save(); render();
 }
 function toggleFav(id) {
   favorites.has(id) ? favorites.delete(id) : favorites.add(id);
   save(); render();
 }
 
-/* =========================================================
-   HELPERS
-   ========================================================= */
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, c =>
     ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 }
 function previewText(solfeo) {
-  if (!solfeo) return '';
-  return solfeo.replace(/[|/]/g, ' · ').replace(/\s+/g, ' ').trim();
+  return (solfeo || '').replace(/[|/]/g, ' · ').replace(/\s+/g, ' ').trim();
 }
 function prettySolfeo(solfeo) {
-  if (!solfeo) return '';
-  return esc(solfeo)
+  return esc(solfeo || '')
     .replace(/[|/]/g, '<span class="bar">/</span>')
     .replace(/\n/g, '<br>');
 }
 
-/* =========================================================
-   RENDER
-   ========================================================= */
+/* RENDER */
 function render() {
   const q = document.getElementById('searchInput').value.toLowerCase().trim();
   const list = sheets.filter(s => {
     if (!q) return true;
-    return (s.title || '').toLowerCase().includes(q) || (s.composer || '').toLowerCase().includes(q);
+    return (s.title||'').toLowerCase().includes(q) || (s.composer||'').toLowerCase().includes(q);
   });
 
   document.getElementById('sectionLabel').textContent =
@@ -921,14 +777,14 @@ function render() {
 
   c.innerHTML = list.map(s => {
     const fav = favorites.has(s.id);
-    const preview = previewText(s.solfeo);
+    const prev = previewText(s.solfeo);
     return `<div class="card" data-id="${s.id}">
       <div class="card-head">
         <div class="card-title">${esc(s.title)}</div>
         <button class="card-fav ${fav ? 'active' : ''}" data-act="fav" data-id="${s.id}" aria-label="Favorito">${fav ? '❤️' : '🤍'}</button>
       </div>
       ${s.composer ? `<div class="card-composer">${esc(s.composer)}</div>` : '<div style="margin-bottom:14px"></div>'}
-      ${preview ? `<div class="card-preview">${esc(preview).slice(0, 110)}${preview.length > 110 ? '…' : ''}</div>` : ''}
+      ${prev ? `<div class="card-preview">${esc(prev)}</div>` : ''}
       <div class="card-footer">
         <div class="tags">
           <span class="tag cat">${esc(s.category || 'Otro')}</span>
@@ -952,16 +808,14 @@ function render() {
     };
   });
   c.querySelectorAll('.card').forEach(card => {
-    card.onclick = (e) => {
+    card.onclick = e => {
       if (e.target.closest('[data-act]')) return;
       showDetail(card.dataset.id);
     };
   });
 }
 
-/* =========================================================
-   DETALLE
-   ========================================================= */
+/* DETALLE */
 let currentAudio = null;
 
 function showDetail(id) {
@@ -976,7 +830,7 @@ function showDetail(id) {
     <div class="detail-meta">
       <span class="tag cat">${esc(s.category || 'Otro')}</span>
       <span class="tag diff">${esc(s.difficulty || 'Fácil')}</span>
-      ${s.composer && s.composer !== '—' ? `<span class="tag" style="background:#F0E8ED;color:#6B5B65">${esc(s.composer)}</span>` : ''}
+      ${s.composer && s.composer !== '—' ? `<span class="tag custom">${esc(s.composer)}</span>` : ''}
     </div>
 
     <div class="sheet-block">
@@ -1010,11 +864,10 @@ function showDetail(id) {
     btn.textContent = '🎼 Ocultar pentagrama';
     const wrap = document.createElement('div');
     wrap.className = 'score-container';
-    wrap.id = 'scoreContainer';
     slot.innerHTML = '';
     slot.appendChild(wrap);
     try {
-      ABCJS.renderAbc(wrap, s.abc, { responsive: 'resize', scale: 1.3, staffwidth: 500, padding: 8 });
+      ABCJS.renderAbc(wrap, s.abc, { responsive: 'resize', scale: 1.2, staffwidth: 480, padding: 8 });
     } catch (e) {
       wrap.innerHTML = `<div style="text-align:center;color:#C43A56;padding:20px;font-size:14px">Error al dibujar la partitura.</div>`;
     }
@@ -1050,9 +903,7 @@ async function togglePlay(s) {
   }
 }
 
-/* =========================================================
-   EDITAR / AÑADIR
-   ========================================================= */
+/* EDITAR / AÑADIR */
 function openAdd() {
   document.getElementById('editTitle').textContent = 'Añadir canción';
   document.getElementById('editId').value = '';
@@ -1090,19 +941,14 @@ document.getElementById('sheetForm').addEventListener('submit', e => {
   const difficulty = document.getElementById('fDifficulty').value;
   const solfeo = document.getElementById('fSolfeo').value.trim();
   const notes = document.getElementById('fNotes').value.trim();
-
   if (!title || !solfeo) { alert('Título y notas en solfeo son obligatorios.'); return; }
-
   const abc = solfeoToAbc(solfeo, { title, composer });
   const data = { title, composer, category, difficulty, solfeo, notes, abc };
-
   id ? updateSheet(id, data) : addSheet(data);
   closeModals();
 });
 
-/* =========================================================
-   PWA
-   ========================================================= */
+/* PWA */
 let promptInstall = null;
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
@@ -1123,13 +969,10 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-/* =========================================================
-   INIT
-   ========================================================= */
+/* INIT */
 document.addEventListener('DOMContentLoaded', () => {
   load();
   render();
-
   document.getElementById('searchInput').addEventListener('input', render);
   document.getElementById('addBtn').onclick = openAdd;
   document.getElementById('cancelBtn').onclick = closeModals;
@@ -1138,7 +981,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('editModal').onclick = e => { if (e.target === e.currentTarget) closeModals(); };
   document.getElementById('detailModal').onclick = e => { if (e.target === e.currentTarget) closeModals(); };
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModals(); });
-
   loadABCJS().then(() => console.log('✅ Listo')).catch(() => {
     alert('⚠️ No se pudo cargar la librería musical. Conéctate a internet una vez y recarga.');
   });
