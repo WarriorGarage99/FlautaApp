@@ -3,48 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#7C4D6B">
+<meta name="theme-color" content="#2E5A87">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Flauta María">
 <title>Partituras de María</title>
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" type="image/svg+xml" href="./icon.svg">
 <link rel="apple-touch-icon" href="./icon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{overflow-x:hidden;scroll-behavior:smooth}
+html{overflow-x:hidden;scroll-behavior:smooth;height:100%}
 :root{
-  --primary:#7C4D6B;--primary-soft:#A77A96;--primary-dark:#4F3343;
-  --gradient:linear-gradient(135deg,#7C4D6B 0%,#A77A96 100%);
-  --accent:#F2E4EC;--accent-line:#E8D0DF;
-  --bg:#FAF7F9;--surface:#FFF;
-  --text:#241A21;--text-soft:#6B5B65;--text-faint:#9A8A93;
-  --divider:rgba(124,77,107,.08);
-  --shadow-md:0 6px 20px rgba(80,50,70,.08);
-  --shadow-lg:0 20px 50px rgba(80,50,70,.14);
+  /* Azul — color favorito de María */
+  --primary:#2E5A87;
+  --primary-soft:#6B8AB8;
+  --primary-dark:#1A3A5C;
+  --primary-deep:#0F2540;
+  --gradient:linear-gradient(135deg,#2E5A87 0%,#6B8AB8 100%);
+  --gradient-deep:linear-gradient(135deg,#1A3A5C 0%,#3B6B9C 100%);
+  --accent:#E4EEF8;
+  --accent-line:#C8DBEF;
+  --accent-deep:#B9D2EA;
+
+  /* Rosa — acento romántico */
+  --rose:#D67C96;
+  --rose-soft:#F5DFE6;
+  --rose-deep:#A84562;
+  --rose-glow:rgba(214,124,150,.18);
+
+  --bg:#F5F8FC;
+  --surface:#FFFFFF;
+  --text:#16232F;
+  --text-soft:#4C5C6C;
+  --text-faint:#8291A2;
+  --divider:rgba(46,90,135,.08);
+  --divider-rose:rgba(214,124,150,.15);
+
+  --shadow-xs:0 1px 2px rgba(30,60,100,.04);
+  --shadow-sm:0 2px 6px rgba(30,60,100,.05);
+  --shadow-md:0 6px 20px rgba(30,60,100,.09);
+  --shadow-lg:0 20px 50px rgba(30,60,100,.16);
+  --shadow-rose:0 8px 24px rgba(214,124,150,.22);
+
   --r-sm:10px;--r-md:14px;--r-lg:20px;--r-full:999px;
-  --t:.2s cubic-bezier(.4,0,.2,1);
+  --t:.22s cubic-bezier(.4,0,.2,1);
   --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   --font-serif:'Fraunces',Georgia,serif;
 }
 body{
   font-family:var(--font);
-  background:var(--bg);
-  color:var(--text);
+  background:var(--bg);color:var(--text);
   font-size:15px;line-height:1.5;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  padding-bottom:40px;
-  min-height:100vh;
-  overflow-x:hidden;
-  max-width:100vw;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  padding-bottom:40px;min-height:100vh;
+  overflow-x:hidden;max-width:100vw;width:100%;
+  position:relative;
+}
+/* Bloqueo de scroll cuando hay modal abierto */
+body.no-scroll{
+  position:fixed;
+  overflow:hidden;
   width:100%;
+  left:0;right:0;
 }
 
-/* HEADER */
+/* ================== HEADER ================== */
 .app-header{
-  background:rgba(255,255,255,.92);
+  background:rgba(255,255,255,.94);
   border-bottom:1px solid var(--divider);
   padding:18px 24px 16px;
   position:sticky;top:0;z-index:100;
@@ -61,7 +87,17 @@ body{
   background:var(--gradient);
   display:flex;align-items:center;justify-content:center;
   font-size:20px;flex-shrink:0;
-  box-shadow:0 4px 12px rgba(124,77,107,.28);
+  box-shadow:0 4px 14px rgba(46,90,135,.32);
+  position:relative;
+  overflow:hidden;
+}
+.app-header .logo::after{
+  content:'';
+  position:absolute;top:-20%;left:-30%;
+  width:60%;height:140%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+  transform:rotate(20deg);
+  pointer-events:none;
 }
 .app-header h1{
   font-family:var(--font-serif);
@@ -76,14 +112,30 @@ body{
 }
 .app-header .badge{
   font-size:11px;font-weight:600;
-  color:var(--primary);background:var(--accent);
-  padding:6px 12px;border-radius:var(--r-full);
-  white-space:nowrap;letter-spacing:.02em;flex-shrink:0;
-  display:flex;align-items:center;gap:5px;
+  color:var(--primary-dark);
+  background:linear-gradient(135deg,var(--rose-soft) 0%,var(--accent) 100%);
+  padding:6px 13px;border-radius:var(--r-full);
+  white-space:nowrap;flex-shrink:0;
+  display:flex;align-items:center;gap:6px;
+  border:1px solid var(--rose-glow);
+  box-shadow:0 2px 8px rgba(214,124,150,.12);
 }
-.app-header .badge::before{content:'♥';color:#D43F5E;font-size:12px}
+.app-header .badge::before{
+  content:'♥';
+  color:var(--rose-deep);
+  font-size:12px;
+  line-height:1;
+  animation:heartbeat 1.6s ease-in-out infinite;
+}
+@keyframes heartbeat{
+  0%,100%{transform:scale(1)}
+  15%{transform:scale(1.18)}
+  30%{transform:scale(1)}
+  45%{transform:scale(1.12)}
+  60%{transform:scale(1)}
+}
 
-/* TOOLBAR */
+/* ================== TOOLBAR ================== */
 .toolbar{
   background:var(--surface);
   border-bottom:1px solid var(--divider);
@@ -99,14 +151,14 @@ body{
   width:100%;
   padding:11px 16px 11px 42px;
   font-family:var(--font);font-size:14.5px;
-  background:#F5EEF2;border:1px solid transparent;
+  background:#EDF3F9;border:1px solid transparent;
   border-radius:var(--r-md);color:var(--text);
   outline:none;transition:var(--t);
 }
 .search-field input::placeholder{color:var(--text-faint)}
 .search-field input:focus{
   background:#fff;border-color:var(--primary-soft);
-  box-shadow:0 0 0 4px rgba(124,77,107,.1);
+  box-shadow:0 0 0 4px rgba(46,90,135,.1);
 }
 .search-field .icon{
   position:absolute;left:15px;top:50%;transform:translateY(-50%);
@@ -119,13 +171,13 @@ body{
   font-family:var(--font);font-size:14px;font-weight:600;
   cursor:pointer;white-space:nowrap;flex-shrink:0;
   transition:var(--t);
-  box-shadow:0 3px 10px rgba(124,77,107,.22);
+  box-shadow:0 3px 12px rgba(46,90,135,.28);
 }
-.btn-primary:hover{background:var(--primary-dark)}
+.btn-primary:hover{background:var(--primary-dark);box-shadow:0 5px 18px rgba(46,90,135,.35)}
 .btn-primary:active{transform:scale(.97)}
 .btn-primary .plus{font-size:16px;line-height:1;font-weight:500}
 
-/* CONTAINER + GRID */
+/* ================== CONTAINER + GRID ================== */
 .container{
   max-width:1100px;margin:0 auto;
   padding:24px;width:100%;min-width:0;
@@ -141,7 +193,7 @@ body{
   gap:14px;width:100%;min-width:0;
 }
 
-/* CARD */
+/* ================== CARD ================== */
 .card{
   background:var(--surface);
   border:1px solid var(--divider);
@@ -150,19 +202,21 @@ body{
   cursor:pointer;transition:var(--t);
   display:flex;flex-direction:column;
   position:relative;overflow:hidden;
-  min-width:0;width:100%;
-  max-width:100%;
+  min-width:0;width:100%;max-width:100%;
 }
 .card::before{
   content:'';position:absolute;top:0;left:0;right:0;height:3px;
   background:var(--gradient);opacity:0;transition:var(--t);
 }
-.card:hover{border-color:var(--accent-line);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.card:hover{
+  border-color:var(--accent-line);
+  box-shadow:var(--shadow-md);
+  transform:translateY(-2px);
+}
 .card:hover::before{opacity:1}
 .card-head{
   display:flex;justify-content:space-between;
-  align-items:flex-start;gap:10px;margin-bottom:6px;
-  min-width:0;
+  align-items:flex-start;gap:10px;margin-bottom:6px;min-width:0;
 }
 .card-title{
   font-family:var(--font-serif);
@@ -177,8 +231,8 @@ body{
   font-size:16px;padding:2px 4px;border-radius:var(--r-sm);
   transition:var(--t);opacity:.35;flex-shrink:0;line-height:1;
 }
-.card-fav:hover{opacity:1;background:var(--accent)}
-.card-fav.active{opacity:1}
+.card-fav:hover{opacity:1;background:var(--rose-soft)}
+.card-fav.active{opacity:1;filter:drop-shadow(0 0 4px var(--rose-glow))}
 .card-composer{
   font-size:13px;color:var(--text-soft);
   font-weight:400;margin-bottom:14px;
@@ -191,11 +245,8 @@ body{
   background:var(--accent);
   padding:10px 12px;border-radius:var(--r-sm);
   overflow:hidden;min-width:0;max-width:100%;
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  overflow-wrap:anywhere;
-  word-break:break-word;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow-wrap:anywhere;word-break:break-word;
 }
 .card-preview::before{
   content:'♪ ';color:var(--primary);font-weight:700;margin-right:2px;
@@ -209,12 +260,11 @@ body{
 .tag{
   font-size:10.5px;font-weight:600;
   padding:3px 10px;border-radius:var(--r-full);
-  letter-spacing:.02em;text-transform:uppercase;
-  white-space:nowrap;
+  letter-spacing:.02em;text-transform:uppercase;white-space:nowrap;
 }
 .tag.cat{color:var(--primary-dark);background:var(--accent)}
-.tag.diff{color:#2F5A82;background:#E2ECF5}
-.tag.custom{color:#6B5B65;background:#F0E8ED}
+.tag.diff{color:#2F5A82;background:#DCEAF6}
+.tag.custom{color:var(--rose-deep);background:var(--rose-soft)}
 .card-actions{display:flex;gap:2px;align-items:center;flex-shrink:0}
 .icon-btn{
   background:none;border:none;cursor:pointer;
@@ -223,29 +273,29 @@ body{
   transition:var(--t);line-height:1;
 }
 .icon-btn:hover{background:var(--accent);color:var(--primary)}
-.icon-btn.danger:hover{background:#FBE6EA;color:#C43A56}
+.icon-btn.danger:hover{background:var(--rose-soft);color:var(--rose-deep)}
 
-/* EMPTY */
+/* ================== EMPTY ================== */
 .empty{
   grid-column:1/-1;text-align:center;
   padding:80px 20px;color:var(--text-faint);
 }
-.empty .ico{font-size:44px;margin-bottom:14px;opacity:.35;filter:grayscale(.3)}
+.empty .ico{font-size:44px;margin-bottom:14px;opacity:.35}
 .empty h3{
   font-family:var(--font-serif);font-weight:500;
   font-size:18px;color:var(--text-soft);margin-bottom:6px;
 }
 .empty p{font-size:14px;color:var(--text-faint)}
 
-/* MODALES */
+/* ================== MODAL ================== */
 .modal-bg{
   position:fixed;inset:0;
-  background:rgba(36,26,33,.45);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  background:rgba(22,35,47,.5);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
   z-index:1000;display:none;
   align-items:center;justify-content:center;
   padding:20px;animation:fadeIn .2s ease;
-  overflow-x:hidden;
+  overflow:hidden;overscroll-behavior:contain;
 }
 .modal-bg.open{display:flex}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -258,8 +308,10 @@ body{
   width:100%;max-width:560px;
   max-height:calc(100dvh - 40px);
   overflow-y:auto;overflow-x:hidden;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
   box-shadow:var(--shadow-lg);
-  animation:slideUp .28s cubic-bezier(.16,1,.3,1);
+  animation:slideUp .3s cubic-bezier(.16,1,.3,1);
   position:relative;min-width:0;
 }
 .modal-header{
@@ -287,19 +339,19 @@ body{
   display:flex;gap:10px;justify-content:flex-end;
 }
 
-/* FORM */
+/* ================== FORM ================== */
 .field{margin-bottom:16px;min-width:0}
 .field:last-child{margin-bottom:0}
 .field-label{
   display:block;font-size:12.5px;font-weight:600;
   color:var(--text-soft);margin-bottom:6px;
 }
-.field-label .req{color:#D43F5E;margin-left:2px}
+.field-label .req{color:var(--rose-deep);margin-left:2px}
 .field-label .opt{color:var(--text-faint);font-weight:400;font-size:11.5px}
 .field input,.field select,.field textarea{
   width:100%;padding:11px 14px;
   font-family:var(--font);font-size:15px;
-  background:#F7F1F4;border:1.5px solid transparent;
+  background:#EDF3F9;border:1.5px solid transparent;
   border-radius:var(--r-sm);color:var(--text);
   outline:none;transition:var(--t);
   -webkit-appearance:none;appearance:none;
@@ -312,10 +364,10 @@ body{
 }
 .field input:focus,.field select:focus,.field textarea:focus{
   background:#fff;border-color:var(--primary-soft);
-  box-shadow:0 0 0 4px rgba(124,77,107,.1);
+  box-shadow:0 0 0 4px rgba(46,90,135,.1);
 }
 .field select{
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B5B65' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234C5C6C' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 14px center;
   padding-right:36px;
 }
@@ -331,25 +383,24 @@ body{
   font-weight:600;font-size:12px;
 }
 .btn-ghost{
-  background:#F0E8ED;color:var(--text-soft);border:none;
+  background:#E9EFF5;color:var(--text-soft);border:none;
   border-radius:var(--r-sm);padding:12px 22px;
   font-family:var(--font);font-weight:600;font-size:14px;
   cursor:pointer;transition:var(--t);
 }
-.btn-ghost:hover{background:#E5D9E0;color:var(--text)}
+.btn-ghost:hover{background:#DBE4EE;color:var(--text)}
 .btn-solid{
   background:var(--primary);color:#fff;border:none;
   border-radius:var(--r-sm);padding:12px 24px;
   font-family:var(--font);font-weight:600;font-size:14px;
   cursor:pointer;transition:var(--t);
-  box-shadow:0 3px 10px rgba(124,77,107,.22);
+  box-shadow:0 3px 12px rgba(46,90,135,.28);
 }
 .btn-solid:hover{background:var(--primary-dark)}
 
-/* DETALLE */
+/* ================== DETALLE ================== */
 .detail-meta{
-  display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;
-  min-width:0;
+  display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;min-width:0;
 }
 .detail-meta .tag{font-size:11px;padding:4px 12px;overflow-wrap:anywhere}
 .sheet-block{margin-top:4px;min-width:0}
@@ -363,7 +414,7 @@ body{
   content:'';flex:1;height:1px;background:var(--accent-line);
 }
 .sheet-notes{
-  background:linear-gradient(180deg,#FDFBFC 0%,#FAF3F7 100%);
+  background:linear-gradient(180deg,#F8FBFE 0%,#EEF4FA 100%);
   border:1px solid var(--accent-line);
   border-radius:var(--r-md);
   padding:20px 22px;
@@ -377,15 +428,15 @@ body{
 }
 .sheet-notes::before{
   content:'♪';position:absolute;top:14px;right:18px;
-  font-size:40px;color:rgba(124,77,107,.06);
+  font-size:40px;color:rgba(46,90,135,.06);
   font-family:var(--font-serif);line-height:1;pointer-events:none;
 }
 .sheet-notes .bar{
-  color:var(--primary-soft);font-weight:400;opacity:.7;padding:0 4px;
+  color:var(--primary-soft);font-weight:400;opacity:.75;padding:0 4px;
 }
 .detail-notes{
   margin-top:16px;font-size:13.5px;line-height:1.65;
-  color:var(--text-soft);background:#F5EEF2;
+  color:var(--text-soft);background:var(--accent);
   padding:14px 16px;border-radius:var(--r-sm);
   white-space:pre-wrap;overflow-wrap:anywhere;
 }
@@ -409,11 +460,11 @@ body{
 .btn-action:hover{border-color:var(--primary-soft);background:var(--accent)}
 .btn-action.primary{
   background:var(--primary);color:#fff;border-color:var(--primary);
-  box-shadow:0 3px 12px rgba(124,77,107,.25);
+  box-shadow:0 3px 14px rgba(46,90,135,.28);
 }
 .btn-action.primary:hover{background:var(--primary-dark);border-color:var(--primary-dark)}
-.btn-action.playing{background:#D43F5E;border-color:#D43F5E;color:#fff}
-.btn-action.playing:hover{background:#B8314D;border-color:#B8314D}
+.btn-action.playing{background:var(--rose);border-color:var(--rose);color:#fff}
+.btn-action.playing:hover{background:var(--rose-deep);border-color:var(--rose-deep)}
 .score-container{
   margin-top:16px;background:#fff;
   border:1px solid var(--accent-line);
@@ -424,9 +475,11 @@ body{
 }
 .score-container svg{max-width:100%;height:auto;display:block;margin:0 auto}
 
-/* INSTALL BAR */
+/* ================== INSTALL BAR ================== */
 .install-bar{
-  display:none;background:var(--accent);color:var(--primary-dark);
+  display:none;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--rose-soft) 100%);
+  color:var(--primary-dark);
   padding:11px 20px;font-size:13px;font-weight:500;
   text-align:center;border-bottom:1px solid var(--accent-line);
 }
@@ -439,15 +492,133 @@ body{
 }
 .install-bar button:hover{background:var(--primary-dark)}
 
-/* FOOTER */
+/* ================== FOOTER ================== */
 .footer{
-  text-align:center;padding:32px 24px 20px;
-  color:var(--text-faint);font-size:12px;letter-spacing:.02em;
+  text-align:center;padding:36px 24px 60px;
+  color:var(--text-faint);font-size:12.5px;letter-spacing:.02em;
+  line-height:1.7;
+}
+.footer .heart{
+  color:var(--rose);display:inline-block;
+  animation:heartbeat 1.8s ease-in-out infinite;
 }
 .footer strong{color:var(--text-soft);font-weight:600}
-.footer .heart{color:#D43F5E}
+.footer .sign{
+  font-family:var(--font-serif);
+  font-style:italic;
+  color:var(--primary);
+  font-size:14px;
+  margin-top:4px;
+  display:block;
+}
 
-/* RESPONSIVE */
+/* ================== WATERMARK ROMÁNTICO ================== */
+.watermark{
+  position:fixed;
+  bottom:18px;right:18px;
+  z-index:50;
+  pointer-events:none;
+  font-family:var(--font-serif);
+  font-size:11px;
+  font-style:italic;
+  color:rgba(46,90,135,.42);
+  text-align:right;
+  line-height:1.5;
+  padding:6px 12px;
+  border-radius:var(--r-full);
+  background:rgba(255,255,255,.72);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  border:1px solid rgba(214,124,150,.18);
+  box-shadow:0 4px 14px rgba(46,90,135,.06);
+  user-select:none;
+  transition:var(--t);
+}
+.watermark .names{font-weight:600;color:var(--primary)}
+.watermark .rose{color:var(--rose)}
+
+/* ================== WELCOME MODAL ================== */
+.welcome-modal{
+  max-width:480px;
+  background:linear-gradient(180deg,#FFFFFF 0%,#F8FBFE 100%);
+  position:relative;
+  overflow:hidden;
+}
+.welcome-modal::before{
+  content:'';
+  position:absolute;
+  top:-60px;left:50%;
+  transform:translateX(-50%);
+  width:180px;height:180px;
+  background:radial-gradient(circle,rgba(214,124,150,.13) 0%,transparent 70%);
+  border-radius:50%;
+  pointer-events:none;
+}
+.welcome-body{
+  padding:40px 32px 32px;
+  text-align:center;
+  position:relative;
+}
+.welcome-heart{
+  font-size:52px;
+  color:var(--rose);
+  margin-bottom:8px;
+  line-height:1;
+  animation:heartbeat 1.8s ease-in-out infinite;
+  filter:drop-shadow(0 6px 16px rgba(214,124,150,.3));
+}
+.welcome-title{
+  font-family:var(--font-serif);
+  font-size:26px;
+  font-weight:600;
+  color:var(--primary-dark);
+  letter-spacing:-.02em;
+  margin-bottom:6px;
+}
+.welcome-sub{
+  font-family:var(--font-serif);
+  font-style:italic;
+  color:var(--rose-deep);
+  font-size:14px;
+  margin-bottom:24px;
+}
+.welcome-text{
+  font-size:14.5px;
+  line-height:1.75;
+  color:var(--text-soft);
+  margin-bottom:8px;
+}
+.welcome-text strong{color:var(--primary-dark);font-weight:600}
+.welcome-sign{
+  font-family:var(--font-serif);
+  font-style:italic;
+  font-size:15px;
+  color:var(--primary);
+  margin-top:24px;
+  padding-top:20px;
+  border-top:1px solid var(--divider-rose);
+  display:block;
+}
+.welcome-sign .heart{color:var(--rose);font-style:normal}
+.welcome-btn{
+  margin-top:24px;
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:var(--r-md);
+  background:var(--primary);
+  color:#fff;
+  font-family:var(--font);
+  font-weight:600;
+  font-size:15px;
+  cursor:pointer;
+  transition:var(--t);
+  box-shadow:0 4px 16px rgba(46,90,135,.3);
+}
+.welcome-btn:hover{background:var(--primary-dark);box-shadow:0 6px 22px rgba(46,90,135,.4)}
+.welcome-btn:active{transform:scale(.98)}
+
+/* ================== RESPONSIVE ================== */
 @media (max-width:640px){
   .app-header{padding:14px 16px 12px}
   .app-header .logo{width:34px;height:34px;font-size:18px}
@@ -461,7 +632,7 @@ body{
   .grid{grid-template-columns:1fr;gap:10px}
   .card{padding:16px 18px 12px}
   .card-title{font-size:16px}
-  .modal{border-radius:var(--r-md);max-height:95dvh}
+  .modal{border-radius:var(--r-md);max-height:94dvh}
   .modal-header{padding:18px 20px 0}
   .modal-title{font-size:18px}
   .modal-body{padding:16px 20px 20px}
@@ -470,11 +641,16 @@ body{
   .sheet-notes{padding:16px 18px;font-size:14px;line-height:1.9}
   .actions-row{flex-direction:column}
   .btn-action{width:100%}
+  .watermark{font-size:10px;bottom:12px;right:12px;padding:4px 10px}
+  .welcome-body{padding:32px 24px 26px}
+  .welcome-heart{font-size:46px}
+  .welcome-title{font-size:22px}
+  .footer{padding:30px 20px 70px}
 }
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:rgba(124,77,107,.18);border-radius:8px}
-::-webkit-scrollbar-thumb:hover{background:rgba(124,77,107,.3)}
+::-webkit-scrollbar-thumb{background:rgba(46,90,135,.18);border-radius:8px}
+::-webkit-scrollbar-thumb:hover{background:rgba(46,90,135,.3)}
 </style>
 </head>
 <body>
@@ -513,8 +689,14 @@ body{
 
 <div class="footer">
   Hecho con <span class="heart">♥</span> por <strong>Stephan</strong> para <strong>María</strong>
+  <span class="sign">— con todo mi amor, para la mejor flautista ✨</span>
 </div>
 
+<div class="watermark">
+  <span class="names">Stephan</span> <span class="rose">♡</span> <span class="names">María</span>
+</div>
+
+<!-- MODAL EDITAR -->
 <div class="modal-bg" id="editModal">
   <div class="modal">
     <div class="modal-header">
@@ -575,6 +757,7 @@ body{
   </div>
 </div>
 
+<!-- MODAL DETALLE -->
 <div class="modal-bg" id="detailModal">
   <div class="modal">
     <div class="modal-header">
@@ -585,7 +768,35 @@ body{
   </div>
 </div>
 
+<!-- MODAL BIENVENIDA -->
+<div class="modal-bg" id="welcomeModal">
+  <div class="modal welcome-modal">
+    <div class="welcome-body">
+      <div class="welcome-heart">♥</div>
+      <h2 class="welcome-title">Para María</h2>
+      <div class="welcome-sub">con todo mi amor</div>
+      <p class="welcome-text">
+        Hice esta pequeña app para vos, para que puedas guardar
+        y encontrar todas tus partituras de flauta en un solo lugar.
+      </p>
+      <p class="welcome-text" style="margin-top:14px">
+        Podés <strong>escribir tus canciones</strong> tal como las anotás en tu cuaderno,
+        <strong>escucharlas con sonido de flauta</strong> y
+        <strong>ver el pentagrama</strong> cuando quieras.
+      </p>
+      <span class="welcome-sign">
+        Espero que te guste tanto como a mí me gustó hacerla.<br>
+        — Stephan <span class="heart">♥</span>
+      </span>
+      <button class="welcome-btn" id="welcomeBtn">Comenzar 🎵</button>
+    </div>
+  </div>
+</div>
+
 <script>
+/* =========================================================
+   ABCJS
+   ========================================================= */
 const CDNS = [
   'https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.2.3/abcjs-basic-min.js',
   'https://unpkg.com/abcjs@6.2.3/dist/abcjs-basic-min.js',
@@ -606,21 +817,37 @@ function loadABCJS() {
   });
 }
 
-const MAP = { do:'C', re:'D', mi:'E', fa:'F', sol:'G', la:'A', si:'B' };
+/* =========================================================
+   SCROLL LOCK (para que la página de atrás no scrollee)
+   ========================================================= */
+let lockedScrollY = 0;
+function lockBody() {
+  if (document.body.classList.contains('no-scroll')) return;
+  lockedScrollY = window.scrollY || window.pageYOffset;
+  document.body.style.top = `-${lockedScrollY}px`;
+  document.body.classList.add('no-scroll');
+}
+function unlockBody() {
+  if (!document.body.classList.contains('no-scroll')) return;
+  document.body.classList.remove('no-scroll');
+  document.body.style.top = '';
+  window.scrollTo(0, lockedScrollY);
+}
 
+/* =========================================================
+   SOLFEO → ABC
+   ========================================================= */
+const MAP = { do:'C', re:'D', mi:'E', fa:'F', sol:'G', la:'A', si:'B' };
 function solfeoToAbc(solfeo, meta = {}) {
   const title = (meta.title || 'Sin título').replace(/[:\n|]/g, ' ');
   const composer = (meta.composer || 'Anónimo').replace(/[:\n|]/g, ' ');
   const key = meta.key || 'C';
-
   const clean = solfeo
     .replace(/[|/]+/g, ' | ')
     .replace(/[-–—]+/g, ' ')
     .replace(/[\n\r]+/g, ' / ');
-
   const tokens = clean.toLowerCase().split(/\s+/).filter(Boolean);
   const notes = [];
-
   for (const t of tokens) {
     if (t === '|' || t === '/') { notes.push('|'); continue; }
     const hi = t.includes('*') || t.includes("'");
@@ -637,12 +864,11 @@ function solfeoToAbc(solfeo, meta = {}) {
     else if (lo) letter = letter + ',';
     notes.push(letter);
   }
-
   return `X:1\nT:${title}\nC:${composer}\nM:4/4\nL:1/4\nQ:1/4=95\nK:${key}\n%%MIDI program 73\n${notes.join(' ')} |`;
 }
 
 /* =========================================================
-   REPERTORIO — VERSIONES COMPLETAS
+   REPERTORIO COMPLETO
    ========================================================= */
 const SEED = [
   { title:'Estrellita', composer:'Tradicional', category:'Infantil', difficulty:'Fácil',
@@ -690,9 +916,10 @@ const SEED = [
 /* =========================================================
    ESTADO
    ========================================================= */
-const KEY = 'flautaMaria_v5_sheets';
-const SEEDED = 'flautaMaria_v5_seeded';
-const FAV = 'flautaMaria_v5_favs';
+const KEY = 'flautaMaria_v6_sheets';
+const SEEDED = 'flautaMaria_v6_seeded';
+const FAV = 'flautaMaria_v6_favs';
+const WELCOMED = 'flautaMaria_v6_welcomed';
 
 let sheets = [];
 let favorites = new Set();
@@ -754,7 +981,9 @@ function prettySolfeo(solfeo) {
     .replace(/\n/g, '<br>');
 }
 
-/* RENDER */
+/* =========================================================
+   RENDER
+   ========================================================= */
 function render() {
   const q = document.getElementById('searchInput').value.toLowerCase().trim();
   const list = sheets.filter(s => {
@@ -815,7 +1044,9 @@ function render() {
   });
 }
 
-/* DETALLE */
+/* =========================================================
+   DETALLE
+   ========================================================= */
 let currentAudio = null;
 
 function showDetail(id) {
@@ -848,7 +1079,9 @@ function showDetail(id) {
     <div id="scoreSlot"></div>
   `;
 
-  document.getElementById('detailModal').classList.add('open');
+  const modal = document.getElementById('detailModal');
+  modal.classList.add('open');
+  lockBody();
 
   document.getElementById('playBtn').onclick = () => togglePlay(s);
   document.getElementById('toggleScore').onclick = () => {
@@ -869,7 +1102,7 @@ function showDetail(id) {
     try {
       ABCJS.renderAbc(wrap, s.abc, { responsive: 'resize', scale: 1.2, staffwidth: 480, padding: 8 });
     } catch (e) {
-      wrap.innerHTML = `<div style="text-align:center;color:#C43A56;padding:20px;font-size:14px">Error al dibujar la partitura.</div>`;
+      wrap.innerHTML = `<div style="text-align:center;color:#A84562;padding:20px;font-size:14px">Error al dibujar la partitura.</div>`;
     }
   };
 }
@@ -903,7 +1136,9 @@ async function togglePlay(s) {
   }
 }
 
-/* EDITAR / AÑADIR */
+/* =========================================================
+   EDITAR / AÑADIR
+   ========================================================= */
 function openAdd() {
   document.getElementById('editTitle').textContent = 'Añadir canción';
   document.getElementById('editId').value = '';
@@ -911,6 +1146,7 @@ function openAdd() {
   document.getElementById('fCategory').value = 'Popular';
   document.getElementById('fDifficulty').value = 'Fácil';
   document.getElementById('editModal').classList.add('open');
+  lockBody();
   setTimeout(() => document.getElementById('fTitle').focus(), 250);
 }
 function openEdit(id) {
@@ -925,11 +1161,14 @@ function openEdit(id) {
   document.getElementById('fSolfeo').value = s.solfeo || '';
   document.getElementById('fNotes').value = s.notes || '';
   document.getElementById('editModal').classList.add('open');
+  lockBody();
 }
 function closeModals() {
   stopAudio();
   document.getElementById('editModal').classList.remove('open');
   document.getElementById('detailModal').classList.remove('open');
+  document.getElementById('welcomeModal').classList.remove('open');
+  unlockBody();
 }
 
 document.getElementById('sheetForm').addEventListener('submit', e => {
@@ -948,7 +1187,9 @@ document.getElementById('sheetForm').addEventListener('submit', e => {
   closeModals();
 });
 
-/* PWA */
+/* =========================================================
+   PWA
+   ========================================================= */
 let promptInstall = null;
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
@@ -969,10 +1210,13 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-/* INIT */
+/* =========================================================
+   INIT
+   ========================================================= */
 document.addEventListener('DOMContentLoaded', () => {
   load();
   render();
+
   document.getElementById('searchInput').addEventListener('input', render);
   document.getElementById('addBtn').onclick = openAdd;
   document.getElementById('cancelBtn').onclick = closeModals;
@@ -981,6 +1225,19 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('editModal').onclick = e => { if (e.target === e.currentTarget) closeModals(); };
   document.getElementById('detailModal').onclick = e => { if (e.target === e.currentTarget) closeModals(); };
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModals(); });
+
+  // Modal de bienvenida (solo la primera vez)
+  if (!localStorage.getItem(WELCOMED)) {
+    setTimeout(() => {
+      document.getElementById('welcomeModal').classList.add('open');
+      lockBody();
+    }, 400);
+  }
+  document.getElementById('welcomeBtn').onclick = () => {
+    localStorage.setItem(WELCOMED, '1');
+    closeModals();
+  };
+
   loadABCJS().then(() => console.log('✅ Listo')).catch(() => {
     alert('⚠️ No se pudo cargar la librería musical. Conéctate a internet una vez y recarga.');
   });
