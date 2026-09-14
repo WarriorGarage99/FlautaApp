@@ -15,610 +15,244 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{overflow-x:hidden;scroll-behavior:smooth;height:100%}
 :root{
-  /* Azul — color favorito de María */
-  --primary:#2E5A87;
-  --primary-soft:#6B8AB8;
-  --primary-dark:#1A3A5C;
-  --primary-deep:#0F2540;
+  --primary:#2E5A87;--primary-soft:#6B8AB8;--primary-dark:#1A3A5C;--primary-deep:#0F2540;
   --gradient:linear-gradient(135deg,#2E5A87 0%,#6B8AB8 100%);
   --gradient-deep:linear-gradient(135deg,#1A3A5C 0%,#3B6B9C 100%);
-  --accent:#E4EEF8;
-  --accent-line:#C8DBEF;
-  --accent-deep:#B9D2EA;
-
-  /* Rosa — acento romántico */
-  --rose:#D67C96;
-  --rose-soft:#F5DFE6;
-  --rose-deep:#A84562;
-  --rose-glow:rgba(214,124,150,.18);
-
-  --bg:#F5F8FC;
-  --surface:#FFFFFF;
-  --text:#16232F;
-  --text-soft:#4C5C6C;
-  --text-faint:#8291A2;
-  --divider:rgba(46,90,135,.08);
-  --divider-rose:rgba(214,124,150,.15);
-
-  --shadow-xs:0 1px 2px rgba(30,60,100,.04);
+  --accent:#E4EEF8;--accent-line:#C8DBEF;--accent-deep:#B9D2EA;
+  --rose:#D67C96;--rose-soft:#F5DFE6;--rose-deep:#A84562;--rose-glow:rgba(214,124,150,.18);
+  --bg:#F5F8FC;--surface:#FFFFFF;
+  --text:#16232F;--text-soft:#4C5C6C;--text-faint:#8291A2;
+  --divider:rgba(46,90,135,.08);--divider-rose:rgba(214,124,150,.15);
   --shadow-sm:0 2px 6px rgba(30,60,100,.05);
   --shadow-md:0 6px 20px rgba(30,60,100,.09);
   --shadow-lg:0 20px 50px rgba(30,60,100,.16);
-  --shadow-rose:0 8px 24px rgba(214,124,150,.22);
-
   --r-sm:10px;--r-md:14px;--r-lg:20px;--r-full:999px;
   --t:.22s cubic-bezier(.4,0,.2,1);
   --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   --font-serif:'Fraunces',Georgia,serif;
 }
 body{
-  font-family:var(--font);
-  background:var(--bg);color:var(--text);
-  font-size:15px;line-height:1.5;
-  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
-  padding-bottom:40px;min-height:100vh;
-  overflow-x:hidden;max-width:100vw;width:100%;
-  position:relative;
+  font-family:var(--font);background:var(--bg);color:var(--text);
+  font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;
+  padding-bottom:40px;min-height:100vh;overflow-x:hidden;max-width:100vw;width:100%;
 }
-/* Bloqueo de scroll cuando hay modal abierto */
-body.no-scroll{
-  position:fixed;
-  overflow:hidden;
-  width:100%;
-  left:0;right:0;
-}
+body.no-scroll{position:fixed;overflow:hidden;width:100%;left:0;right:0}
 
-/* ================== HEADER ================== */
 .app-header{
-  background:rgba(255,255,255,.94);
-  border-bottom:1px solid var(--divider);
-  padding:18px 24px 16px;
-  position:sticky;top:0;z-index:100;
-  backdrop-filter:saturate(180%) blur(12px);
-  -webkit-backdrop-filter:saturate(180%) blur(12px);
+  background:rgba(255,255,255,.94);border-bottom:1px solid var(--divider);
+  padding:18px 24px 16px;position:sticky;top:0;z-index:100;
+  backdrop-filter:saturate(180%) blur(12px);-webkit-backdrop-filter:saturate(180%) blur(12px);
 }
-.app-header .row{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:16px;max-width:1100px;margin:0 auto;min-width:0;
-}
+.app-header .row{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1100px;margin:0 auto;min-width:0}
 .app-header .brand{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
 .app-header .logo{
-  width:38px;height:38px;border-radius:11px;
-  background:var(--gradient);
-  display:flex;align-items:center;justify-content:center;
-  font-size:20px;flex-shrink:0;
-  box-shadow:0 4px 14px rgba(46,90,135,.32);
-  position:relative;
-  overflow:hidden;
+  width:38px;height:38px;border-radius:11px;background:var(--gradient);
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;
+  box-shadow:0 4px 14px rgba(46,90,135,.32);position:relative;overflow:hidden;
 }
 .app-header .logo::after{
-  content:'';
-  position:absolute;top:-20%;left:-30%;
-  width:60%;height:140%;
+  content:'';position:absolute;top:-20%;left:-30%;width:60%;height:140%;
   background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
-  transform:rotate(20deg);
-  pointer-events:none;
+  transform:rotate(20deg);pointer-events:none;
 }
 .app-header h1{
-  font-family:var(--font-serif);
-  font-size:21px;font-weight:600;
-  color:var(--text);letter-spacing:-.02em;
-  line-height:1.15;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  font-family:var(--font-serif);font-size:21px;font-weight:600;color:var(--text);
+  letter-spacing:-.02em;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
-.app-header .subtitle{
-  font-size:12px;color:var(--text-faint);font-weight:400;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
+.app-header .subtitle{font-size:12px;color:var(--text-faint);font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .app-header .badge{
-  font-size:11px;font-weight:600;
-  color:var(--primary-dark);
+  font-size:11px;font-weight:600;color:var(--primary-dark);
   background:linear-gradient(135deg,var(--rose-soft) 0%,var(--accent) 100%);
-  padding:6px 13px;border-radius:var(--r-full);
-  white-space:nowrap;flex-shrink:0;
-  display:flex;align-items:center;gap:6px;
-  border:1px solid var(--rose-glow);
+  padding:6px 13px;border-radius:var(--r-full);white-space:nowrap;flex-shrink:0;
+  display:flex;align-items:center;gap:6px;border:1px solid var(--rose-glow);
   box-shadow:0 2px 8px rgba(214,124,150,.12);
 }
-.app-header .badge::before{
-  content:'♥';
-  color:var(--rose-deep);
-  font-size:12px;
-  line-height:1;
-  animation:heartbeat 1.6s ease-in-out infinite;
-}
-@keyframes heartbeat{
-  0%,100%{transform:scale(1)}
-  15%{transform:scale(1.18)}
-  30%{transform:scale(1)}
-  45%{transform:scale(1.12)}
-  60%{transform:scale(1)}
-}
+.app-header .badge::before{content:'♥';color:var(--rose-deep);font-size:12px;line-height:1;animation:heartbeat 1.6s ease-in-out infinite}
+@keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.18)}30%{transform:scale(1)}45%{transform:scale(1.12)}60%{transform:scale(1)}}
 
-/* ================== TOOLBAR ================== */
-.toolbar{
-  background:var(--surface);
-  border-bottom:1px solid var(--divider);
-  padding:14px 24px;
-  position:sticky;top:73px;z-index:90;
-}
-.toolbar-inner{
-  max-width:1100px;margin:0 auto;
-  display:flex;gap:10px;align-items:center;min-width:0;
-}
+.toolbar{background:var(--surface);border-bottom:1px solid var(--divider);padding:14px 24px;position:sticky;top:73px;z-index:90}
+.toolbar-inner{max-width:1100px;margin:0 auto;display:flex;gap:10px;align-items:center;min-width:0}
 .search-field{flex:1 1 auto;position:relative;min-width:0;max-width:100%}
-.search-field input{
-  width:100%;
-  padding:11px 16px 11px 42px;
-  font-family:var(--font);font-size:14.5px;
-  background:#EDF3F9;border:1px solid transparent;
-  border-radius:var(--r-md);color:var(--text);
-  outline:none;transition:var(--t);
-}
+.search-field input{width:100%;padding:11px 16px 11px 42px;font-family:var(--font);font-size:14.5px;background:#EDF3F9;border:1px solid transparent;border-radius:var(--r-md);color:var(--text);outline:none;transition:var(--t)}
 .search-field input::placeholder{color:var(--text-faint)}
-.search-field input:focus{
-  background:#fff;border-color:var(--primary-soft);
-  box-shadow:0 0 0 4px rgba(46,90,135,.1);
-}
-.search-field .icon{
-  position:absolute;left:15px;top:50%;transform:translateY(-50%);
-  font-size:15px;opacity:.45;pointer-events:none;line-height:1;
-}
+.search-field input:focus{background:#fff;border-color:var(--primary-soft);box-shadow:0 0 0 4px rgba(46,90,135,.1)}
+.search-field .icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:15px;opacity:.45;pointer-events:none;line-height:1}
 .btn-primary{
-  display:inline-flex;align-items:center;gap:7px;
-  background:var(--primary);color:#fff;border:none;
-  border-radius:var(--r-md);padding:11px 18px;
-  font-family:var(--font);font-size:14px;font-weight:600;
-  cursor:pointer;white-space:nowrap;flex-shrink:0;
-  transition:var(--t);
-  box-shadow:0 3px 12px rgba(46,90,135,.28);
+  display:inline-flex;align-items:center;gap:7px;background:var(--primary);color:#fff;border:none;
+  border-radius:var(--r-md);padding:11px 18px;font-family:var(--font);font-size:14px;font-weight:600;
+  cursor:pointer;white-space:nowrap;flex-shrink:0;transition:var(--t);box-shadow:0 3px 12px rgba(46,90,135,.28);
 }
 .btn-primary:hover{background:var(--primary-dark);box-shadow:0 5px 18px rgba(46,90,135,.35)}
 .btn-primary:active{transform:scale(.97)}
 .btn-primary .plus{font-size:16px;line-height:1;font-weight:500}
 
-/* ================== CONTAINER + GRID ================== */
-.container{
-  max-width:1100px;margin:0 auto;
-  padding:24px;width:100%;min-width:0;
-}
-.section-label{
-  font-size:11px;font-weight:600;
-  letter-spacing:.12em;text-transform:uppercase;
-  color:var(--text-faint);margin-bottom:14px;
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));
-  gap:14px;width:100%;min-width:0;
-}
+.container{max-width:1100px;margin:0 auto;padding:24px;width:100%;min-width:0}
+.section-label{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text-faint);margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));gap:14px;width:100%;min-width:0}
 
-/* ================== CARD ================== */
 .card{
-  background:var(--surface);
-  border:1px solid var(--divider);
-  border-radius:var(--r-md);
-  padding:18px 20px 14px;
-  cursor:pointer;transition:var(--t);
-  display:flex;flex-direction:column;
-  position:relative;overflow:hidden;
-  min-width:0;width:100%;max-width:100%;
+  background:var(--surface);border:1px solid var(--divider);border-radius:var(--r-md);
+  padding:18px 20px 14px;cursor:pointer;transition:var(--t);display:flex;flex-direction:column;
+  position:relative;overflow:hidden;min-width:0;width:100%;max-width:100%;
 }
-.card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:3px;
-  background:var(--gradient);opacity:0;transition:var(--t);
-}
-.card:hover{
-  border-color:var(--accent-line);
-  box-shadow:var(--shadow-md);
-  transform:translateY(-2px);
-}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gradient);opacity:0;transition:var(--t)}
+.card:hover{border-color:var(--accent-line);box-shadow:var(--shadow-md);transform:translateY(-2px)}
 .card:hover::before{opacity:1}
-.card-head{
-  display:flex;justify-content:space-between;
-  align-items:flex-start;gap:10px;margin-bottom:6px;min-width:0;
-}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px;min-width:0}
 .card-title{
-  font-family:var(--font-serif);
-  font-size:17px;font-weight:600;
-  color:var(--text);line-height:1.25;letter-spacing:-.01em;
-  flex:1;min-width:0;
+  font-family:var(--font-serif);font-size:17px;font-weight:600;color:var(--text);
+  line-height:1.25;letter-spacing:-.01em;flex:1;min-width:0;
   overflow:hidden;overflow-wrap:anywhere;word-break:break-word;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
 }
-.card-fav{
-  background:none;border:none;cursor:pointer;
-  font-size:16px;padding:2px 4px;border-radius:var(--r-sm);
-  transition:var(--t);opacity:.35;flex-shrink:0;line-height:1;
-}
+.card-fav{background:none;border:none;cursor:pointer;font-size:16px;padding:2px 4px;border-radius:var(--r-sm);transition:var(--t);opacity:.35;flex-shrink:0;line-height:1}
 .card-fav:hover{opacity:1;background:var(--rose-soft)}
 .card-fav.active{opacity:1;filter:drop-shadow(0 0 4px var(--rose-glow))}
-.card-composer{
-  font-size:13px;color:var(--text-soft);
-  font-weight:400;margin-bottom:14px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  min-width:0;max-width:100%;
-}
+.card-composer{font-size:13px;color:var(--text-soft);font-weight:400;margin-bottom:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;max-width:100%}
 .card-preview{
-  font-size:12.5px;color:var(--primary-dark);
-  line-height:1.55;margin-bottom:14px;
-  background:var(--accent);
-  padding:10px 12px;border-radius:var(--r-sm);
+  font-size:12.5px;color:var(--primary-dark);line-height:1.55;margin-bottom:14px;
+  background:var(--accent);padding:10px 12px;border-radius:var(--r-sm);
   overflow:hidden;min-width:0;max-width:100%;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
   overflow-wrap:anywhere;word-break:break-word;
 }
-.card-preview::before{
-  content:'♪ ';color:var(--primary);font-weight:700;margin-right:2px;
-}
-.card-footer{
-  display:flex;justify-content:space-between;align-items:center;
-  gap:8px;margin-top:auto;padding-top:12px;
-  border-top:1px solid var(--divider);min-width:0;
-}
+.card-preview::before{content:'♪ ';color:var(--primary);font-weight:700;margin-right:2px}
+.card-footer{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:auto;padding-top:12px;border-top:1px solid var(--divider);min-width:0}
 .tags{display:flex;gap:6px;flex-wrap:wrap;min-width:0;flex:1}
-.tag{
-  font-size:10.5px;font-weight:600;
-  padding:3px 10px;border-radius:var(--r-full);
-  letter-spacing:.02em;text-transform:uppercase;white-space:nowrap;
-}
+.tag{font-size:10.5px;font-weight:600;padding:3px 10px;border-radius:var(--r-full);letter-spacing:.02em;text-transform:uppercase;white-space:nowrap}
 .tag.cat{color:var(--primary-dark);background:var(--accent)}
 .tag.diff{color:#2F5A82;background:#DCEAF6}
 .tag.custom{color:var(--rose-deep);background:var(--rose-soft)}
 .card-actions{display:flex;gap:2px;align-items:center;flex-shrink:0}
-.icon-btn{
-  background:none;border:none;cursor:pointer;
-  font-size:14px;color:var(--text-faint);
-  padding:6px;border-radius:var(--r-sm);
-  transition:var(--t);line-height:1;
-}
+.icon-btn{background:none;border:none;cursor:pointer;font-size:14px;color:var(--text-faint);padding:6px;border-radius:var(--r-sm);transition:var(--t);line-height:1}
 .icon-btn:hover{background:var(--accent);color:var(--primary)}
 .icon-btn.danger:hover{background:var(--rose-soft);color:var(--rose-deep)}
 
-/* ================== EMPTY ================== */
-.empty{
-  grid-column:1/-1;text-align:center;
-  padding:80px 20px;color:var(--text-faint);
-}
+.empty{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--text-faint)}
 .empty .ico{font-size:44px;margin-bottom:14px;opacity:.35}
-.empty h3{
-  font-family:var(--font-serif);font-weight:500;
-  font-size:18px;color:var(--text-soft);margin-bottom:6px;
-}
+.empty h3{font-family:var(--font-serif);font-weight:500;font-size:18px;color:var(--text-soft);margin-bottom:6px}
 .empty p{font-size:14px;color:var(--text-faint)}
 
-/* ================== MODAL ================== */
 .modal-bg{
-  position:fixed;inset:0;
-  background:rgba(22,35,47,.5);
+  position:fixed;inset:0;background:rgba(22,35,47,.5);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
-  z-index:1000;display:none;
-  align-items:center;justify-content:center;
-  padding:20px;animation:fadeIn .2s ease;
-  overflow:hidden;overscroll-behavior:contain;
+  z-index:1000;display:none;align-items:center;justify-content:center;
+  padding:20px;animation:fadeIn .2s ease;overflow:hidden;overscroll-behavior:contain;
 }
 .modal-bg.open{display:flex}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes slideUp{
-  from{opacity:0;transform:translateY(16px) scale(.98)}
-  to{opacity:1;transform:translateY(0) scale(1)}
-}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
 .modal{
-  background:var(--surface);border-radius:var(--r-lg);
-  width:100%;max-width:560px;
-  max-height:calc(100dvh - 40px);
-  overflow-y:auto;overflow-x:hidden;
-  overscroll-behavior:contain;
-  -webkit-overflow-scrolling:touch;
-  box-shadow:var(--shadow-lg);
-  animation:slideUp .3s cubic-bezier(.16,1,.3,1);
+  background:var(--surface);border-radius:var(--r-lg);width:100%;max-width:560px;
+  max-height:calc(100dvh - 40px);overflow-y:auto;overflow-x:hidden;
+  overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+  box-shadow:var(--shadow-lg);animation:slideUp .3s cubic-bezier(.16,1,.3,1);
   position:relative;min-width:0;
 }
-.modal-header{
-  padding:22px 26px 0;
-  display:flex;justify-content:space-between;
-  align-items:flex-start;gap:12px;min-width:0;
-}
-.modal-title{
-  font-family:var(--font-serif);
-  font-size:20px;font-weight:600;color:var(--text);
-  letter-spacing:-.015em;line-height:1.25;
-  flex:1;min-width:0;overflow-wrap:anywhere;word-break:break-word;
-}
+.modal-header{padding:22px 26px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;min-width:0}
+.modal-title{font-family:var(--font-serif);font-size:20px;font-weight:600;color:var(--text);letter-spacing:-.015em;line-height:1.25;flex:1;min-width:0;overflow-wrap:anywhere;word-break:break-word}
 .modal-close{
-  background:none;border:none;cursor:pointer;
-  width:32px;height:32px;border-radius:var(--r-sm);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--text-faint);font-size:20px;line-height:1;
-  transition:var(--t);flex-shrink:0;margin-top:-2px;
+  background:none;border:none;cursor:pointer;width:32px;height:32px;border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;color:var(--text-faint);
+  font-size:20px;line-height:1;transition:var(--t);flex-shrink:0;margin-top:-2px;
 }
 .modal-close:hover{background:var(--accent);color:var(--primary-dark)}
 .modal-body{padding:20px 26px 26px;min-width:0}
-.modal-footer{
-  padding:0 26px 22px;
-  display:flex;gap:10px;justify-content:flex-end;
-}
+.modal-footer{padding:0 26px 22px;display:flex;gap:10px;justify-content:flex-end}
 
-/* ================== FORM ================== */
 .field{margin-bottom:16px;min-width:0}
 .field:last-child{margin-bottom:0}
-.field-label{
-  display:block;font-size:12.5px;font-weight:600;
-  color:var(--text-soft);margin-bottom:6px;
-}
+.field-label{display:block;font-size:12.5px;font-weight:600;color:var(--text-soft);margin-bottom:6px}
 .field-label .req{color:var(--rose-deep);margin-left:2px}
 .field-label .opt{color:var(--text-faint);font-weight:400;font-size:11.5px}
 .field input,.field select,.field textarea{
-  width:100%;padding:11px 14px;
-  font-family:var(--font);font-size:15px;
-  background:#EDF3F9;border:1.5px solid transparent;
-  border-radius:var(--r-sm);color:var(--text);
-  outline:none;transition:var(--t);
-  -webkit-appearance:none;appearance:none;
+  width:100%;padding:11px 14px;font-family:var(--font);font-size:15px;
+  background:#EDF3F9;border:1.5px solid transparent;border-radius:var(--r-sm);
+  color:var(--text);outline:none;transition:var(--t);-webkit-appearance:none;appearance:none;
   max-width:100%;min-width:0;
 }
 .field textarea{resize:vertical;min-height:110px;line-height:1.6;overflow-wrap:anywhere}
-.field textarea.mono{
-  font-family:'Courier New',monospace;
-  font-size:14px;letter-spacing:.02em;line-height:1.75;
-}
-.field input:focus,.field select:focus,.field textarea:focus{
-  background:#fff;border-color:var(--primary-soft);
-  box-shadow:0 0 0 4px rgba(46,90,135,.1);
-}
+.field textarea.mono{font-family:'Courier New',monospace;font-size:14px;letter-spacing:.02em;line-height:1.75}
+.field input:focus,.field select:focus,.field textarea:focus{background:#fff;border-color:var(--primary-soft);box-shadow:0 0 0 4px rgba(46,90,135,.1)}
 .field select{
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%234C5C6C' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 14px center;
-  padding-right:36px;
+  background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;
 }
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;min-width:0}
-.hint{
-  font-size:12px;color:var(--text-soft);
-  background:var(--accent);padding:10px 12px;
-  border-radius:var(--r-sm);margin-top:8px;line-height:1.6;
-}
-.hint code{
-  background:#fff;padding:1px 6px;border-radius:5px;
-  font-family:'Courier New',monospace;color:var(--primary-dark);
-  font-weight:600;font-size:12px;
-}
-.btn-ghost{
-  background:#E9EFF5;color:var(--text-soft);border:none;
-  border-radius:var(--r-sm);padding:12px 22px;
-  font-family:var(--font);font-weight:600;font-size:14px;
-  cursor:pointer;transition:var(--t);
-}
+.hint{font-size:12px;color:var(--text-soft);background:var(--accent);padding:10px 12px;border-radius:var(--r-sm);margin-top:8px;line-height:1.6}
+.hint code{background:#fff;padding:1px 6px;border-radius:5px;font-family:'Courier New',monospace;color:var(--primary-dark);font-weight:600;font-size:12px}
+.btn-ghost{background:#E9EFF5;color:var(--text-soft);border:none;border-radius:var(--r-sm);padding:12px 22px;font-family:var(--font);font-weight:600;font-size:14px;cursor:pointer;transition:var(--t)}
 .btn-ghost:hover{background:#DBE4EE;color:var(--text)}
-.btn-solid{
-  background:var(--primary);color:#fff;border:none;
-  border-radius:var(--r-sm);padding:12px 24px;
-  font-family:var(--font);font-weight:600;font-size:14px;
-  cursor:pointer;transition:var(--t);
-  box-shadow:0 3px 12px rgba(46,90,135,.28);
-}
+.btn-solid{background:var(--primary);color:#fff;border:none;border-radius:var(--r-sm);padding:12px 24px;font-family:var(--font);font-weight:600;font-size:14px;cursor:pointer;transition:var(--t);box-shadow:0 3px 12px rgba(46,90,135,.28)}
 .btn-solid:hover{background:var(--primary-dark)}
 
-/* ================== DETALLE ================== */
-.detail-meta{
-  display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;min-width:0;
-}
+.detail-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;min-width:0}
 .detail-meta .tag{font-size:11px;padding:4px 12px;overflow-wrap:anywhere}
 .sheet-block{margin-top:4px;min-width:0}
-.sheet-block-label{
-  display:flex;align-items:center;gap:8px;
-  font-size:11px;font-weight:700;
-  letter-spacing:.14em;text-transform:uppercase;
-  color:var(--primary);margin-bottom:10px;
-}
-.sheet-block-label::after{
-  content:'';flex:1;height:1px;background:var(--accent-line);
-}
+.sheet-block-label{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--primary);margin-bottom:10px}
+.sheet-block-label::after{content:'';flex:1;height:1px;background:var(--accent-line)}
 .sheet-notes{
   background:linear-gradient(180deg,#F8FBFE 0%,#EEF4FA 100%);
-  border:1px solid var(--accent-line);
-  border-radius:var(--r-md);
-  padding:20px 22px;
-  font-family:'Courier New',monospace;
-  font-size:15px;line-height:2;
-  color:var(--primary-dark);
-  letter-spacing:.03em;font-weight:600;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;word-break:break-word;
-  position:relative;min-width:0;
+  border:1px solid var(--accent-line);border-radius:var(--r-md);padding:20px 22px;
+  font-family:'Courier New',monospace;font-size:15px;line-height:2;color:var(--primary-dark);
+  letter-spacing:.03em;font-weight:600;white-space:pre-wrap;
+  overflow-wrap:anywhere;word-break:break-word;position:relative;min-width:0;
 }
-.sheet-notes::before{
-  content:'♪';position:absolute;top:14px;right:18px;
-  font-size:40px;color:rgba(46,90,135,.06);
-  font-family:var(--font-serif);line-height:1;pointer-events:none;
-}
-.sheet-notes .bar{
-  color:var(--primary-soft);font-weight:400;opacity:.75;padding:0 4px;
-}
-.detail-notes{
-  margin-top:16px;font-size:13.5px;line-height:1.65;
-  color:var(--text-soft);background:var(--accent);
-  padding:14px 16px;border-radius:var(--r-sm);
-  white-space:pre-wrap;overflow-wrap:anywhere;
-}
-.detail-notes strong{
-  display:block;font-size:11px;font-weight:700;
-  letter-spacing:.12em;text-transform:uppercase;
-  color:var(--primary);margin-bottom:6px;
-}
-.actions-row{
-  display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;
-}
+.sheet-notes::before{content:'♪';position:absolute;top:14px;right:18px;font-size:40px;color:rgba(46,90,135,.06);font-family:var(--font-serif);line-height:1;pointer-events:none}
+.sheet-notes .bar{color:var(--primary-soft);font-weight:400;opacity:.75;padding:0 4px}
+.detail-notes{margin-top:16px;font-size:13.5px;line-height:1.65;color:var(--text-soft);background:var(--accent);padding:14px 16px;border-radius:var(--r-sm);white-space:pre-wrap;overflow-wrap:anywhere}
+.detail-notes strong{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);margin-bottom:6px}
+.actions-row{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
 .btn-action{
-  flex:1;min-width:0;
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  background:var(--surface);color:var(--text);
-  border:1.5px solid var(--accent-line);
-  border-radius:var(--r-md);padding:12px 18px;
-  font-family:var(--font);font-weight:600;font-size:14px;
+  flex:1;min-width:0;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--surface);color:var(--text);border:1.5px solid var(--accent-line);
+  border-radius:var(--r-md);padding:12px 18px;font-family:var(--font);font-weight:600;font-size:14px;
   cursor:pointer;transition:var(--t);
 }
 .btn-action:hover{border-color:var(--primary-soft);background:var(--accent)}
-.btn-action.primary{
-  background:var(--primary);color:#fff;border-color:var(--primary);
-  box-shadow:0 3px 14px rgba(46,90,135,.28);
-}
+.btn-action.primary{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 3px 14px rgba(46,90,135,.28)}
 .btn-action.primary:hover{background:var(--primary-dark);border-color:var(--primary-dark)}
 .btn-action.playing{background:var(--rose);border-color:var(--rose);color:#fff}
 .btn-action.playing:hover{background:var(--rose-deep);border-color:var(--rose-deep)}
-.score-container{
-  margin-top:16px;background:#fff;
-  border:1px solid var(--accent-line);
-  border-radius:var(--r-md);
-  padding:14px 8px;overflow-x:auto;
-  animation:slideUp .25s ease;min-width:0;
-  -webkit-overflow-scrolling:touch;
-}
+.score-container{margin-top:16px;background:#fff;border:1px solid var(--accent-line);border-radius:var(--r-md);padding:14px 8px;overflow-x:auto;animation:slideUp .25s ease;min-width:0;-webkit-overflow-scrolling:touch}
 .score-container svg{max-width:100%;height:auto;display:block;margin:0 auto}
 
-/* ================== INSTALL BAR ================== */
-.install-bar{
-  display:none;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--rose-soft) 100%);
-  color:var(--primary-dark);
-  padding:11px 20px;font-size:13px;font-weight:500;
-  text-align:center;border-bottom:1px solid var(--accent-line);
-}
+.install-bar{display:none;background:linear-gradient(135deg,var(--accent) 0%,var(--rose-soft) 100%);color:var(--primary-dark);padding:11px 20px;font-size:13px;font-weight:500;text-align:center;border-bottom:1px solid var(--accent-line)}
 .install-bar.show{display:block}
-.install-bar button{
-  background:var(--primary);color:#fff;border:none;
-  border-radius:var(--r-full);padding:6px 14px;
-  font-size:12px;font-weight:600;margin-left:10px;
-  cursor:pointer;font-family:var(--font);transition:var(--t);
-}
+.install-bar button{background:var(--primary);color:#fff;border:none;border-radius:var(--r-full);padding:6px 14px;font-size:12px;font-weight:600;margin-left:10px;cursor:pointer;font-family:var(--font);transition:var(--t)}
 .install-bar button:hover{background:var(--primary-dark)}
 
-/* ================== FOOTER ================== */
-.footer{
-  text-align:center;padding:36px 24px 60px;
-  color:var(--text-faint);font-size:12.5px;letter-spacing:.02em;
-  line-height:1.7;
-}
-.footer .heart{
-  color:var(--rose);display:inline-block;
-  animation:heartbeat 1.8s ease-in-out infinite;
-}
+.footer{text-align:center;padding:36px 24px 60px;color:var(--text-faint);font-size:12.5px;letter-spacing:.02em;line-height:1.7}
+.footer .heart{color:var(--rose);display:inline-block;animation:heartbeat 1.8s ease-in-out infinite}
 .footer strong{color:var(--text-soft);font-weight:600}
-.footer .sign{
-  font-family:var(--font-serif);
-  font-style:italic;
-  color:var(--primary);
-  font-size:14px;
-  margin-top:4px;
-  display:block;
-}
+.footer .sign{font-family:var(--font-serif);font-style:italic;color:var(--primary);font-size:14px;margin-top:4px;display:block}
 
-/* ================== WATERMARK ROMÁNTICO ================== */
 .watermark{
-  position:fixed;
-  bottom:18px;right:18px;
-  z-index:50;
-  pointer-events:none;
-  font-family:var(--font-serif);
-  font-size:11px;
-  font-style:italic;
-  color:rgba(46,90,135,.42);
-  text-align:right;
-  line-height:1.5;
-  padding:6px 12px;
-  border-radius:var(--r-full);
-  background:rgba(255,255,255,.72);
-  backdrop-filter:blur(6px);
-  -webkit-backdrop-filter:blur(6px);
-  border:1px solid rgba(214,124,150,.18);
-  box-shadow:0 4px 14px rgba(46,90,135,.06);
-  user-select:none;
-  transition:var(--t);
+  position:fixed;bottom:18px;right:18px;z-index:50;pointer-events:none;
+  font-family:var(--font-serif);font-size:11px;font-style:italic;
+  color:rgba(46,90,135,.42);text-align:right;line-height:1.5;
+  padding:6px 12px;border-radius:var(--r-full);background:rgba(255,255,255,.72);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  border:1px solid rgba(214,124,150,.18);box-shadow:0 4px 14px rgba(46,90,135,.06);
+  user-select:none;transition:var(--t);
 }
 .watermark .names{font-weight:600;color:var(--primary)}
 .watermark .rose{color:var(--rose)}
 
-/* ================== WELCOME MODAL ================== */
-.welcome-modal{
-  max-width:480px;
-  background:linear-gradient(180deg,#FFFFFF 0%,#F8FBFE 100%);
-  position:relative;
-  overflow:hidden;
-}
-.welcome-modal::before{
-  content:'';
-  position:absolute;
-  top:-60px;left:50%;
-  transform:translateX(-50%);
-  width:180px;height:180px;
-  background:radial-gradient(circle,rgba(214,124,150,.13) 0%,transparent 70%);
-  border-radius:50%;
-  pointer-events:none;
-}
-.welcome-body{
-  padding:40px 32px 32px;
-  text-align:center;
-  position:relative;
-}
-.welcome-heart{
-  font-size:52px;
-  color:var(--rose);
-  margin-bottom:8px;
-  line-height:1;
-  animation:heartbeat 1.8s ease-in-out infinite;
-  filter:drop-shadow(0 6px 16px rgba(214,124,150,.3));
-}
-.welcome-title{
-  font-family:var(--font-serif);
-  font-size:26px;
-  font-weight:600;
-  color:var(--primary-dark);
-  letter-spacing:-.02em;
-  margin-bottom:6px;
-}
-.welcome-sub{
-  font-family:var(--font-serif);
-  font-style:italic;
-  color:var(--rose-deep);
-  font-size:14px;
-  margin-bottom:24px;
-}
-.welcome-text{
-  font-size:14.5px;
-  line-height:1.75;
-  color:var(--text-soft);
-  margin-bottom:8px;
-}
+.welcome-modal{max-width:480px;background:linear-gradient(180deg,#FFFFFF 0%,#F8FBFE 100%);position:relative;overflow:hidden}
+.welcome-modal::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:180px;height:180px;background:radial-gradient(circle,rgba(214,124,150,.13) 0%,transparent 70%);border-radius:50%;pointer-events:none}
+.welcome-body{padding:40px 32px 32px;text-align:center;position:relative}
+.welcome-heart{font-size:52px;color:var(--rose);margin-bottom:8px;line-height:1;animation:heartbeat 1.8s ease-in-out infinite;filter:drop-shadow(0 6px 16px rgba(214,124,150,.3))}
+.welcome-title{font-family:var(--font-serif);font-size:26px;font-weight:600;color:var(--primary-dark);letter-spacing:-.02em;margin-bottom:6px}
+.welcome-sub{font-family:var(--font-serif);font-style:italic;color:var(--rose-deep);font-size:14px;margin-bottom:24px}
+.welcome-text{font-size:14.5px;line-height:1.75;color:var(--text-soft);margin-bottom:8px}
 .welcome-text strong{color:var(--primary-dark);font-weight:600}
-.welcome-sign{
-  font-family:var(--font-serif);
-  font-style:italic;
-  font-size:15px;
-  color:var(--primary);
-  margin-top:24px;
-  padding-top:20px;
-  border-top:1px solid var(--divider-rose);
-  display:block;
-}
+.welcome-sign{font-family:var(--font-serif);font-style:italic;font-size:15px;color:var(--primary);margin-top:24px;padding-top:20px;border-top:1px solid var(--divider-rose);display:block}
 .welcome-sign .heart{color:var(--rose);font-style:normal}
-.welcome-btn{
-  margin-top:24px;
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:var(--r-md);
-  background:var(--primary);
-  color:#fff;
-  font-family:var(--font);
-  font-weight:600;
-  font-size:15px;
-  cursor:pointer;
-  transition:var(--t);
-  box-shadow:0 4px 16px rgba(46,90,135,.3);
-}
+.welcome-btn{margin-top:24px;width:100%;padding:14px;border:none;border-radius:var(--r-md);background:var(--primary);color:#fff;font-family:var(--font);font-weight:600;font-size:15px;cursor:pointer;transition:var(--t);box-shadow:0 4px 16px rgba(46,90,135,.3)}
 .welcome-btn:hover{background:var(--primary-dark);box-shadow:0 6px 22px rgba(46,90,135,.4)}
 .welcome-btn:active{transform:scale(.98)}
 
-/* ================== RESPONSIVE ================== */
 @media (max-width:640px){
   .app-header{padding:14px 16px 12px}
   .app-header .logo{width:34px;height:34px;font-size:18px}
@@ -776,11 +410,11 @@ body.no-scroll{
       <h2 class="welcome-title">Para María</h2>
       <div class="welcome-sub">con todo mi amor</div>
       <p class="welcome-text">
-        Hice esta pequeña app para vos, para que puedas guardar
-        y encontrar todas tus partituras de flauta en un solo lugar.
+        Hice esta pequeña app para ti, para que puedas guardar
+        y encontrar todas tus partituras en un solo lugar.
       </p>
       <p class="welcome-text" style="margin-top:14px">
-        Podés <strong>escribir tus canciones</strong> tal como las anotás en tu cuaderno,
+        Puedes escribir tus canciones tal como las anotás en tu cuaderno,
         <strong>escucharlas con sonido de flauta</strong> y
         <strong>ver el pentagrama</strong> cuando quieras.
       </p>
@@ -818,7 +452,7 @@ function loadABCJS() {
 }
 
 /* =========================================================
-   SCROLL LOCK (para que la página de atrás no scrollee)
+   SCROLL LOCK
    ========================================================= */
 let lockedScrollY = 0;
 function lockBody() {
@@ -868,17 +502,12 @@ function solfeoToAbc(solfeo, meta = {}) {
 }
 
 /* =========================================================
-   REPERTORIO COMPLETO
+   REPERTORIO — Canciones fáciles y populares para flauta
    ========================================================= */
 const SEED = [
+  /* --- Clásicos infantiles --- */
   { title:'Estrellita', composer:'Tradicional', category:'Infantil', difficulty:'Fácil',
     solfeo:'Do Do Sol Sol La La Sol / Fa Fa Mi Mi Re Re Do / Sol Sol Fa Fa Mi Mi Re / Sol Sol Fa Fa Mi Mi Re / Do Do Sol Sol La La Sol / Fa Fa Mi Mi Re Re Do' },
-
-  { title:'Himno a la Alegría', composer:'L. van Beethoven', category:'Clásica', difficulty:'Fácil',
-    solfeo:'Mi Mi Fa Sol / Sol Fa Mi Re / Do Do Re Mi / Mi Re Re / Mi Mi Fa Sol / Sol Fa Mi Re / Do Do Re Mi / Re Do Do / Re Re Mi Do / Re Mi Fa Mi Do / Re Mi Fa Mi Re Do Re Sol, / Mi Mi Fa Sol / Sol Fa Mi Re / Do Do Re Mi / Re Do Do' },
-
-  { title:'Cumpleaños Feliz', composer:'Tradicional', category:'Popular', difficulty:'Fácil',
-    solfeo:'Sol Sol La Sol Do Si / Sol Sol La Sol Re Do / Sol Sol Sol* Mi Do Si La / Fa Fa Mi Do Re Do' },
 
   { title:'Campanita del Lugar', composer:'Tradicional francesa', category:'Infantil', difficulty:'Fácil',
     solfeo:'Do Re Mi Do / Do Re Mi Do / Mi Fa Sol / Mi Fa Sol / Sol La Sol Fa Mi Do / Sol La Sol Fa Mi Do / Do Sol, Do / Do Sol, Do' },
@@ -886,24 +515,53 @@ const SEED = [
   { title:'Mary Had a Little Lamb', composer:'Tradicional', category:'Infantil', difficulty:'Fácil',
     solfeo:'Mi Re Do Re / Mi Mi Mi / Re Re Re / Mi Sol Sol / Mi Re Do Re / Mi Mi Mi Mi / Re Re Mi Re / Do' },
 
-  { title:'Jingle Bells', composer:'J. Pierpont', category:'Popular', difficulty:'Fácil',
-    solfeo:'Mi Mi Mi / Mi Mi Mi / Mi Sol Do Re Mi / Fa Fa Fa Fa Fa Mi Mi / Mi Re Re Mi Re Sol / Mi Mi Mi / Mi Mi Mi / Mi Sol Do Re Mi / Fa Fa Fa Fa Fa Mi Mi / Sol Sol Fa Re Do / Do Re Mi Re Mi Do Re Mi Re Mi Do Mi Sol, / Do Re Mi Re Mi Do Mi / La Sol Fa Re Do' },
-
-  { title:'Noche de Paz', composer:'F. Gruber', category:'Popular', difficulty:'Fácil',
-    solfeo:'Sol La Sol Mi / Sol La Sol Mi / Re* Re* Si / Do* Do* Sol / La La Do* Si La / Sol La Sol Mi / Sol La Sol Mi / Re* Re* Si / Do* Do* Sol / La La Do* Si La / Sol La Sol Mi' },
-
-  { title:'Cuando los Santos Marchan', composer:'Tradicional', category:'Popular', difficulty:'Fácil',
-    solfeo:'Do Mi Fa Sol / Do Mi Fa Sol / Do Mi Fa Sol Mi Do Mi Re / Mi Mi Re Do Do Mi Sol Sol / Fa Mi Do Mi Re Do / Do Mi Fa Sol / Do Mi Fa Sol / Do Mi Fa Sol Mi Do Mi Re / Mi Mi Re Do Do Mi Sol Sol / Fa Mi Do Mi Re Do' },
-
-  { title:'Au Clair de la Lune', composer:'Tradicional francesa', category:'Clásica', difficulty:'Fácil',
-    solfeo:'Do Do Do Re / Mi Mi Re / Do Re Mi Do / Do Si, Do / Do Do Do Re / Mi Mi Re / Do Re Mi Do / Do Si, Do / Do Do Do Re / Mi Mi Re / Do Re Mi Do / Do Si, Do' },
-
-  { title:'La Cucaracha', composer:'Tradicional mexicana', category:'Folclórica', difficulty:'Fácil',
-    solfeo:'Do Do Do Re / Mi Mi Re / Do Do Do Re / Mi Mi Re / Do Do La, Sol, / Do Re Mi Do / Do Do Do Re / Mi Mi Re / Do Do Do Re / Mi Mi Re / Do Do La, Sol, / Do Re Mi Do' },
+  { title:'Row Row Row Your Boat', composer:'Tradicional', category:'Infantil', difficulty:'Fácil',
+    solfeo:'Do Do Do Re Mi / Mi Re Mi Fa Sol / Do* Do* Do* Sol Sol Sol / Mi Mi Mi Do Do Do / Do* Sol Do* Sol Do* Sol Do* Sol / Do* Sol Mi Do Re Mi Do' },
 
   { title:'El Puente de Londres', composer:'Tradicional inglesa', category:'Infantil', difficulty:'Fácil',
     solfeo:'Sol La Sol Fa Mi Fa Sol / Re Mi Fa / Mi Fa Sol / Sol La Sol Fa Mi Fa Sol / Re Sol, Mi, Do / Sol La Sol Fa Mi Fa Sol / Re Sol, Mi, Do' },
 
+  { title:'Au Clair de la Lune', composer:'Tradicional francesa', category:'Clásica', difficulty:'Fácil',
+    solfeo:'Do Do Do Re / Mi Mi Re / Do Re Mi Do / Do Si, Do / Do Do Do Re / Mi Mi Re / Do Re Mi Do / Do Si, Do / Do Do Do Re / Mi Mi Re / Do Re Mi Do / Do Si, Do' },
+
+  /* --- Clásicos populares --- */
+  { title:'Himno a la Alegría', composer:'L. van Beethoven', category:'Clásica', difficulty:'Fácil',
+    solfeo:'Mi Mi Fa Sol / Sol Fa Mi Re / Do Do Re Mi / Mi Re Re / Mi Mi Fa Sol / Sol Fa Mi Re / Do Do Re Mi / Re Do Do / Re Re Mi Do / Re Mi Fa Mi Do / Re Mi Fa Mi Re Do Re Sol, / Mi Mi Fa Sol / Sol Fa Mi Re / Do Do Re Mi / Re Do Do' },
+
+  { title:'Cumpleaños Feliz', composer:'Tradicional', category:'Popular', difficulty:'Fácil',
+    solfeo:'Sol Sol La Sol Do Si / Sol Sol La Sol Re Do / Sol Sol Sol* Mi Do Si La / Fa Fa Mi Do Re Do' },
+
+  { title:'Sublime Gracia', composer:'Tradicional', category:'Popular', difficulty:'Fácil',
+    solfeo:'Sol, Do Mi Do Si, La, Sol, / Do Mi Sol Mi Re Do / Sol, Do Mi Do Si, La, Sol, / Do Mi Sol Mi Re Do',
+    notes:'Amazing Grace · muy popular en flauta' },
+
+  { title:'My Bonnie Lies Over the Ocean', composer:'Tradicional escocesa', category:'Popular', difficulty:'Fácil',
+    solfeo:'Do Do Do Re Mi Re Do Mi Re / Do Do Do Re Mi Re Do Sol Fa Mi / Do Do Do Re Mi Fa Sol La Sol / Sol La Sol Fa Mi Re Do Si, Do / Sol La Si Do* La Sol / Sol La Si Do* La Sol Fa Mi Re Do' },
+
+  { title:'Cuando los Santos Marchan', composer:'Tradicional', category:'Popular', difficulty:'Fácil',
+    solfeo:'Do Mi Fa Sol / Do Mi Fa Sol / Do Mi Fa Sol Mi Do Mi Re / Mi Mi Re Do Do Mi Sol Sol / Fa Mi Do Mi Re Do / Do Mi Fa Sol / Do Mi Fa Sol / Do Mi Fa Sol Mi Do Mi Re / Mi Mi Re Do Do Mi Sol Sol / Fa Mi Do Mi Re Do' },
+
+  { title:'La Cucaracha', composer:'Tradicional mexicana', category:'Folclórica', difficulty:'Fácil',
+    solfeo:'Do Do Do Re / Mi Mi Re / Do Do Do Re / Mi Mi Re / Do Do La, Sol, / Do Re Mi Do / Do Do Do Re / Mi Mi Re / Do Do Do Re / Mi Mi Re / Do Do La, Sol, / Do Re Mi Do' },
+
+  /* --- Navidad --- */
+  { title:'Noche de Paz', composer:'F. Gruber', category:'Popular', difficulty:'Fácil',
+    solfeo:'Sol La Sol Mi / Sol La Sol Mi / Re* Re* Si / Do* Do* Sol / La La Do* Si La / Sol La Sol Mi / Sol La Sol Mi / Re* Re* Si / Do* Do* Sol / La La Do* Si La / Sol La Sol Mi' },
+
+  { title:'Jingle Bells', composer:'J. Pierpont', category:'Popular', difficulty:'Fácil',
+    solfeo:'Mi Mi Mi / Mi Mi Mi / Mi Sol Do Re Mi / Fa Fa Fa Fa Fa Mi Mi / Mi Re Re Mi Re Sol / Mi Mi Mi / Mi Mi Mi / Mi Sol Do Re Mi / Fa Fa Fa Fa Fa Mi Mi / Sol Sol Fa Re Do / Do Re Mi Re Mi Do Re Mi Re Mi Do Mi Sol, / Do Re Mi Re Mi Do Mi / La Sol Fa Re Do' },
+
+  { title:'We Wish You a Merry Christmas', composer:'Tradicional inglesa', category:'Popular', difficulty:'Fácil',
+    solfeo:'Do Do Do Do Do Re Mi / Do Do Do Do Do Re Mi / Do Do Do Do Do Sol Fa Mi Re / Re Re Re Re Re Mi Fa / Mi Mi Mi Mi Mi Fa Sol / Fa Fa Fa Fa Fa Sol La / Sol Sol Sol Sol Sol La Si / Mi Mi Mi Mi Mi Fa Sol / Fa Fa Fa Fa Fa Sol La / Sol Sol Sol Sol Sol La Si / Mi Mi Mi Mi Mi Re Do / Re Do Si Do' },
+
+  { title:'Deck the Halls', composer:'Tradicional galesa', category:'Popular', difficulty:'Fácil',
+    solfeo:'Sol Fa Mi Re Do Re Mi Do / Re Mi Fa Sol La Fa Re / Sol Fa Mi Re Do Re Mi Do / Re Mi Fa Sol La Fa Re / Mi Fa Sol Mi Do Re Mi Do / Re Mi Fa Sol La Fa Re / Fa Mi Re Do Re Mi Do / Re Mi Fa Sol La Fa Re' },
+
+  { title:'Oh Christmas Tree', composer:'Tradicional alemana', category:'Popular', difficulty:'Fácil',
+    solfeo:'Mi Sol Sol Fa Mi Re Do / Re Mi Fa Mi Re Do Re / Mi Sol Sol Fa Mi Re Do / Re Mi Fa Mi Re Do Re Do',
+    notes:'O Tannenbaum' },
+
+  /* --- Del cuaderno de María --- */
   { title:'El Titanic', composer:'James Horner', category:'Bandas Sonoras', difficulty:'Fácil',
     solfeo:'Fa Sol La / Sol Fa Sol Do* / Do* La Fa Re Do / Fa Sol La / Sol Fa Sol Do* / Sol La Sol Do* / Do* Re* Re* Do* Sol',
     notes:'Transcrita del cuaderno de María ✨' },
@@ -916,10 +574,10 @@ const SEED = [
 /* =========================================================
    ESTADO
    ========================================================= */
-const KEY = 'flautaMaria_v6_sheets';
-const SEEDED = 'flautaMaria_v6_seeded';
-const FAV = 'flautaMaria_v6_favs';
-const WELCOMED = 'flautaMaria_v6_welcomed';
+const KEY = 'flautaMaria_v7_sheets';
+const SEEDED = 'flautaMaria_v7_seeded';
+const FAV = 'flautaMaria_v7_favs';
+const WELCOMED = 'flautaMaria_v7_welcomed';
 
 let sheets = [];
 let favorites = new Set();
@@ -1048,6 +706,7 @@ function render() {
    DETALLE
    ========================================================= */
 let currentAudio = null;
+let currentAudioStartedAt = 0;
 
 function showDetail(id) {
   const s = getSheet(id);
@@ -1079,8 +738,7 @@ function showDetail(id) {
     <div id="scoreSlot"></div>
   `;
 
-  const modal = document.getElementById('detailModal');
-  modal.classList.add('open');
+  document.getElementById('detailModal').classList.add('open');
   lockBody();
 
   document.getElementById('playBtn').onclick = () => togglePlay(s);
@@ -1108,140 +766,51 @@ function showDetail(id) {
 }
 
 function stopAudio() {
-  if (currentAudio) { try { currentAudio.stop(); } catch {} currentAudio = null; }
+  const synthToStop = currentAudio;
+  currentAudio = null;
+  currentAudioStartedAt = 0;
+  if (synthToStop) {
+    try { synthToStop.stop(); } catch (e) {}
+  }
   const b = document.getElementById('playBtn');
-  if (b) { b.classList.remove('playing'); b.textContent = '🔊 Escuchar'; }
+  if (b) {
+    b.classList.remove('playing');
+    b.textContent = '🔊 Escuchar';
+  }
 }
 
 async function togglePlay(s) {
   const btn = document.getElementById('playBtn');
+
+  // Si ya está sonando → detener
   if (currentAudio) { stopAudio(); return; }
+
   if (!s.abc) { alert('Esta canción no tiene notas guardadas.'); return; }
 
   try {
     const visual = ABCJS.renderAbc('*', s.abc)[0];
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const synth = new ABCJS.synth.CreateSynth();
-    await synth.init({ audioContext: ctx, visualObj: visual, options: { program: 73 } });
+
+    // ✅ El callback onEnded va DENTRO de options (así lo espera ABCJS 6)
+    await synth.init({
+      audioContext: ctx,
+      visualObj: visual,
+      options: {
+        program: 73,
+        onEnded: () => { stopAudio(); }
+      }
+    });
     await synth.prime();
-    synth.start();
+
+    // Fallback: por si la versión de ABCJS ignora options.onEnded
+    try { synth.onEnded = () => { stopAudio(); }; } catch (e) {}
+
     currentAudio = synth;
+    currentAudioStartedAt = Date.now();
+    synth.start();
+
     btn.classList.add('playing');
     btn.textContent = '⏹ Detener';
-    synth.onEnded = () => { stopAudio(); };
-  } catch (err) {
-    console.error(err);
-    alert('No se pudo reproducir: ' + err.message);
-    stopAudio();
-  }
-}
 
-/* =========================================================
-   EDITAR / AÑADIR
-   ========================================================= */
-function openAdd() {
-  document.getElementById('editTitle').textContent = 'Añadir canción';
-  document.getElementById('editId').value = '';
-  document.getElementById('sheetForm').reset();
-  document.getElementById('fCategory').value = 'Popular';
-  document.getElementById('fDifficulty').value = 'Fácil';
-  document.getElementById('editModal').classList.add('open');
-  lockBody();
-  setTimeout(() => document.getElementById('fTitle').focus(), 250);
-}
-function openEdit(id) {
-  const s = getSheet(id);
-  if (!s) return;
-  document.getElementById('editTitle').textContent = 'Editar canción';
-  document.getElementById('editId').value = id;
-  document.getElementById('fTitle').value = s.title || '';
-  document.getElementById('fComposer').value = s.composer === '—' ? '' : (s.composer || '');
-  document.getElementById('fCategory').value = s.category || 'Popular';
-  document.getElementById('fDifficulty').value = s.difficulty || 'Fácil';
-  document.getElementById('fSolfeo').value = s.solfeo || '';
-  document.getElementById('fNotes').value = s.notes || '';
-  document.getElementById('editModal').classList.add('open');
-  lockBody();
-}
-function closeModals() {
-  stopAudio();
-  document.getElementById('editModal').classList.remove('open');
-  document.getElementById('detailModal').classList.remove('open');
-  document.getElementById('welcomeModal').classList.remove('open');
-  unlockBody();
-}
-
-document.getElementById('sheetForm').addEventListener('submit', e => {
-  e.preventDefault();
-  const id = document.getElementById('editId').value;
-  const title = document.getElementById('fTitle').value.trim();
-  const composer = document.getElementById('fComposer').value.trim() || '—';
-  const category = document.getElementById('fCategory').value;
-  const difficulty = document.getElementById('fDifficulty').value;
-  const solfeo = document.getElementById('fSolfeo').value.trim();
-  const notes = document.getElementById('fNotes').value.trim();
-  if (!title || !solfeo) { alert('Título y notas en solfeo son obligatorios.'); return; }
-  const abc = solfeoToAbc(solfeo, { title, composer });
-  const data = { title, composer, category, difficulty, solfeo, notes, abc };
-  id ? updateSheet(id, data) : addSheet(data);
-  closeModals();
-});
-
-/* =========================================================
-   PWA
-   ========================================================= */
-let promptInstall = null;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  promptInstall = e;
-  document.getElementById('installBar').classList.add('show');
-});
-document.getElementById('installBtn').onclick = async () => {
-  if (promptInstall) {
-    promptInstall.prompt();
-    await promptInstall.userChoice;
-    promptInstall = null;
-    document.getElementById('installBar').classList.remove('show');
-  }
-};
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(e => console.warn('SW', e));
-  });
-}
-
-/* =========================================================
-   INIT
-   ========================================================= */
-document.addEventListener('DOMContentLoaded', () => {
-  load();
-  render();
-
-  document.getElementById('searchInput').addEventListener('input', render);
-  document.getElementById('addBtn').onclick = openAdd;
-  document.getElementById('cancelBtn').onclick = closeModals;
-  document.getElementById('cancelBtn2').onclick = closeModals;
-  document.getElementById('closeBtn').onclick = closeModals;
-  document.getElementById('editModal').onclick = e => { if (e.target === e.currentTarget) closeModals(); };
-  document.getElementById('detailModal').onclick = e => { if (e.target === e.currentTarget) closeModals(); };
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModals(); });
-
-  // Modal de bienvenida (solo la primera vez)
-  if (!localStorage.getItem(WELCOMED)) {
-    setTimeout(() => {
-      document.getElementById('welcomeModal').classList.add('open');
-      lockBody();
-    }, 400);
-  }
-  document.getElementById('welcomeBtn').onclick = () => {
-    localStorage.setItem(WELCOMED, '1');
-    closeModals();
-  };
-
-  loadABCJS().then(() => console.log('✅ Listo')).catch(() => {
-    alert('⚠️ No se pudo cargar la librería musical. Conéctate a internet una vez y recarga.');
-  });
-});
-</script>
-</body>
-</html>
+    // Fallback
