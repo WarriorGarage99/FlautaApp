@@ -10,163 +10,610 @@
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" type="image/svg+xml" href="./icon.svg">
 <link rel="apple-touch-icon" href="./icon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
-  --primary:#7C4D6B;--primary-light:#A77A96;--primary-dark:#4F3343;
-  --gradient:linear-gradient(135deg,#7C4D6B,#A77A96);
-  --accent:#E8D0DF;--bg:#F7F2F5;--surface:#FFF;
-  --text:#2C1E26;--text-light:#5A4A54;
-  --shadow-sm:0 2px 8px rgba(0,0,0,.04);
-  --shadow-md:0 8px 30px rgba(0,0,0,.08);
-  --shadow-lg:0 20px 60px rgba(0,0,0,.12);
-  --radius:16px;--t:.25s ease;
-  --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --primary:#7C4D6B;
+  --primary-soft:#A77A96;
+  --primary-dark:#4F3343;
+  --gradient:linear-gradient(135deg,#7C4D6B 0%,#A77A96 100%);
+  --accent:#F2E4EC;
+  --accent-line:#E8D0DF;
+  --bg:#FAF7F9;
+  --surface:#FFFFFF;
+  --text:#241A21;
+  --text-soft:#6B5B65;
+  --text-faint:#9A8A93;
+  --divider:rgba(124,77,107,.08);
+  --shadow-xs:0 1px 2px rgba(80,50,70,.04);
+  --shadow-sm:0 2px 6px rgba(80,50,70,.05);
+  --shadow-md:0 6px 20px rgba(80,50,70,.08);
+  --shadow-lg:0 20px 50px rgba(80,50,70,.14);
+  --r-sm:10px;
+  --r-md:14px;
+  --r-lg:20px;
+  --r-full:999px;
+  --t:.2s cubic-bezier(.4,0,.2,1);
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-serif:'Fraunces',Georgia,serif;
 }
-body{font-family:var(--font);background:var(--bg);color:var(--text);padding-bottom:60px;min-height:100vh;-webkit-font-smoothing:antialiased}
-header{
-  background:var(--surface);padding:16px 22px 14px;box-shadow:var(--shadow-sm);
-  position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(124,77,107,.06);
+html,body{height:100%}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  font-size:15px;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding-bottom:40px;
+  min-height:100vh;
 }
-header .row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
-header h1{font-size:21px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.5px}
-header .sub{font-size:12px;color:var(--text-light);opacity:.7;margin-top:2px}
-.badge{font-size:11px;background:var(--accent);color:var(--primary-dark);padding:4px 14px;border-radius:40px;font-weight:600;white-space:nowrap}
-.search{padding:12px 22px;background:var(--surface);border-bottom:1px solid rgba(124,77,107,.06);position:sticky;top:64px;z-index:90;display:flex;gap:10px;flex-wrap:wrap}
-.search .box{flex:1;min-width:180px;position:relative}
-.search .box input{
-  width:100%;padding:11px 16px 11px 42px;border:1.5px solid #E4D8DF;border-radius:40px;
-  font-size:15px;font-family:var(--font);background:var(--bg);color:var(--text);outline:none;transition:var(--t);
+
+/* ================== HEADER ================== */
+.app-header{
+  background:var(--surface);
+  border-bottom:1px solid var(--divider);
+  padding:18px 24px 16px;
+  position:sticky;top:0;z-index:100;
+  backdrop-filter:saturate(180%) blur(12px);
+  background:rgba(255,255,255,.92);
 }
-.search .box input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(124,77,107,.1);background:#fff}
-.search .box .icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.5}
-.btn-add{
-  background:var(--primary);color:#fff;border:none;border-radius:40px;padding:10px 22px;
-  font-weight:600;font-size:14px;cursor:pointer;font-family:var(--font);white-space:nowrap;
-  box-shadow:0 4px 14px rgba(124,77,107,.25);transition:var(--t);
+.app-header .row{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;max-width:1100px;margin:0 auto;
 }
-.btn-add:hover{transform:translateY(-1px)}
-.btn-add:active{transform:scale(.96)}
-.list{padding:18px 22px;display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.app-header .brand{display:flex;align-items:center;gap:12px;min-width:0}
+.app-header .logo{
+  width:38px;height:38px;border-radius:11px;
+  background:var(--gradient);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;flex-shrink:0;
+  box-shadow:0 4px 12px rgba(124,77,107,.28);
+}
+.app-header h1{
+  font-family:var(--font-serif);
+  font-size:21px;font-weight:600;
+  color:var(--text);
+  letter-spacing:-.02em;
+  line-height:1.15;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.app-header .subtitle{
+  font-size:12px;color:var(--text-faint);
+  font-weight:400;letter-spacing:.01em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.app-header .badge{
+  font-size:11px;font-weight:600;
+  color:var(--primary);background:var(--accent);
+  padding:6px 12px;border-radius:var(--r-full);
+  white-space:nowrap;letter-spacing:.02em;
+  display:flex;align-items:center;gap:5px;
+}
+.app-header .badge::before{content:'♥';color:#D43F5E;font-size:12px;line-height:1}
+
+/* ================== TOOLBAR ================== */
+.toolbar{
+  background:var(--surface);
+  border-bottom:1px solid var(--divider);
+  padding:14px 24px;
+  position:sticky;top:73px;z-index:90;
+}
+.toolbar-inner{
+  max-width:1100px;margin:0 auto;
+  display:flex;gap:10px;align-items:center;
+}
+.search-field{
+  flex:1;position:relative;min-width:0;
+}
+.search-field input{
+  width:100%;
+  padding:11px 16px 11px 42px;
+  font-family:var(--font);
+  font-size:14.5px;
+  background:#F5EEF2;
+  border:1px solid transparent;
+  border-radius:var(--r-md);
+  color:var(--text);
+  outline:none;
+  transition:var(--t);
+}
+.search-field input::placeholder{color:var(--text-faint)}
+.search-field input:focus{
+  background:#fff;
+  border-color:var(--primary-soft);
+  box-shadow:0 0 0 4px rgba(124,77,107,.1);
+}
+.search-field .icon{
+  position:absolute;left:15px;top:50%;transform:translateY(-50%);
+  font-size:15px;opacity:.45;pointer-events:none;line-height:1;
+}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--primary);color:#fff;
+  border:none;border-radius:var(--r-md);
+  padding:11px 18px;
+  font-family:var(--font);font-size:14px;font-weight:600;
+  cursor:pointer;white-space:nowrap;
+  transition:var(--t);
+  box-shadow:0 3px 10px rgba(124,77,107,.22);
+}
+.btn-primary:hover{background:var(--primary-dark);box-shadow:0 5px 16px rgba(124,77,107,.32)}
+.btn-primary:active{transform:scale(.97)}
+.btn-primary .plus{font-size:16px;line-height:1;font-weight:500}
+
+/* ================== GRID ================== */
+.container{
+  max-width:1100px;margin:0 auto;
+  padding:24px;
+}
+.section-label{
+  font-size:11px;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text-faint);
+  margin-bottom:14px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:14px;
+}
 .card{
-  background:var(--surface);border-radius:var(--radius);padding:18px 22px 14px;
-  box-shadow:var(--shadow-sm);transition:var(--t);border:1px solid rgba(124,77,107,.04);
-  display:flex;flex-direction:column;cursor:pointer;
+  background:var(--surface);
+  border:1px solid var(--divider);
+  border-radius:var(--r-md);
+  padding:18px 20px 14px;
+  cursor:pointer;
+  transition:var(--t);
+  display:flex;flex-direction:column;
+  position:relative;
+  overflow:hidden;
 }
-.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:rgba(124,77,107,.08)}
-.card .title{font-size:17px;font-weight:600;margin-bottom:2px;line-height:1.3}
-.card .composer{font-size:13px;color:var(--text-light);margin-bottom:10px}
-.card .preview{
-  font-family:'Courier New',monospace;font-size:12.5px;color:var(--primary-dark);
-  background:var(--accent);padding:8px 12px;border-radius:10px;margin-bottom:10px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.5;
+.card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--gradient);
+  opacity:0;
+  transition:var(--t);
 }
-.card .meta{display:flex;gap:6px;flex-wrap:wrap;font-size:11px}
-.card .meta .tag{padding:3px 12px;border-radius:30px;font-weight:500}
-.tag.cat{background:#EDE4EA;color:#4F3343}
-.tag.diff{background:#DDE8F0;color:#1F4A7A}
-.card .actions{
-  margin-top:12px;display:flex;gap:4px;align-items:center;justify-content:flex-end;
-  border-top:1px solid rgba(124,77,107,.06);padding-top:10px;
+.card:hover{
+  border-color:var(--accent-line);
+  box-shadow:var(--shadow-md);
+  transform:translateY(-2px);
 }
-.card .actions button{
-  background:none;border:none;font-size:15px;cursor:pointer;padding:6px 10px;
-  border-radius:30px;color:var(--text-light);opacity:.55;transition:var(--t);font-family:var(--font);
+.card:hover::before{opacity:1}
+
+.card-head{
+  display:flex;justify-content:space-between;
+  align-items:flex-start;gap:10px;
+  margin-bottom:6px;
 }
-.card .actions button:hover{opacity:1;background:rgba(124,77,107,.06)}
-.card .actions .fav.active{color:#D43F5E;opacity:1}
-.card .actions .view{
-  font-size:13px;font-weight:600;color:var(--primary);opacity:1;
-  background:rgba(124,77,107,.08);padding:6px 16px;border-radius:30px;
+.card-title{
+  font-family:var(--font-serif);
+  font-size:17px;font-weight:600;
+  color:var(--text);
+  line-height:1.25;
+  letter-spacing:-.01em;
+  flex:1;min-width:0;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  word-break:break-word;
 }
-.empty{text-align:center;padding:60px 20px;color:var(--text-light);grid-column:1/-1}
-.empty .i{font-size:48px;margin-bottom:12px;opacity:.4}
+.card-fav{
+  background:none;border:none;cursor:pointer;
+  font-size:16px;padding:2px 4px;
+  border-radius:var(--r-sm);
+  transition:var(--t);
+  opacity:.35;flex-shrink:0;line-height:1;
+}
+.card-fav:hover{opacity:1;background:var(--accent)}
+.card-fav.active{opacity:1}
+
+.card-composer{
+  font-size:13px;color:var(--text-soft);
+  font-weight:400;margin-bottom:14px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+.card-preview{
+  font-size:13px;
+  color:var(--text-soft);
+  line-height:1.5;
+  margin-bottom:14px;
+  font-style:italic;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  word-break:break-word;
+}
+.card-preview::before{
+  content:'♪ ';
+  color:var(--primary-soft);
+  font-style:normal;
+  font-weight:600;
+  margin-right:2px;
+}
+
+.card-footer{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:8px;margin-top:auto;
+  padding-top:12px;
+  border-top:1px solid var(--divider);
+}
+.tags{display:flex;gap:6px;flex-wrap:wrap;min-width:0}
+.tag{
+  font-size:10.5px;font-weight:600;
+  padding:3px 10px;
+  border-radius:var(--r-full);
+  letter-spacing:.02em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.tag.cat{color:var(--primary-dark);background:var(--accent)}
+.tag.diff{color:#2F5A82;background:#E2ECF5}
+
+.card-actions{
+  display:flex;gap:2px;align-items:center;flex-shrink:0;
+}
+.icon-btn{
+  background:none;border:none;cursor:pointer;
+  font-size:14px;color:var(--text-faint);
+  padding:6px;border-radius:var(--r-sm);
+  transition:var(--t);line-height:1;
+}
+.icon-btn:hover{background:var(--accent);color:var(--primary)}
+.icon-btn.danger:hover{background:#FBE6EA;color:#C43A56}
+
+/* ================== EMPTY ================== */
+.empty{
+  grid-column:1/-1;
+  text-align:center;
+  padding:80px 20px;
+  color:var(--text-faint);
+}
+.empty .ico{
+  font-size:44px;margin-bottom:14px;
+  opacity:.35;
+  filter:grayscale(.3);
+}
+.empty h3{
+  font-family:var(--font-serif);
+  font-weight:500;font-size:18px;
+  color:var(--text-soft);
+  margin-bottom:6px;
+  letter-spacing:-.01em;
+}
+.empty p{font-size:14px;color:var(--text-faint)}
+
+/* ================== MODALES ================== */
 .modal-bg{
-  position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(6px);
-  z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;
+  position:fixed;inset:0;
+  background:rgba(36,26,33,.45);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  z-index:1000;
+  display:none;
+  align-items:center;justify-content:center;
+  padding:20px;
+  animation:fadeIn .2s ease;
 }
 .modal-bg.open{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideUp{
+  from{opacity:0;transform:translateY(16px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
 .modal{
-  background:var(--surface);border-radius:24px;max-width:600px;width:100%;
-  padding:26px 26px 22px;box-shadow:var(--shadow-lg);animation:pop .3s ease;
-  max-height:92vh;overflow-y:auto;
+  background:var(--surface);
+  border-radius:var(--r-lg);
+  width:100%;max-width:560px;
+  max-height:calc(100vh - 40px);
+  overflow-y:auto;
+  box-shadow:var(--shadow-lg);
+  animation:slideUp .28s cubic-bezier(.16,1,.3,1);
+  position:relative;
 }
-@keyframes pop{from{opacity:0;transform:scale(.95) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.modal h2{font-size:21px;font-weight:700;margin-bottom:18px;letter-spacing:-.3px}
-.modal label{font-size:13px;font-weight:500;color:var(--text-light);display:block;margin-top:14px;margin-bottom:4px}
-.modal input,.modal select,.modal textarea{
-  width:100%;padding:11px 14px;border:1.5px solid #E4D8DF;border-radius:12px;
-  font-family:var(--font);font-size:15px;background:var(--bg);color:var(--text);outline:none;transition:var(--t);
+.modal-header{
+  padding:22px 26px 0;
+  display:flex;justify-content:space-between;
+  align-items:flex-start;gap:12px;
 }
-.modal input:focus,.modal select:focus,.modal textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(124,77,107,.08)}
-.modal textarea{min-height:120px;resize:vertical}
-.modal textarea.solfeo{font-family:'Courier New',monospace;font-size:15px;line-height:1.7;letter-spacing:.5px}
-.modal .hint{font-size:11.5px;color:var(--text-light);margin-top:6px;line-height:1.5;background:#F0E8ED;padding:8px 12px;border-radius:10px}
-.modal .hint code{background:#fff;padding:1px 6px;border-radius:6px;color:var(--primary-dark);font-weight:600}
-.modal .form-actions{display:flex;gap:10px;margin-top:22px;justify-content:flex-end}
-.modal .form-actions button{padding:11px 26px;border-radius:40px;font-weight:600;font-size:14px;border:none;cursor:pointer;font-family:var(--font);transition:var(--t)}
-.btn-cancel{background:#F0E8ED;color:var(--text-light)}
-.btn-submit{background:var(--primary);color:#fff;box-shadow:0 4px 16px rgba(124,77,107,.25)}
-.row-detail{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(124,77,107,.06);font-size:14px}
-.row-detail .lbl{color:var(--text-light);font-weight:500}
-.row-detail .val{font-weight:500}
-.solfeo-block{
-  background:linear-gradient(135deg,#FBF5F9,#F2E4EC);border:1px solid #E8D0DF;
-  border-radius:16px;padding:18px 22px;margin-top:16px;
+.modal-title{
+  font-family:var(--font-serif);
+  font-size:20px;font-weight:600;
+  color:var(--text);
+  letter-spacing:-.015em;
+  line-height:1.25;
+  flex:1;min-width:0;
 }
-.solfeo-block .lbl{
-  font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--primary);
-  font-weight:700;margin-bottom:10px;
+.modal-close{
+  background:none;border:none;cursor:pointer;
+  width:32px;height:32px;
+  border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-faint);font-size:20px;line-height:1;
+  transition:var(--t);flex-shrink:0;
+  margin-top:-2px;
 }
-.solfeo-block .txt{
-  font-family:'Courier New',monospace;font-size:16px;line-height:1.9;
-  color:var(--primary-dark);white-space:pre-wrap;letter-spacing:.4px;font-weight:600;
+.modal-close:hover{background:var(--accent);color:var(--primary-dark)}
+
+.modal-body{padding:20px 26px 26px}
+.modal-footer{
+  padding:0 26px 22px;
+  display:flex;gap:10px;justify-content:flex-end;
 }
-.solfeo-block .txt .bar{color:var(--primary-light);font-weight:400;opacity:.7}
-.controls{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;align-items:center;justify-content:center}
-.controls button{
-  background:var(--surface);border:1.5px solid #E4D8DF;border-radius:30px;
-  padding:9px 18px;font-size:14px;font-weight:600;cursor:pointer;
-  font-family:var(--font);color:var(--text);transition:var(--t);
+
+/* ================== FORM ================== */
+.field{margin-bottom:16px}
+.field:last-child{margin-bottom:0}
+.field-label{
+  display:block;
+  font-size:12.5px;font-weight:600;
+  color:var(--text-soft);
+  margin-bottom:6px;
+  letter-spacing:.01em;
 }
-.controls button:hover{background:var(--accent);border-color:var(--primary)}
-.controls .play{background:var(--primary);color:#fff;border:none;padding:9px 22px}
-.controls .play:hover{background:var(--primary-dark)}
-.controls .play.playing{background:#D43F5E}
-.controls .toggle.active{background:var(--primary);color:#fff;border-color:var(--primary)}
-.score-wrap{
-  margin-top:12px;background:#fff;border-radius:14px;border:1px solid #ECDFE6;
-  padding:14px;overflow-x:auto;display:none;
+.field-label .req{color:#D43F5E;margin-left:2px}
+.field-label .opt{color:var(--text-faint);font-weight:400;font-size:11.5px}
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  padding:11px 14px;
+  font-family:var(--font);
+  font-size:15px;
+  background:#F7F1F4;
+  border:1.5px solid transparent;
+  border-radius:var(--r-sm);
+  color:var(--text);
+  outline:none;
+  transition:var(--t);
+  -webkit-appearance:none;
+  appearance:none;
 }
-.score-wrap.show{display:block}
-.score-wrap svg{max-width:100%;height:auto}
-.close-btn{
-  margin-top:20px;width:100%;padding:14px;border:none;border-radius:40px;
-  background:var(--primary);color:#fff;font-weight:600;font-size:15px;cursor:pointer;transition:var(--t);
+.field textarea{resize:vertical;min-height:110px;line-height:1.6}
+.field textarea.mono{font-family:'Courier New',monospace;font-size:14px;letter-spacing:.02em;line-height:1.75}
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+  background:#fff;
+  border-color:var(--primary-soft);
+  box-shadow:0 0 0 4px rgba(124,77,107,.1);
 }
-.close-btn:hover{background:var(--primary-dark)}
-.footer{text-align:center;padding:28px 20px 16px;color:var(--text-light);font-size:12px;opacity:.6;border-top:1px solid rgba(124,77,107,.06);margin-top:20px}
+.field select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B5B65' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  padding-right:36px;
+}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hint{
+  font-size:12px;
+  color:var(--text-soft);
+  background:var(--accent);
+  padding:10px 12px;
+  border-radius:var(--r-sm);
+  margin-top:8px;
+  line-height:1.6;
+}
+.hint code{
+  background:#fff;
+  padding:1px 6px;
+  border-radius:5px;
+  font-family:'Courier New',monospace;
+  color:var(--primary-dark);
+  font-weight:600;
+  font-size:12px;
+}
+.hint br + br{display:none}
+.btn-ghost{
+  background:#F0E8ED;color:var(--text-soft);
+  border:none;border-radius:var(--r-sm);
+  padding:12px 22px;
+  font-family:var(--font);font-weight:600;font-size:14px;
+  cursor:pointer;transition:var(--t);
+}
+.btn-ghost:hover{background:#E5D9E0;color:var(--text)}
+.btn-solid{
+  background:var(--primary);color:#fff;
+  border:none;border-radius:var(--r-sm);
+  padding:12px 24px;
+  font-family:var(--font);font-weight:600;font-size:14px;
+  cursor:pointer;transition:var(--t);
+  box-shadow:0 3px 10px rgba(124,77,107,.22);
+}
+.btn-solid:hover{background:var(--primary-dark);box-shadow:0 5px 16px rgba(124,77,107,.32)}
+
+/* ================== DETALLE ================== */
+.detail-meta{
+  display:flex;flex-wrap:wrap;gap:8px;
+  margin-bottom:18px;
+}
+.detail-meta .tag{font-size:11px;padding:4px 12px}
+
+.sheet-block{
+  margin-top:4px;
+}
+.sheet-block-label{
+  display:flex;align-items:center;gap:8px;
+  font-size:11px;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--primary);
+  margin-bottom:10px;
+}
+.sheet-block-label::after{
+  content:'';
+  flex:1;height:1px;
+  background:var(--accent-line);
+}
+.sheet-notes{
+  background:linear-gradient(180deg,#FDFBFC 0%,#FAF3F7 100%);
+  border:1px solid var(--accent-line);
+  border-radius:var(--r-md);
+  padding:20px 22px;
+  font-family:'Courier New',monospace;
+  font-size:15px;
+  line-height:2;
+  color:var(--primary-dark);
+  letter-spacing:.03em;
+  font-weight:600;
+  white-space:pre-wrap;
+  word-break:break-word;
+  position:relative;
+}
+.sheet-notes::before{
+  content:'♪';
+  position:absolute;
+  top:14px;right:18px;
+  font-size:40px;
+  color:rgba(124,77,107,.06);
+  font-family:var(--font-serif);
+  line-height:1;
+  pointer-events:none;
+}
+.sheet-notes .bar{
+  color:var(--primary-soft);
+  font-weight:400;
+  opacity:.7;
+  padding:0 4px;
+}
+
+.detail-notes{
+  margin-top:16px;
+  font-size:13.5px;
+  line-height:1.65;
+  color:var(--text-soft);
+  background:#F5EEF2;
+  padding:14px 16px;
+  border-radius:var(--r-sm);
+  white-space:pre-wrap;
+}
+.detail-notes strong{
+  display:block;
+  font-size:11px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--primary);
+  margin-bottom:6px;
+}
+
+.actions-row{
+  display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;
+}
+.btn-action{
+  flex:1;
+  min-width:150px;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  background:var(--surface);
+  color:var(--text);
+  border:1.5px solid var(--accent-line);
+  border-radius:var(--r-md);
+  padding:12px 18px;
+  font-family:var(--font);font-weight:600;font-size:14px;
+  cursor:pointer;transition:var(--t);
+}
+.btn-action:hover{border-color:var(--primary-soft);background:var(--accent)}
+.btn-action.primary{
+  background:var(--primary);color:#fff;border-color:var(--primary);
+  box-shadow:0 3px 12px rgba(124,77,107,.25);
+}
+.btn-action.primary:hover{background:var(--primary-dark);border-color:var(--primary-dark)}
+.btn-action.playing{background:#D43F5E;border-color:#D43F5E;color:#fff}
+.btn-action.playing:hover{background:#B8314D;border-color:#B8314D}
+
+.score-container{
+  margin-top:16px;
+  background:#fff;
+  border:1px solid var(--accent-line);
+  border-radius:var(--r-md);
+  padding:18px 14px;
+  overflow-x:auto;
+  animation:slideUp .25s ease;
+}
+.score-container svg{max-width:100%;height:auto;display:block;margin:0 auto}
+
+/* ================== INSTALL BAR ================== */
+.install-bar{
+  display:none;
+  background:var(--accent);
+  color:var(--primary-dark);
+  padding:11px 20px;
+  font-size:13px;font-weight:500;
+  text-align:center;
+  border-bottom:1px solid var(--accent-line);
+}
+.install-bar.show{display:block}
+.install-bar button{
+  background:var(--primary);color:#fff;
+  border:none;border-radius:var(--r-full);
+  padding:6px 14px;
+  font-size:12px;font-weight:600;
+  margin-left:10px;cursor:pointer;
+  font-family:var(--font);transition:var(--t);
+}
+.install-bar button:hover{background:var(--primary-dark)}
+
+/* ================== FOOTER ================== */
+.footer{
+  text-align:center;
+  padding:32px 24px 20px;
+  color:var(--text-faint);
+  font-size:12px;
+  letter-spacing:.02em;
+}
+.footer strong{color:var(--text-soft);font-weight:600}
 .footer .heart{color:#D43F5E}
-.install-bar{display:none;background:var(--accent);color:var(--primary-dark);padding:10px 18px;font-size:13px;text-align:center;font-weight:500;border-bottom:1px solid rgba(124,77,107,.1)}
-.install-bar button{background:var(--primary);color:#fff;border:none;border-radius:30px;padding:6px 16px;font-size:12px;font-weight:600;margin-left:8px;cursor:pointer;font-family:var(--font)}
+
+/* ================== RESPONSIVE ================== */
 @media (max-width:640px){
-  header{padding:14px 16px 12px}header h1{font-size:19px}
-  .search{padding:12px 16px;top:58px}
-  .list{padding:12px 16px;grid-template-columns:1fr;gap:12px}
-  .modal{padding:22px 18px;border-radius:20px}
+  .app-header{padding:14px 16px 12px}
+  .app-header .logo{width:34px;height:34px;font-size:18px}
+  .app-header h1{font-size:17px}
+  .app-header .subtitle{font-size:11px}
+  .app-header .badge{display:none}
+  .toolbar{padding:10px 16px;top:60px}
+  .toolbar-inner{flex-direction:column;align-items:stretch}
+  .btn-primary{justify-content:center}
+  .container{padding:16px}
+  .grid{grid-template-columns:1fr;gap:10px}
+  .card{padding:16px 18px 12px}
+  .card-title{font-size:16px}
+  .modal{border-radius:var(--r-md);max-height:95vh}
+  .modal-header{padding:18px 20px 0}
+  .modal-title{font-size:18px}
+  .modal-body{padding:16px 20px 20px}
+  .modal-footer{padding:0 20px 18px}
+  .field-row{grid-template-columns:1fr;gap:0}
+  .sheet-notes{padding:16px 18px;font-size:14px;line-height:1.9}
+  .actions-row{flex-direction:column}
+  .btn-action{width:100%}
 }
+
+/* Scrollbar refinada */
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(124,77,107,.18);border-radius:8px}
+::-webkit-scrollbar-thumb:hover{background:rgba(124,77,107,.3)}
 </style>
 </head>
 <body>
 
-<header>
+<!-- ===== HEADER ===== -->
+<header class="app-header">
   <div class="row">
-    <div>
-      <h1>🎵 Partituras de María</h1>
-      <div class="sub">Repertorio personal · funciona sin internet</div>
+    <div class="brand">
+      <div class="logo">🎵</div>
+      <div style="min-width:0">
+        <h1>Partituras de María</h1>
+        <div class="subtitle">Repertorio personal · funciona sin internet</div>
+      </div>
     </div>
-    <div class="badge">❤️ PARA MI ESPOSA</div>
+    <div class="badge">Para mi esposa</div>
   </div>
 </header>
 
@@ -174,75 +621,108 @@ header .sub{font-size:12px;color:var(--text-light);opacity:.7;margin-top:2px}
   ¿Instalar la app en tu teléfono?<button id="installBtn">Instalar</button>
 </div>
 
-<div class="search">
-  <div class="box">
-    <span class="icon">🔍</span>
-    <input type="text" id="searchInput" placeholder="Buscar por título o compositor...">
+<!-- ===== TOOLBAR ===== -->
+<div class="toolbar">
+  <div class="toolbar-inner">
+    <div class="search-field">
+      <span class="icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Buscar por título o compositor...">
+    </div>
+    <button class="btn-primary" id="addBtn"><span class="plus">＋</span> Añadir canción</button>
   </div>
-  <button class="btn-add" id="addBtn">➕ Añadir canción</button>
 </div>
 
-<div class="list" id="list"></div>
+<!-- ===== LISTA ===== -->
+<div class="container">
+  <div class="section-label" id="sectionLabel">Tu repertorio</div>
+  <div class="grid" id="list"></div>
+</div>
 
 <div class="footer">
-  <span class="heart">❤️</span> Hecho con amor por <strong>Stephan</strong> para <strong>María</strong>
+  Hecho con <span class="heart">♥</span> por <strong>Stephan</strong> para <strong>María</strong>
 </div>
 
-<!-- Modal Añadir/Editar -->
+<!-- ===== MODAL EDITAR ===== -->
 <div class="modal-bg" id="editModal">
   <div class="modal">
-    <h2 id="editTitle">📝 Añadir canción</h2>
-    <form id="sheetForm">
-      <input type="hidden" id="editId">
-      <label>Título *</label>
-      <input type="text" id="fTitle" required placeholder="Ej: El Titanic">
-      <label>Compositor</label>
-      <input type="text" id="fComposer" placeholder="Ej: James Horner (opcional)">
-      <label>Categoría</label>
-      <select id="fCategory">
-        <option value="Popular">Popular</option>
-        <option value="Infantil">Infantil</option>
-        <option value="Clásica">Clásica</option>
-        <option value="Folclórica">Folclórica</option>
-        <option value="Bandas Sonoras">Bandas Sonoras</option>
-        <option value="Anime">Anime</option>
-        <option value="Otro">Otro</option>
-      </select>
-      <label>Dificultad</label>
-      <select id="fDifficulty">
-        <option value="Fácil">Fácil</option>
-        <option value="Media">Media</option>
-        <option value="Avanzada">Avanzada</option>
-      </select>
-      <label>Notas en solfeo *</label>
-      <textarea id="fSolfeo" class="solfeo" required placeholder="Do Re Mi Fa / Sol La Si Do*"></textarea>
-      <div class="hint">
-        Escribe las notas como en tu cuaderno. Ejemplos:
-        <br>• <code>Do Re Mi Fa</code> — nota por nota
-        <br>• <code>/</code> o <code>|</code> — compás (barra)
-        <br>• <code>Do*</code> — Do agudo · <code>Si,</code> — Si grave
-      </div>
-      <label>Notas / observaciones</label>
-      <textarea id="fNotes" placeholder="Observaciones, enlaces a videos..."></textarea>
-      <div class="form-actions">
-        <button type="button" class="btn-cancel" id="cancelBtn">Cancelar</button>
-        <button type="submit" class="btn-submit">Guardar</button>
-      </div>
-    </form>
+    <div class="modal-header">
+      <h2 class="modal-title" id="editTitle">Añadir canción</h2>
+      <button class="modal-close" id="cancelBtn" aria-label="Cerrar">×</button>
+    </div>
+    <div class="modal-body">
+      <form id="sheetForm">
+        <input type="hidden" id="editId">
+
+        <div class="field">
+          <label class="field-label" for="fTitle">Título <span class="req">*</span></label>
+          <input type="text" id="fTitle" required placeholder="Ej: El Titanic">
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="fComposer">Compositor <span class="opt">(opcional)</span></label>
+          <input type="text" id="fComposer" placeholder="Ej: James Horner">
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field-label" for="fCategory">Categoría</label>
+            <select id="fCategory">
+              <option value="Popular">Popular</option>
+              <option value="Infantil">Infantil</option>
+              <option value="Clásica">Clásica</option>
+              <option value="Folclórica">Folclórica</option>
+              <option value="Bandas Sonoras">Bandas Sonoras</option>
+              <option value="Anime">Anime</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label" for="fDifficulty">Dificultad</label>
+            <select id="fDifficulty">
+              <option value="Fácil">Fácil</option>
+              <option value="Media">Media</option>
+              <option value="Avanzada">Avanzada</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="fSolfeo">Notas en solfeo <span class="req">*</span></label>
+          <textarea id="fSolfeo" class="mono" required placeholder="Do Re Mi Fa / Sol La Si Do*"></textarea>
+          <div class="hint">
+            Escribe como en tu cuaderno.
+            Usa <code>/</code> o <code>|</code> para separar compases · <code>Do*</code> para agudo · <code>Do,</code> para grave.
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="fNotes">Notas / observaciones <span class="opt">(opcional)</span></label>
+          <textarea id="fNotes" placeholder="Enlaces a videos, tempo, anotaciones..."></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn-ghost" id="cancelBtn2">Cancelar</button>
+      <button type="submit" class="btn-solid" form="sheetForm">Guardar</button>
+    </div>
   </div>
 </div>
 
-<!-- Modal Detalle -->
+<!-- ===== MODAL DETALLE ===== -->
 <div class="modal-bg" id="detailModal">
   <div class="modal">
-    <h2 id="detailTitle">📄 Detalle</h2>
-    <div id="detailBody"></div>
-    <button class="close-btn" id="closeBtn">Cerrar</button>
+    <div class="modal-header">
+      <h2 class="modal-title" id="detailTitle">Canción</h2>
+      <button class="modal-close" id="closeBtn" aria-label="Cerrar">×</button>
+    </div>
+    <div class="modal-body" id="detailBody"></div>
   </div>
 </div>
 
 <script>
-/* ============ CARGAR ABCJS ============ */
+/* =========================================================
+   CARGA DE ABCJS
+   ========================================================= */
 const CDNS = [
   'https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.2.3/abcjs-basic-min.js',
   'https://unpkg.com/abcjs@6.2.3/dist/abcjs-basic-min.js',
@@ -263,40 +743,41 @@ function loadABCJS() {
   });
 }
 
-/* ============ CONVERSOR SOLFEO → ABC ============ */
-const SOLFEO_MAP = { do:'C', re:'D', mi:'E', fa:'F', sol:'G', la:'A', si:'B' };
+/* =========================================================
+   SOLFEO → ABC
+   ========================================================= */
+const MAP = { do:'C', re:'D', mi:'E', fa:'F', sol:'G', la:'A', si:'B' };
 
 function solfeoToAbc(solfeo, meta = {}) {
-  const title = (meta.title || 'Sin título').replace(/[:|]/g, '');
-  const composer = (meta.composer || 'Anónimo').replace(/[:|]/g, '');
+  const title = (meta.title || 'Sin título').replace(/[:\n|]/g, ' ');
+  const composer = (meta.composer || 'Anónimo').replace(/[:\n|]/g, ' ');
   const key = meta.key || 'C';
 
-  // Normalizar
-  const txt = solfeo
-    .replace(/[|/]/g, ' | ')       // barras
-    .replace(/[-–—]+/g, ' ')       // guiones son separadores
-    .replace(/[;\n\r]+/g, ' / ');  // saltos de línea = barras también
+  const clean = solfeo
+    .replace(/[|/]+/g, ' | ')
+    .replace(/[-–—]+/g, ' ')
+    .replace(/[\n\r]+/g, ' / ');
 
-  const tokens = txt.toLowerCase().split(/\s+/).filter(Boolean);
+  const tokens = clean.toLowerCase().split(/\s+/).filter(Boolean);
   const notes = [];
 
   for (const t of tokens) {
     if (t === '|' || t === '/') { notes.push('|'); continue; }
 
-    const isHigh = t.includes('*') || t.includes("'");
-    const isLow = t.includes(',') || t.includes('.');
-    const clean = t.replace(/[*',.]/g, '');
+    const hi = t.includes('*') || t.includes("'");
+    const lo = t.includes(',') || t.endsWith('.');
+    const base = t.replace(/[*',.]/g, '');
 
-    let letter = SOLFEO_MAP[clean];
+    let letter = MAP[base];
     if (!letter) {
-      for (const [k, v] of Object.entries(SOLFEO_MAP)) {
-        if (clean.startsWith(k)) { letter = v; break; }
+      for (const [k, v] of Object.entries(MAP)) {
+        if (base.startsWith(k)) { letter = v; break; }
       }
     }
     if (!letter) continue;
 
-    if (isHigh) letter = letter.toLowerCase(); // en ABC: minúscula = octava alta
-    else if (isLow) letter = letter + ',';
+    if (hi) letter = letter.toLowerCase();
+    else if (lo) letter = letter + ',';
 
     notes.push(letter);
   }
@@ -305,12 +786,9 @@ function solfeoToAbc(solfeo, meta = {}) {
   return `X:1\nT:${title}\nC:${composer}\nM:4/4\nL:1/4\nQ:1/4=95\nK:${key}\n%%MIDI program 73\n${body} |`;
 }
 
-/* Extraer "preview" bonito de un ABC (solo para mostrar en la tarjeta) */
-function abcToSolfeoPreview(solfeo) {
-  return solfeo.replace(/\s+/g, ' ').trim();
-}
-
-/* ============ DATOS INICIALES (repertorio principiante) ============ */
+/* =========================================================
+   REPERTORIO INICIAL
+   ========================================================= */
 const SEED = [
   { title:'Estrellita', composer:'Tradicional', category:'Infantil', difficulty:'Fácil',
     solfeo:'Do Do Sol Sol La La Sol / Fa Fa Mi Mi Re Re Do / Sol Sol Fa Fa Mi Mi Re / Sol Sol Fa Fa Mi Mi Re / Do Do Sol Sol La La Sol / Fa Fa Mi Mi Re Re Do' },
@@ -339,13 +817,15 @@ const SEED = [
     notes:'Transcrita del cuaderno de María ✨' },
   { title:'Canción del cuaderno', composer:'—', category:'Otro', difficulty:'Fácil',
     solfeo:'Fa Fa Fa Fa Mi Fa / Fa Mi Fa / Sol La Sol / Fa Fa Fa Fa Mi Fa Fa Do / Fa Fa Fa Fa Mi Fa Fa Mi Fa / Sol La Sol / Fa Fa Fa Fa Mi Fa Fa Do / Sol Do* Do* / La Sol / Fa La Sol Fa Mi Fa Fa Re Do',
-    notes:'Segunda canción del cuaderno de María 💜' }
+    notes:'Segunda canción del cuaderno de María ♥' }
 ];
 
-/* ============ ESTADO ============ */
-const KEY = 'flautaMaria_v3_sheets';
-const SEEDED = 'flautaMaria_v3_seeded';
-const FAV = 'flautaMaria_v3_favs';
+/* =========================================================
+   ESTADO
+   ========================================================= */
+const KEY = 'flautaMaria_v4_sheets';
+const SEEDED = 'flautaMaria_v4_seeded';
+const FAV = 'flautaMaria_v4_favs';
 
 let sheets = [];
 let favorites = new Set();
@@ -371,12 +851,10 @@ function load() {
   }
   try { favorites = new Set(JSON.parse(localStorage.getItem(FAV) || '[]')); } catch { favorites = new Set(); }
 }
-
 function save() {
   localStorage.setItem(KEY, JSON.stringify(sheets));
   localStorage.setItem(FAV, JSON.stringify([...favorites]));
 }
-
 function getSheet(id) { return sheets.find(s => s.id === id); }
 
 function addSheet(data) {
@@ -400,9 +878,27 @@ function toggleFav(id) {
   save(); render();
 }
 
-/* ============ RENDER ============ */
-function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+/* =========================================================
+   HELPERS
+   ========================================================= */
+function esc(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c =>
+    ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+function previewText(solfeo) {
+  if (!solfeo) return '';
+  return solfeo.replace(/[|/]/g, ' · ').replace(/\s+/g, ' ').trim();
+}
+function prettySolfeo(solfeo) {
+  if (!solfeo) return '';
+  return esc(solfeo)
+    .replace(/[|/]/g, '<span class="bar">/</span>')
+    .replace(/\n/g, '<br>');
+}
 
+/* =========================================================
+   RENDER
+   ========================================================= */
 function render() {
   const q = document.getElementById('searchInput').value.toLowerCase().trim();
   const list = sheets.filter(s => {
@@ -410,28 +906,38 @@ function render() {
     return (s.title || '').toLowerCase().includes(q) || (s.composer || '').toLowerCase().includes(q);
   });
 
+  document.getElementById('sectionLabel').textContent =
+    q ? `${list.length} resultado${list.length !== 1 ? 's' : ''}` : 'Tu repertorio';
+
   const c = document.getElementById('list');
   if (!list.length) {
-    c.innerHTML = `<div class="empty"><div class="i">🎶</div><h3>No hay canciones aquí</h3><p style="margin-top:6px;font-size:14px">Prueba con otra búsqueda o añade una nueva</p></div>`;
+    c.innerHTML = `<div class="empty">
+      <div class="ico">🎶</div>
+      <h3>No hay canciones</h3>
+      <p>Prueba con otra búsqueda o añade una nueva</p>
+    </div>`;
     return;
   }
 
   c.innerHTML = list.map(s => {
     const fav = favorites.has(s.id);
-    const preview = abcToSolfeoPreview(s.solfeo || '');
+    const preview = previewText(s.solfeo);
     return `<div class="card" data-id="${s.id}">
-      <div class="title">${esc(s.title)}</div>
-      <div class="composer">${esc(s.composer || '')}</div>
-      ${preview ? `<div class="preview">🎵 ${esc(preview).slice(0, 90)}${preview.length > 90 ? '…' : ''}</div>` : ''}
-      <div class="meta">
-        <span class="tag cat">${esc(s.category || 'Otro')}</span>
-        <span class="tag diff">${esc(s.difficulty || 'Fácil')}</span>
+      <div class="card-head">
+        <div class="card-title">${esc(s.title)}</div>
+        <button class="card-fav ${fav ? 'active' : ''}" data-act="fav" data-id="${s.id}" aria-label="Favorito">${fav ? '❤️' : '🤍'}</button>
       </div>
-      <div class="actions">
-        <button class="fav ${fav ? 'active' : ''}" data-act="fav" data-id="${s.id}">${fav ? '❤️' : '🤍'}</button>
-        <button data-act="edit" data-id="${s.id}">✏️</button>
-        <button data-act="del" data-id="${s.id}">🗑️</button>
-        <button class="view" data-act="view" data-id="${s.id}">Ver</button>
+      ${s.composer ? `<div class="card-composer">${esc(s.composer)}</div>` : '<div style="margin-bottom:14px"></div>'}
+      ${preview ? `<div class="card-preview">${esc(preview).slice(0, 110)}${preview.length > 110 ? '…' : ''}</div>` : ''}
+      <div class="card-footer">
+        <div class="tags">
+          <span class="tag cat">${esc(s.category || 'Otro')}</span>
+          <span class="tag diff">${esc(s.difficulty || 'Fácil')}</span>
+        </div>
+        <div class="card-actions">
+          <button class="icon-btn" data-act="edit" data-id="${s.id}" title="Editar">✎</button>
+          <button class="icon-btn danger" data-act="del" data-id="${s.id}" title="Eliminar">🗑</button>
+        </div>
       </div>
     </div>`;
   }).join('');
@@ -443,69 +949,74 @@ function render() {
       if (act === 'fav') toggleFav(id);
       else if (act === 'edit') openEdit(id);
       else if (act === 'del') deleteSheet(id);
-      else if (act === 'view') showDetail(id);
     };
   });
   c.querySelectorAll('.card').forEach(card => {
-    card.onclick = () => showDetail(card.dataset.id);
+    card.onclick = (e) => {
+      if (e.target.closest('[data-act]')) return;
+      showDetail(card.dataset.id);
+    };
   });
 }
 
-/* ============ DETALLE ============ */
+/* =========================================================
+   DETALLE
+   ========================================================= */
 let currentAudio = null;
-
-function prettySolfeo(solfeo) {
-  if (!solfeo) return '';
-  return esc(solfeo)
-    .replace(/[|/]/g, '<span class="bar">  /  </span>')
-    .replace(/\n/g, '<br>');
-}
 
 function showDetail(id) {
   const s = getSheet(id);
   if (!s) return;
   stopAudio();
 
-  document.getElementById('detailTitle').textContent = '🎵 ' + s.title;
+  document.getElementById('detailTitle').textContent = s.title;
   const body = document.getElementById('detailBody');
 
   body.innerHTML = `
-    <div class="row-detail"><span class="lbl">Compositor</span><span class="val">${esc(s.composer || '—')}</span></div>
-    <div class="row-detail"><span class="lbl">Dificultad</span><span class="val">${esc(s.difficulty || 'Fácil')}</span></div>
-    ${s.notes ? `<div class="row-detail" style="border:none;display:block;padding:10px 0"><span class="lbl">📝 Notas:</span><div style="margin-top:4px;font-size:14px;line-height:1.6">${esc(s.notes)}</div></div>` : ''}
-
-    <div class="solfeo-block">
-      <div class="lbl">🎼 Notas (solfeo)</div>
-      <div class="txt">${prettySolfeo(s.solfeo) || '(sin notas)'}</div>
+    <div class="detail-meta">
+      <span class="tag cat">${esc(s.category || 'Otro')}</span>
+      <span class="tag diff">${esc(s.difficulty || 'Fácil')}</span>
+      ${s.composer && s.composer !== '—' ? `<span class="tag" style="background:#F0E8ED;color:#6B5B65">${esc(s.composer)}</span>` : ''}
     </div>
 
-    <div class="controls">
-      <button class="play" id="playBtn">🔊 Escuchar con flauta</button>
-      <button class="toggle" id="toggleScore">🎼 Ver pentagrama</button>
+    <div class="sheet-block">
+      <div class="sheet-block-label">Notas en solfeo</div>
+      <div class="sheet-notes">${prettySolfeo(s.solfeo) || '(sin notas)'}</div>
     </div>
 
-    <div class="score-wrap" id="scoreWrap"></div>
+    ${s.notes ? `<div class="detail-notes"><strong>Notas</strong>${esc(s.notes)}</div>` : ''}
+
+    <div class="actions-row">
+      <button class="btn-action primary" id="playBtn">🔊 Escuchar</button>
+      <button class="btn-action" id="toggleScore">🎼 Ver pentagrama</button>
+    </div>
+
+    <div id="scoreSlot"></div>
   `;
 
   document.getElementById('detailModal').classList.add('open');
 
   document.getElementById('playBtn').onclick = () => togglePlay(s);
   document.getElementById('toggleScore').onclick = () => {
-    const wrap = document.getElementById('scoreWrap');
+    const slot = document.getElementById('scoreSlot');
     const btn = document.getElementById('toggleScore');
-    if (wrap.classList.contains('show')) {
-      wrap.classList.remove('show');
-      btn.classList.remove('active');
+    if (slot.dataset.open === '1') {
+      slot.innerHTML = '';
+      slot.dataset.open = '0';
       btn.textContent = '🎼 Ver pentagrama';
       return;
     }
-    wrap.classList.add('show');
-    btn.classList.add('active');
+    slot.dataset.open = '1';
     btn.textContent = '🎼 Ocultar pentagrama';
-    if (!wrap.dataset.rendered) {
-      wrap.id = 'scoreWrap';
-      ABCJS.renderAbc(wrap, s.abc, { responsive: 'resize', scale: 1.4, staffwidth: 520, padding: 10 });
-      wrap.dataset.rendered = '1';
+    const wrap = document.createElement('div');
+    wrap.className = 'score-container';
+    wrap.id = 'scoreContainer';
+    slot.innerHTML = '';
+    slot.appendChild(wrap);
+    try {
+      ABCJS.renderAbc(wrap, s.abc, { responsive: 'resize', scale: 1.3, staffwidth: 500, padding: 8 });
+    } catch (e) {
+      wrap.innerHTML = `<div style="text-align:center;color:#C43A56;padding:20px;font-size:14px">Error al dibujar la partitura.</div>`;
     }
   };
 }
@@ -513,7 +1024,7 @@ function showDetail(id) {
 function stopAudio() {
   if (currentAudio) { try { currentAudio.stop(); } catch {} currentAudio = null; }
   const b = document.getElementById('playBtn');
-  if (b) { b.classList.remove('playing'); b.textContent = '🔊 Escuchar con flauta'; }
+  if (b) { b.classList.remove('playing'); b.textContent = '🔊 Escuchar'; }
 }
 
 async function togglePlay(s) {
@@ -539,22 +1050,25 @@ async function togglePlay(s) {
   }
 }
 
-/* ============ EDITAR / AÑADIR ============ */
+/* =========================================================
+   EDITAR / AÑADIR
+   ========================================================= */
 function openAdd() {
-  document.getElementById('editTitle').textContent = '📝 Añadir canción';
+  document.getElementById('editTitle').textContent = 'Añadir canción';
   document.getElementById('editId').value = '';
   document.getElementById('sheetForm').reset();
   document.getElementById('fCategory').value = 'Popular';
   document.getElementById('fDifficulty').value = 'Fácil';
   document.getElementById('editModal').classList.add('open');
+  setTimeout(() => document.getElementById('fTitle').focus(), 250);
 }
 function openEdit(id) {
   const s = getSheet(id);
   if (!s) return;
-  document.getElementById('editTitle').textContent = '✏️ Editar canción';
+  document.getElementById('editTitle').textContent = 'Editar canción';
   document.getElementById('editId').value = id;
   document.getElementById('fTitle').value = s.title || '';
-  document.getElementById('fComposer').value = s.composer || '';
+  document.getElementById('fComposer').value = s.composer === '—' ? '' : (s.composer || '');
   document.getElementById('fCategory').value = s.category || 'Popular';
   document.getElementById('fDifficulty').value = s.difficulty || 'Fácil';
   document.getElementById('fSolfeo').value = s.solfeo || '';
@@ -571,7 +1085,7 @@ document.getElementById('sheetForm').addEventListener('submit', e => {
   e.preventDefault();
   const id = document.getElementById('editId').value;
   const title = document.getElementById('fTitle').value.trim();
-  const composer = document.getElementById('fComposer').value.trim() || 'Anónimo';
+  const composer = document.getElementById('fComposer').value.trim() || '—';
   const category = document.getElementById('fCategory').value;
   const difficulty = document.getElementById('fDifficulty').value;
   const solfeo = document.getElementById('fSolfeo').value.trim();
@@ -586,39 +1100,44 @@ document.getElementById('sheetForm').addEventListener('submit', e => {
   closeModals();
 });
 
-/* ============ INSTALAR PWA ============ */
+/* =========================================================
+   PWA
+   ========================================================= */
 let promptInstall = null;
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
   promptInstall = e;
-  document.getElementById('installBar').style.display = 'block';
+  document.getElementById('installBar').classList.add('show');
 });
 document.getElementById('installBtn').onclick = async () => {
   if (promptInstall) {
     promptInstall.prompt();
     await promptInstall.userChoice;
     promptInstall = null;
-    document.getElementById('installBar').style.display = 'none';
+    document.getElementById('installBar').classList.remove('show');
   }
 };
-
-/* ============ SERVICE WORKER ============ */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js').catch(e => console.warn('SW', e));
   });
 }
 
-/* ============ INIT ============ */
+/* =========================================================
+   INIT
+   ========================================================= */
 document.addEventListener('DOMContentLoaded', () => {
   load();
   render();
+
   document.getElementById('searchInput').addEventListener('input', render);
   document.getElementById('addBtn').onclick = openAdd;
   document.getElementById('cancelBtn').onclick = closeModals;
+  document.getElementById('cancelBtn2').onclick = closeModals;
   document.getElementById('closeBtn').onclick = closeModals;
   document.getElementById('editModal').onclick = e => { if (e.target === e.currentTarget) closeModals(); };
   document.getElementById('detailModal').onclick = e => { if (e.target === e.currentTarget) closeModals(); };
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModals(); });
 
   loadABCJS().then(() => console.log('✅ Listo')).catch(() => {
     alert('⚠️ No se pudo cargar la librería musical. Conéctate a internet una vez y recarga.');
