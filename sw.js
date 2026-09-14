@@ -1,4 +1,4 @@
-const CACHE = 'flauta-maria-v1';
+const CACHE = 'flauta-maria-v3';
 const ASSETS = [
   './',
   './index.html',
