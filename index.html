@@ -5,9 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#7C4D6B">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Flauta María">
-<title>Partituras de María · Flauta</title>
+<title>Partituras de María</title>
 <link rel="manifest" href="./manifest.json">
 <link rel="icon" type="image/svg+xml" href="./icon.svg">
 <link rel="apple-touch-icon" href="./icon.svg">
@@ -16,315 +15,217 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
   --primary:#7C4D6B;--primary-light:#A77A96;--primary-dark:#4F3343;
-  --primary-gradient:linear-gradient(135deg,#7C4D6B,#A77A96);
-  --accent:#E8D0DF;--bg:#F7F2F5;--surface:#FFFFFF;
+  --gradient:linear-gradient(135deg,#7C4D6B,#A77A96);
+  --accent:#E8D0DF;--bg:#F7F2F5;--surface:#FFF;
   --text:#2C1E26;--text-light:#5A4A54;
   --shadow-sm:0 2px 8px rgba(0,0,0,.04);
   --shadow-md:0 8px 30px rgba(0,0,0,.08);
   --shadow-lg:0 20px 60px rgba(0,0,0,.12);
-  --radius:16px;--transition:.25s ease;
+  --radius:16px;--t:.25s ease;
   --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
 }
-html{scroll-behavior:smooth}
-body{
-  font-family:var(--font);background:var(--bg);color:var(--text);
-  padding:0 0 60px;min-height:100vh;-webkit-font-smoothing:antialiased;
-}
-.app-header{
-  background:var(--surface);padding:16px 24px 14px;box-shadow:var(--shadow-sm);
+body{font-family:var(--font);background:var(--bg);color:var(--text);padding-bottom:60px;min-height:100vh;-webkit-font-smoothing:antialiased}
+header{
+  background:var(--surface);padding:16px 22px 14px;box-shadow:var(--shadow-sm);
   position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(124,77,107,.06);
 }
-.app-header .title-row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
-.app-header h1{
-  font-size:22px;font-weight:700;background:var(--primary-gradient);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  letter-spacing:-.5px;
-}
-.app-header .sub{font-size:12px;color:var(--text-light);opacity:.7;margin-top:2px}
-.dedication-badge{
-  font-size:11px;background:var(--accent);color:var(--primary-dark);
-  padding:4px 14px;border-radius:40px;font-weight:600;white-space:nowrap;
-  border:1px solid rgba(124,77,107,.1);
-}
-.search-section{
-  padding:14px 24px 12px;background:var(--surface);
-  border-bottom:1px solid rgba(124,77,107,.06);position:sticky;top:64px;z-index:90;
-}
-.search-wrapper{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.search-box{flex:1;min-width:180px;position:relative}
-.search-box input{
+header .row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+header h1{font-size:21px;font-weight:700;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.5px}
+header .sub{font-size:12px;color:var(--text-light);opacity:.7;margin-top:2px}
+.badge{font-size:11px;background:var(--accent);color:var(--primary-dark);padding:4px 14px;border-radius:40px;font-weight:600;white-space:nowrap}
+.search{padding:12px 22px;background:var(--surface);border-bottom:1px solid rgba(124,77,107,.06);position:sticky;top:64px;z-index:90;display:flex;gap:10px;flex-wrap:wrap}
+.search .box{flex:1;min-width:180px;position:relative}
+.search .box input{
   width:100%;padding:11px 16px 11px 42px;border:1.5px solid #E4D8DF;border-radius:40px;
-  font-size:15px;font-family:var(--font);background:var(--bg);color:var(--text);outline:none;
-  transition:var(--transition);
+  font-size:15px;font-family:var(--font);background:var(--bg);color:var(--text);outline:none;transition:var(--t);
 }
-.search-box input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(124,77,107,.1);background:#fff}
-.search-box .icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.5;font-size:16px}
-.filter-group{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.filter-group select{
-  padding:9px 34px 9px 14px;border:1.5px solid #E4D8DF;border-radius:40px;
-  background:var(--bg);font-family:var(--font);font-size:13px;color:var(--text);
-  outline:none;cursor:pointer;appearance:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A4A54' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 12px center;
-  transition:var(--transition);
-}
-.filter-group select:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(124,77,107,.08)}
+.search .box input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(124,77,107,.1);background:#fff}
+.search .box .icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.5}
 .btn-add{
   background:var(--primary);color:#fff;border:none;border-radius:40px;padding:10px 22px;
-  font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px;cursor:pointer;
-  transition:var(--transition);box-shadow:0 4px 14px rgba(124,77,107,.25);
-  font-family:var(--font);white-space:nowrap;
+  font-weight:600;font-size:14px;cursor:pointer;font-family:var(--font);white-space:nowrap;
+  box-shadow:0 4px 14px rgba(124,77,107,.25);transition:var(--t);
 }
-.btn-add:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(124,77,107,.35)}
+.btn-add:hover{transform:translateY(-1px)}
 .btn-add:active{transform:scale(.96)}
-.sheet-list{padding:20px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
-.sheet-card{
+.list{padding:18px 22px;display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.card{
   background:var(--surface);border-radius:var(--radius);padding:18px 22px 14px;
-  box-shadow:var(--shadow-sm);transition:var(--transition);
-  border:1px solid rgba(124,77,107,.04);display:flex;flex-direction:column;
+  box-shadow:var(--shadow-sm);transition:var(--t);border:1px solid rgba(124,77,107,.04);
+  display:flex;flex-direction:column;cursor:pointer;
 }
-.sheet-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:rgba(124,77,107,.08)}
-.sheet-card .title{font-size:17px;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.3}
-.sheet-card .composer{font-size:13px;color:var(--text-light);margin-bottom:8px}
-.sheet-card .meta{display:flex;flex-wrap:wrap;gap:6px 8px;font-size:11px;align-items:center}
-.sheet-card .meta .tag{padding:3px 12px;border-radius:30px;font-weight:500;letter-spacing:.2px}
-.tag.category{background:var(--accent);color:var(--primary-dark)}
-.tag.difficulty{background:#EDE4EA;color:#4F3343}
-.tag.abc{background:#DDE8F0;color:#1F4A7A}
-.sheet-card .actions{
-  margin-top:14px;display:flex;gap:4px;align-items:center;justify-content:flex-end;
-  border-top:1px solid rgba(124,77,107,.06);padding-top:12px;
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:rgba(124,77,107,.08)}
+.card .title{font-size:17px;font-weight:600;margin-bottom:2px;line-height:1.3}
+.card .composer{font-size:13px;color:var(--text-light);margin-bottom:10px}
+.card .preview{
+  font-family:'Courier New',monospace;font-size:12.5px;color:var(--primary-dark);
+  background:var(--accent);padding:8px 12px;border-radius:10px;margin-bottom:10px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.5;
 }
-.sheet-card .actions button{
-  background:none;border:none;font-size:16px;cursor:pointer;transition:var(--transition);
-  padding:6px 10px;border-radius:30px;color:var(--text-light);opacity:.55;
-  display:flex;align-items:center;font-family:var(--font);
+.card .meta{display:flex;gap:6px;flex-wrap:wrap;font-size:11px}
+.card .meta .tag{padding:3px 12px;border-radius:30px;font-weight:500}
+.tag.cat{background:#EDE4EA;color:#4F3343}
+.tag.diff{background:#DDE8F0;color:#1F4A7A}
+.card .actions{
+  margin-top:12px;display:flex;gap:4px;align-items:center;justify-content:flex-end;
+  border-top:1px solid rgba(124,77,107,.06);padding-top:10px;
 }
-.sheet-card .actions button:hover{opacity:1;background:rgba(124,77,107,.06)}
-.sheet-card .actions .fav-btn.active{color:#D43F5E;opacity:1}
-.sheet-card .actions .view-btn{
+.card .actions button{
+  background:none;border:none;font-size:15px;cursor:pointer;padding:6px 10px;
+  border-radius:30px;color:var(--text-light);opacity:.55;transition:var(--t);font-family:var(--font);
+}
+.card .actions button:hover{opacity:1;background:rgba(124,77,107,.06)}
+.card .actions .fav.active{color:#D43F5E;opacity:1}
+.card .actions .view{
   font-size:13px;font-weight:600;color:var(--primary);opacity:1;
   background:rgba(124,77,107,.08);padding:6px 16px;border-radius:30px;
 }
-.sheet-card .actions .view-btn:hover{background:rgba(124,77,107,.15)}
-.empty-state{text-align:center;padding:60px 20px;color:var(--text-light);grid-column:1/-1}
-.empty-state .icon{font-size:48px;margin-bottom:12px;opacity:.4}
-.empty-state h3{font-weight:500;margin-bottom:6px}
-.modal-overlay{
+.empty{text-align:center;padding:60px 20px;color:var(--text-light);grid-column:1/-1}
+.empty .i{font-size:48px;margin-bottom:12px;opacity:.4}
+.modal-bg{
   position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(6px);
   z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;
 }
-.modal-overlay.open{display:flex}
+.modal-bg.open{display:flex}
 .modal{
-  background:var(--surface);border-radius:24px;max-width:620px;width:100%;
-  padding:28px 28px 24px;box-shadow:var(--shadow-lg);animation:modalIn .3s ease;
+  background:var(--surface);border-radius:24px;max-width:600px;width:100%;
+  padding:26px 26px 22px;box-shadow:var(--shadow-lg);animation:pop .3s ease;
   max-height:92vh;overflow-y:auto;
 }
-@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.modal h2{font-size:22px;font-weight:700;margin-bottom:20px;letter-spacing:-.3px}
+@keyframes pop{from{opacity:0;transform:scale(.95) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal h2{font-size:21px;font-weight:700;margin-bottom:18px;letter-spacing:-.3px}
 .modal label{font-size:13px;font-weight:500;color:var(--text-light);display:block;margin-top:14px;margin-bottom:4px}
 .modal input,.modal select,.modal textarea{
   width:100%;padding:11px 14px;border:1.5px solid #E4D8DF;border-radius:12px;
-  font-family:var(--font);font-size:15px;background:var(--bg);transition:var(--transition);
-  color:var(--text);outline:none;
+  font-family:var(--font);font-size:15px;background:var(--bg);color:var(--text);outline:none;transition:var(--t);
 }
-.modal input:focus,.modal select:focus,.modal textarea:focus{
-  border-color:var(--primary);box-shadow:0 0 0 4px rgba(124,77,107,.08)
-}
-.modal textarea{min-height:130px;resize:vertical;font-family:'Courier New',monospace;font-size:13px}
+.modal input:focus,.modal select:focus,.modal textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(124,77,107,.08)}
+.modal textarea{min-height:120px;resize:vertical}
+.modal textarea.solfeo{font-family:'Courier New',monospace;font-size:15px;line-height:1.7;letter-spacing:.5px}
+.modal .hint{font-size:11.5px;color:var(--text-light);margin-top:6px;line-height:1.5;background:#F0E8ED;padding:8px 12px;border-radius:10px}
+.modal .hint code{background:#fff;padding:1px 6px;border-radius:6px;color:var(--primary-dark);font-weight:600}
 .modal .form-actions{display:flex;gap:10px;margin-top:22px;justify-content:flex-end}
-.modal .form-actions button{
-  padding:11px 26px;border-radius:40px;font-weight:600;font-size:14px;border:none;
-  cursor:pointer;transition:var(--transition);font-family:var(--font);
-}
+.modal .form-actions button{padding:11px 26px;border-radius:40px;font-weight:600;font-size:14px;border:none;cursor:pointer;font-family:var(--font);transition:var(--t)}
 .btn-cancel{background:#F0E8ED;color:var(--text-light)}
-.btn-cancel:hover{background:#E5D9E0}
 .btn-submit{background:var(--primary);color:#fff;box-shadow:0 4px 16px rgba(124,77,107,.25)}
-.btn-submit:hover{box-shadow:0 6px 28px rgba(124,77,107,.35);transform:translateY(-1px)}
-.detail-content .detail-row{
-  display:flex;justify-content:space-between;padding:8px 0;
-  border-bottom:1px solid rgba(124,77,107,.06);font-size:14px;
+.row-detail{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(124,77,107,.06);font-size:14px}
+.row-detail .lbl{color:var(--text-light);font-weight:500}
+.row-detail .val{font-weight:500}
+.solfeo-block{
+  background:linear-gradient(135deg,#FBF5F9,#F2E4EC);border:1px solid #E8D0DF;
+  border-radius:16px;padding:18px 22px;margin-top:16px;
 }
-.detail-content .detail-label{color:var(--text-light);font-weight:500}
-.detail-content .detail-value{font-weight:500}
-.detail-content .notes{
-  margin-top:14px;background:var(--bg);padding:14px 18px;border-radius:12px;
-  font-size:13px;line-height:1.6;white-space:pre-wrap;
+.solfeo-block .lbl{
+  font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--primary);
+  font-weight:700;margin-bottom:10px;
 }
-.viewer-wrapper{
-  position:relative;margin-top:16px;background:#fff;border-radius:14px;
-  border:1px solid #ECDFE6;overflow:hidden;touch-action:none;
-  box-shadow:inset 0 2px 8px rgba(0,0,0,.02);cursor:grab;min-height:200px;max-height:55vh;
+.solfeo-block .txt{
+  font-family:'Courier New',monospace;font-size:16px;line-height:1.9;
+  color:var(--primary-dark);white-space:pre-wrap;letter-spacing:.4px;font-weight:600;
 }
-.viewer-wrapper:active{cursor:grabbing}
-.viewer{
-  width:100%;height:100%;display:flex;justify-content:center;align-items:flex-start;
-  transform-origin:0 0;transition:transform .05s linear;padding:20px;min-height:200px;
-}
-.viewer svg{max-width:100%;height:auto;user-select:none;-webkit-user-select:none}
-.viewer .no-abc,.viewer .abc-error{color:var(--text-light);font-size:14px;text-align:center;padding:30px 20px}
-.viewer .abc-error{color:#D43F5E}
-.viewer .loading{color:var(--text-light);font-size:14px;text-align:center;padding:30px 20px}
-.controls{display:flex;gap:8px;margin-top:12px;justify-content:center;align-items:center;flex-wrap:wrap}
+.solfeo-block .txt .bar{color:var(--primary-light);font-weight:400;opacity:.7}
+.controls{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;align-items:center;justify-content:center}
 .controls button{
-  background:var(--surface);border:1px solid #E4D8DF;border-radius:30px;
-  padding:8px 16px;font-size:15px;font-weight:600;cursor:pointer;
-  transition:var(--transition);font-family:var(--font);color:var(--text);box-shadow:var(--shadow-sm);
+  background:var(--surface);border:1.5px solid #E4D8DF;border-radius:30px;
+  padding:9px 18px;font-size:14px;font-weight:600;cursor:pointer;
+  font-family:var(--font);color:var(--text);transition:var(--t);
 }
 .controls button:hover{background:var(--accent);border-color:var(--primary)}
-.controls .zoom-level{font-size:13px;font-weight:500;min-width:50px;text-align:center;color:var(--text-light)}
-.controls .toggle-btn{font-size:13px}
-.controls .toggle-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
-.controls .play-btn{background:var(--primary);color:#fff;border:none;padding:8px 20px;display:inline-flex;align-items:center;gap:6px}
-.controls .play-btn:hover{background:var(--primary-dark);transform:scale(1.02)}
-.controls .play-btn.playing{background:#D43F5E}
-.detail-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px;flex-wrap:wrap}
-.edit-abc-btn{
-  background:var(--accent);color:var(--primary-dark);border:none;border-radius:40px;
-  padding:8px 18px;font-weight:600;font-size:13px;cursor:pointer;transition:var(--transition);
-  font-family:var(--font);
+.controls .play{background:var(--primary);color:#fff;border:none;padding:9px 22px}
+.controls .play:hover{background:var(--primary-dark)}
+.controls .play.playing{background:#D43F5E}
+.controls .toggle.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.score-wrap{
+  margin-top:12px;background:#fff;border-radius:14px;border:1px solid #ECDFE6;
+  padding:14px;overflow-x:auto;display:none;
 }
-.edit-abc-btn:hover{background:#D8B8CA;transform:translateY(-1px)}
-.detail-close-btn{
+.score-wrap.show{display:block}
+.score-wrap svg{max-width:100%;height:auto}
+.close-btn{
   margin-top:20px;width:100%;padding:14px;border:none;border-radius:40px;
-  background:var(--primary);color:#fff;font-weight:600;font-size:15px;cursor:pointer;
-  transition:var(--transition);
+  background:var(--primary);color:#fff;font-weight:600;font-size:15px;cursor:pointer;transition:var(--t);
 }
-.detail-close-btn:hover{background:var(--primary-dark)}
-.footer{
-  text-align:center;padding:30px 20px 16px;color:var(--text-light);
-  font-size:12px;opacity:.6;border-top:1px solid rgba(124,77,107,.06);margin-top:20px;
-}
+.close-btn:hover{background:var(--primary-dark)}
+.footer{text-align:center;padding:28px 20px 16px;color:var(--text-light);font-size:12px;opacity:.6;border-top:1px solid rgba(124,77,107,.06);margin-top:20px}
 .footer .heart{color:#D43F5E}
-.note-label{
-  font-family:var(--font);font-weight:700;font-size:11px;fill:#D43F5E;
-  text-anchor:middle;pointer-events:none;user-select:none;
-}
-.install-banner{
-  display:none;background:var(--accent);color:var(--primary-dark);
-  padding:10px 20px;font-size:13px;text-align:center;font-weight:500;
-  border-bottom:1px solid rgba(124,77,107,.1);
-}
-.install-banner button{
-  background:var(--primary);color:#fff;border:none;border-radius:30px;
-  padding:6px 16px;font-size:12px;font-weight:600;margin-left:8px;cursor:pointer;
-  font-family:var(--font);
-}
+.install-bar{display:none;background:var(--accent);color:var(--primary-dark);padding:10px 18px;font-size:13px;text-align:center;font-weight:500;border-bottom:1px solid rgba(124,77,107,.1)}
+.install-bar button{background:var(--primary);color:#fff;border:none;border-radius:30px;padding:6px 16px;font-size:12px;font-weight:600;margin-left:8px;cursor:pointer;font-family:var(--font)}
 @media (max-width:640px){
-  .app-header{padding:14px 16px 12px}
-  .app-header h1{font-size:19px}
-  .search-section{padding:12px 16px 10px;top:58px}
-  .search-wrapper{flex-direction:column;align-items:stretch}
-  .filter-group select{flex:1;min-width:0}
-  .btn-add{justify-content:center}
-  .sheet-list{padding:12px 16px;grid-template-columns:1fr;gap:14px}
+  header{padding:14px 16px 12px}header h1{font-size:19px}
+  .search{padding:12px 16px;top:58px}
+  .list{padding:12px 16px;grid-template-columns:1fr;gap:12px}
   .modal{padding:22px 18px;border-radius:20px}
-  .modal h2{font-size:19px}
 }
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--primary-light);border-radius:10px}
 </style>
 </head>
 <body>
 
-<header class="app-header">
-  <div class="title-row">
+<header>
+  <div class="row">
     <div>
       <h1>🎵 Partituras de María</h1>
       <div class="sub">Repertorio personal · funciona sin internet</div>
     </div>
-    <div class="dedication-badge">❤️ PARA MI ESPOSA</div>
+    <div class="badge">❤️ PARA MI ESPOSA</div>
   </div>
 </header>
 
-<div class="install-banner" id="installBanner">
+<div class="install-bar" id="installBar">
   ¿Instalar la app en tu teléfono?<button id="installBtn">Instalar</button>
 </div>
 
-<section class="search-section">
-  <div class="search-wrapper">
-    <div class="search-box">
-      <span class="icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="Buscar por título o compositor...">
-    </div>
-    <div class="filter-group">
-      <select id="categoryFilter">
-        <option value="">Todas</option>
-        <option value="Barroca">Barroca</option>
-        <option value="Clásica">Clásica</option>
-        <option value="Romántica">Romántica</option>
-        <option value="Moderna">Moderna</option>
-        <option value="Bandas Sonoras">Bandas Sonoras</option>
-        <option value="Popular">Popular</option>
-        <option value="Folclórica">Folclórica</option>
-        <option value="Jazz">Jazz</option>
-        <option value="Infantil">Infantil</option>
-        <option value="Anime">Anime</option>
-        <option value="Otro">Otro</option>
-      </select>
-      <select id="difficultyFilter">
-        <option value="">Dificultad</option>
-        <option value="Fácil">Fácil</option>
-        <option value="Media">Media</option>
-        <option value="Avanzada">Avanzada</option>
-      </select>
-      <select id="sortFilter">
-        <option value="recent">Recientes</option>
-        <option value="title">Título A-Z</option>
-        <option value="composer">Compositor A-Z</option>
-        <option value="fav">Favoritas</option>
-      </select>
-      <button class="btn-add" id="addSheetBtn">➕ Añadir</button>
-    </div>
+<div class="search">
+  <div class="box">
+    <span class="icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Buscar por título o compositor...">
   </div>
-</section>
+  <button class="btn-add" id="addBtn">➕ Añadir canción</button>
+</div>
 
-<div class="sheet-list" id="sheetList"></div>
+<div class="list" id="list"></div>
 
 <div class="footer">
-  <span class="heart">❤️</span> Hecho con amor por <strong>Stephan Majano</strong> para <strong>María</strong>
+  <span class="heart">❤️</span> Hecho con amor por <strong>Stephan</strong> para <strong>María</strong>
 </div>
 
 <!-- Modal Añadir/Editar -->
-<div class="modal-overlay" id="modalOverlay">
+<div class="modal-bg" id="editModal">
   <div class="modal">
-    <h2 id="modalTitle">📝 Añadir partitura</h2>
+    <h2 id="editTitle">📝 Añadir canción</h2>
     <form id="sheetForm">
       <input type="hidden" id="editId">
       <label>Título *</label>
-      <input type="text" id="formTitle" required placeholder="Ej: Himno a la Alegría">
-      <label>Compositor *</label>
-      <input type="text" id="formComposer" required placeholder="Ej: L. van Beethoven">
+      <input type="text" id="fTitle" required placeholder="Ej: El Titanic">
+      <label>Compositor</label>
+      <input type="text" id="fComposer" placeholder="Ej: James Horner (opcional)">
       <label>Categoría</label>
-      <select id="formCategory">
-        <option value="Clásica">Clásica</option>
-        <option value="Barroca">Barroca</option>
-        <option value="Romántica">Romántica</option>
-        <option value="Moderna">Moderna</option>
+      <select id="fCategory">
         <option value="Popular">Popular</option>
-        <option value="Bandas Sonoras">Bandas Sonoras</option>
-        <option value="Folclórica">Folclórica</option>
-        <option value="Jazz">Jazz</option>
         <option value="Infantil">Infantil</option>
+        <option value="Clásica">Clásica</option>
+        <option value="Folclórica">Folclórica</option>
+        <option value="Bandas Sonoras">Bandas Sonoras</option>
         <option value="Anime">Anime</option>
         <option value="Otro">Otro</option>
       </select>
       <label>Dificultad</label>
-      <select id="formDifficulty">
+      <select id="fDifficulty">
         <option value="Fácil">Fácil</option>
         <option value="Media">Media</option>
         <option value="Avanzada">Avanzada</option>
       </select>
-      <label>Notación ABC</label>
-      <textarea id="formAbc" placeholder="X:1&#10;T:Título&#10;M:4/4&#10;L:1/4&#10;K:C&#10;C D E F | G A B c |"></textarea>
-      <div style="font-size:12px;color:var(--text-light);margin-top:4px;">
-        📖 <a href="https://abcnotation.com/wiki/abc:standard:v2.1" target="_blank" style="color:var(--primary);">Guía de notación ABC</a>
+      <label>Notas en solfeo *</label>
+      <textarea id="fSolfeo" class="solfeo" required placeholder="Do Re Mi Fa / Sol La Si Do*"></textarea>
+      <div class="hint">
+        Escribe las notas como en tu cuaderno. Ejemplos:
+        <br>• <code>Do Re Mi Fa</code> — nota por nota
+        <br>• <code>/</code> o <code>|</code> — compás (barra)
+        <br>• <code>Do*</code> — Do agudo · <code>Si,</code> — Si grave
       </div>
-      <label>Notas / enlaces</label>
-      <textarea id="formNotes" placeholder="Observaciones, tempo, link a un video..." style="min-height:80px;font-family:var(--font)"></textarea>
+      <label>Notas / observaciones</label>
+      <textarea id="fNotes" placeholder="Observaciones, enlaces a videos..."></textarea>
       <div class="form-actions">
-        <button type="button" class="btn-cancel" id="cancelForm">Cancelar</button>
+        <button type="button" class="btn-cancel" id="cancelBtn">Cancelar</button>
         <button type="submit" class="btn-submit">Guardar</button>
       </div>
     </form>
@@ -332,544 +233,396 @@ body{
 </div>
 
 <!-- Modal Detalle -->
-<div class="modal-overlay" id="detailOverlay">
+<div class="modal-bg" id="detailModal">
   <div class="modal">
     <h2 id="detailTitle">📄 Detalle</h2>
-    <div class="detail-content" id="detailContent"></div>
-    <button class="detail-close-btn" id="closeDetail">Cerrar</button>
+    <div id="detailBody"></div>
+    <button class="close-btn" id="closeBtn">Cerrar</button>
   </div>
 </div>
 
 <script>
-/* =========================================================
-   CARGA DE ABCJS (con varios CDNs de respaldo)
-   ========================================================= */
-const ABCJS_CDNS = [
+/* ============ CARGAR ABCJS ============ */
+const CDNS = [
   'https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.2.3/abcjs-basic-min.js',
   'https://unpkg.com/abcjs@6.2.3/dist/abcjs-basic-min.js',
   'https://cdn.jsdelivr.net/npm/abcjs@6.2.3/dist/abcjs-basic-min.js'
 ];
-
 function loadABCJS() {
-  return new Promise((resolve, reject) => {
-    if (window.ABCJS && ABCJS.renderAbc) return resolve();
+  return new Promise((res, rej) => {
+    if (window.ABCJS && ABCJS.renderAbc) return res();
     let i = 0;
-    (function tryNext() {
-      if (i >= ABCJS_CDNS.length) return reject(new Error('No se pudo cargar ABCJS'));
+    (function next() {
+      if (i >= CDNS.length) return rej(new Error('No ABCJS'));
       const s = document.createElement('script');
-      s.src = ABCJS_CDNS[i++];
-      s.onload = () => (window.ABCJS && ABCJS.renderAbc) ? resolve() : tryNext();
-      s.onerror = tryNext;
+      s.src = CDNS[i++];
+      s.onload = () => (window.ABCJS && ABCJS.renderAbc) ? res() : next();
+      s.onerror = next;
       document.head.appendChild(s);
     })();
   });
 }
 
-/* =========================================================
-   REPERTORIO INICIAL (piezas REALES para flauta)
-   ========================================================= */
-const SEED_SHEETS = [
-  { title: 'Estrellita (Twinkle Twinkle)', composer: 'Tradicional', category: 'Infantil', difficulty: 'Fácil',
-    abc: 'X:1\nT:Twinkle Twinkle Little Star\nC:Tradicional\nM:4/4\nL:1/4\nK:C\nC C G G | A A G2 | F F E E | D D C2 |\nG G F F | E E D2 | G G F F | E E D2 |\nC C G G | A A G2 | F F E E | D D C2 |' },
-  { title: 'Himno a la Alegría', composer: 'L. van Beethoven', category: 'Clásica', difficulty: 'Fácil',
-    abc: 'X:1\nT:Himno a la Alegria\nC:L. van Beethoven\nM:4/4\nL:1/4\nK:C\nE E F G | G F E D | C C D E | E3/2 D/ D2 |\nE E F G | G F E D | C C D E | D3/2 C/ C2 |' },
-  { title: 'Cumpleaños Feliz', composer: 'Tradicional', category: 'Popular', difficulty: 'Fácil',
-    abc: 'X:1\nT:Cumpleanos Feliz\nC:Tradicional\nM:3/4\nL:1/4\nK:C\nG/2G/2 A G c B2 | G/2G/2 A G d c2 |\nG/2G/2 g e c B A | F/2F/2 e d c3 |' },
-  { title: 'Mary Had a Little Lamb', composer: 'Tradicional', category: 'Infantil', difficulty: 'Fácil',
-    abc: 'X:1\nT:Mary Had a Little Lamb\nC:Tradicional\nM:4/4\nL:1/4\nK:C\nE D C D | E E E2 | D D D2 | E G G2 |\nE D C D | E E E E | D D E D | C4 |' },
-  { title: 'Au Clair de la Lune', composer: 'Tradicional', category: 'Clásica', difficulty: 'Fácil',
-    abc: 'X:1\nT:Au Clair de la Lune\nC:Tradicional\nM:2/4\nL:1/4\nK:C\nC C C D | E2 D2 | C D E C | C3/2 B,/2 C2 |\nC C C D | E2 D2 | C D E C | C3/2 B,/2 C2 |' },
-  { title: 'Jingle Bells', composer: 'J. Pierpont', category: 'Popular', difficulty: 'Fácil',
-    abc: 'X:1\nT:Jingle Bells\nC:J. Pierpont\nM:4/4\nL:1/4\nK:C\nE E E2 | E E E2 | E G C D | E4 |\nF F F F | F E E E | E D D E | D2 G2 |\nE E E2 | E E E2 | E G C D | E4 |\nF F F F | F E E E | G G F D | C4 |' },
-  { title: 'Noche de Paz', composer: 'F. Gruber', category: 'Popular', difficulty: 'Fácil',
-    abc: 'X:1\nT:Noche de Paz\nC:F. Gruber\nM:3/4\nL:1/4\nK:C\nG>A G | E3 | G>A G | E3 |\nd2 B | c3 | c3 z |' },
-  { title: 'Sublime Gracia', composer: 'Tradicional', category: 'Popular', difficulty: 'Fácil',
-    abc: 'X:1\nT:Sublime Gracia\nC:Tradicional\nM:3/4\nL:1/4\nK:G\nG2 B | d2 B | G2 B | A2 G | E2 G | G2 B | d2 B | A4 |\nG2 B | d2 B | G2 B | A2 G | E2 G | G2 B | A2 G | G4 |' },
-  { title: 'Canon en Re (simplificado)', composer: 'J. Pachelbel', category: 'Barroca', difficulty: 'Media',
-    abc: 'X:1\nT:Canon en Re\nC:J. Pachelbel\nM:4/4\nL:1/4\nK:D\nD A B F# | G D G A | D A B F# | G D G A |\nD A B F# | G D G A | D A B F# | G D G A |' },
-  { title: 'Minueto en Sol', composer: 'J.S. Bach', category: 'Barroca', difficulty: 'Media',
-    abc: 'X:1\nT:Minueto en Sol\nC:J.S. Bach\nM:3/4\nL:1/4\nK:G\nd2 G | A2 B | c2 d | e2 f | g2 f | e2 d | c2 B | A2 G |' },
-  { title: 'Greensleeves', composer: 'Tradicional inglesa', category: 'Folclórica', difficulty: 'Media',
-    abc: 'X:1\nT:Greensleeves\nC:Tradicional\nM:6/8\nL:1/8\nK:Amin\nA2 c B2 c | d2 e f2 e | d2 B B2 A | ^G3 E3 |\nA2 c B2 c | d2 e f2 e | d2 B ^G2 B | A3 A3 |' },
-  { title: 'Scarborough Fair', composer: 'Tradicional inglesa', category: 'Folclórica', difficulty: 'Media',
-    abc: 'X:1\nT:Scarborough Fair\nC:Tradicional\nM:3/4\nL:1/4\nK:Amin\nA2 E A2 c | B2 A ^G2 E | A2 B c2 d | e2 e e3 |' },
-  { title: 'La Cucaracha', composer: 'Tradicional mexicana', category: 'Folclórica', difficulty: 'Fácil',
-    abc: 'X:1\nT:La Cucaracha\nC:Tradicional\nM:2/4\nL:1/8\nK:C\nc2 c2 c2 d2 | e2 e2 e2 d2 | c2 c2 c2 d2 | e2 e2 e2 d2 |\nc2 A2 G2 E2 | G2 A2 c4 |' },
-  { title: 'Cielito Lindo', composer: 'Q. Mendoza y Cortés', category: 'Folclórica', difficulty: 'Fácil',
-    abc: 'X:1\nT:Cielito Lindo\nC:Q. Mendoza y Cortes\nM:3/4\nL:1/4\nK:C\nE2 G G2 A | G2 E C3 | E2 G G2 A | G2 E C3 |' },
-  { title: 'Oda a la Alegría (flauta dulce)', composer: 'L. van Beethoven', category: 'Clásica', difficulty: 'Fácil',
-    abc: 'X:1\nT:Oda a la Alegria\nC:L. van Beethoven\nM:4/4\nL:1/4\nK:G\nG2 B2 | d2 g2 | f2 e2 | d2 B2 |\nG2 G2 | F2 E2 | D2 C2 | B,2 B,2 |' }
+/* ============ CONVERSOR SOLFEO → ABC ============ */
+const SOLFEO_MAP = { do:'C', re:'D', mi:'E', fa:'F', sol:'G', la:'A', si:'B' };
+
+function solfeoToAbc(solfeo, meta = {}) {
+  const title = (meta.title || 'Sin título').replace(/[:|]/g, '');
+  const composer = (meta.composer || 'Anónimo').replace(/[:|]/g, '');
+  const key = meta.key || 'C';
+
+  // Normalizar
+  const txt = solfeo
+    .replace(/[|/]/g, ' | ')       // barras
+    .replace(/[-–—]+/g, ' ')       // guiones son separadores
+    .replace(/[;\n\r]+/g, ' / ');  // saltos de línea = barras también
+
+  const tokens = txt.toLowerCase().split(/\s+/).filter(Boolean);
+  const notes = [];
+
+  for (const t of tokens) {
+    if (t === '|' || t === '/') { notes.push('|'); continue; }
+
+    const isHigh = t.includes('*') || t.includes("'");
+    const isLow = t.includes(',') || t.includes('.');
+    const clean = t.replace(/[*',.]/g, '');
+
+    let letter = SOLFEO_MAP[clean];
+    if (!letter) {
+      for (const [k, v] of Object.entries(SOLFEO_MAP)) {
+        if (clean.startsWith(k)) { letter = v; break; }
+      }
+    }
+    if (!letter) continue;
+
+    if (isHigh) letter = letter.toLowerCase(); // en ABC: minúscula = octava alta
+    else if (isLow) letter = letter + ',';
+
+    notes.push(letter);
+  }
+
+  const body = notes.join(' ');
+  return `X:1\nT:${title}\nC:${composer}\nM:4/4\nL:1/4\nQ:1/4=95\nK:${key}\n%%MIDI program 73\n${body} |`;
+}
+
+/* Extraer "preview" bonito de un ABC (solo para mostrar en la tarjeta) */
+function abcToSolfeoPreview(solfeo) {
+  return solfeo.replace(/\s+/g, ' ').trim();
+}
+
+/* ============ DATOS INICIALES (repertorio principiante) ============ */
+const SEED = [
+  { title:'Estrellita', composer:'Tradicional', category:'Infantil', difficulty:'Fácil',
+    solfeo:'Do Do Sol Sol La La Sol / Fa Fa Mi Mi Re Re Do / Sol Sol Fa Fa Mi Mi Re / Sol Sol Fa Fa Mi Mi Re / Do Do Sol Sol La La Sol / Fa Fa Mi Mi Re Re Do' },
+  { title:'Himno a la Alegría', composer:'L. van Beethoven', category:'Clásica', difficulty:'Fácil',
+    solfeo:'Mi Mi Fa Sol / Sol Fa Mi Re / Do Do Re Mi / Mi Re Re / Mi Mi Fa Sol / Sol Fa Mi Re / Do Do Re Mi / Re Do Do' },
+  { title:'Cumpleaños Feliz', composer:'Tradicional', category:'Popular', difficulty:'Fácil',
+    solfeo:'Sol Sol La Sol Do Si / Sol Sol La Sol Re Do / Sol Sol Sol* Mi Do Si La / Fa Fa Mi Do Re Do' },
+  { title:'Campanita del Lugar', composer:'Tradicional francesa', category:'Infantil', difficulty:'Fácil',
+    solfeo:'Do Re Mi Do / Do Re Mi Do / Mi Fa Sol / Mi Fa Sol / Sol La Sol Fa Mi Do / Sol La Sol Fa Mi Do / Do Sol, Do / Do Sol, Do' },
+  { title:'Mary Had a Little Lamb', composer:'Tradicional', category:'Infantil', difficulty:'Fácil',
+    solfeo:'Mi Re Do Re / Mi Mi Mi / Re Re Re / Mi Sol Sol / Mi Re Do Re / Mi Mi Mi Mi / Re Re Mi Re / Do' },
+  { title:'Jingle Bells', composer:'J. Pierpont', category:'Popular', difficulty:'Fácil',
+    solfeo:'Mi Mi Mi / Mi Mi Mi / Mi Sol Do Re Mi / Fa Fa Fa Fa Fa Mi Mi / Mi Re Re Mi Re Sol / Mi Mi Mi / Mi Mi Mi / Mi Sol Do Re Mi / Fa Fa Fa Fa Fa Mi Mi / Sol Sol Fa Re Do' },
+  { title:'Noche de Paz', composer:'F. Gruber', category:'Popular', difficulty:'Fácil',
+    solfeo:'Sol La Sol Mi / Sol La Sol Mi / Re* Re* Si / Do* Do* Sol / La La Do* Si La / Sol La Sol Mi' },
+  { title:'Cuando los Santos Marchan', composer:'Tradicional', category:'Popular', difficulty:'Fácil',
+    solfeo:'Do Mi Fa Sol / Do Mi Fa Sol / Do Mi Fa Sol Mi Do Mi Re / Mi Mi Re Do Do Mi Sol Sol / Fa Mi Do Mi Re Do' },
+  { title:'Au Clair de la Lune', composer:'Tradicional francesa', category:'Clásica', difficulty:'Fácil',
+    solfeo:'Do Do Do Re / Mi Mi Re / Do Re Mi Do / Do Si, Do' },
+  { title:'La Cucaracha', composer:'Tradicional mexicana', category:'Folclórica', difficulty:'Fácil',
+    solfeo:'Do Do Do Re / Mi Mi Re / Do Do Do Re / Mi Mi Re / Do Do La, Sol, / Do Re Mi Do' },
+  { title:'El Puente de Londres', composer:'Tradicional inglesa', category:'Infantil', difficulty:'Fácil',
+    solfeo:'Sol La Sol Fa Mi Fa Sol / Re Mi Fa / Mi Fa Sol / Sol La Sol Fa Mi Fa Sol / Re Sol, Mi, Do' },
+  { title:'El Titanic', composer:'James Horner', category:'Bandas Sonoras', difficulty:'Fácil',
+    solfeo:'Fa Sol La / Sol Fa Sol Do* / Do* La Fa Re Do / Fa Sol La / Sol Fa Sol Do* / Sol La Sol Do* / Do* Re* Re* Do* Sol',
+    notes:'Transcrita del cuaderno de María ✨' },
+  { title:'Canción del cuaderno', composer:'—', category:'Otro', difficulty:'Fácil',
+    solfeo:'Fa Fa Fa Fa Mi Fa / Fa Mi Fa / Sol La Sol / Fa Fa Fa Fa Mi Fa Fa Do / Fa Fa Fa Fa Mi Fa Fa Mi Fa / Sol La Sol / Fa Fa Fa Fa Mi Fa Fa Do / Sol Do* Do* / La Sol / Fa La Sol Fa Mi Fa Fa Re Do',
+    notes:'Segunda canción del cuaderno de María 💜' }
 ];
 
-/* =========================================================
-   ESTADO Y ALMACENAMIENTO
-   ========================================================= */
-const STORAGE_KEY = 'flautaMaria_v2_sheets';
-const FAV_KEY     = 'flautaMaria_v2_favs';
-const SEED_KEY    = 'flautaMaria_v2_seeded';
+/* ============ ESTADO ============ */
+const KEY = 'flautaMaria_v3_sheets';
+const SEEDED = 'flautaMaria_v3_seeded';
+const FAV = 'flautaMaria_v3_favs';
 
 let sheets = [];
 let favorites = new Set();
 
-function loadData() {
-  const seeded = localStorage.getItem(SEED_KEY);
-  const stored = localStorage.getItem(STORAGE_KEY);
+function seedAll() {
+  return SEED.map((s, i) => ({
+    ...s,
+    id: 'seed_' + i + '_' + Math.random().toString(36).slice(2, 7),
+    createdAt: Date.now() - i * 1000,
+    abc: solfeoToAbc(s.solfeo, s)
+  }));
+}
 
-  if (!seeded || !stored) {
-    sheets = SEED_SHEETS.map((s, i) => ({
-      ...s,
-      id: 'seed_' + i + '_' + Math.random().toString(36).slice(2, 8),
-      notes: '',
-      createdAt: Date.now() - i * 1000
-    }));
-    saveAll();
-    localStorage.setItem(SEED_KEY, '1');
+function load() {
+  const hasSeed = localStorage.getItem(SEEDED);
+  if (!hasSeed) {
+    sheets = seedAll();
+    localStorage.setItem(SEEDED, '1');
+    save();
   } else {
-    try { sheets = JSON.parse(stored) || []; } catch { sheets = []; }
-    if (!sheets.length) sheets = SEED_SHEETS.map((s, i) => ({ ...s, id: 'seed_' + i, notes: '' }));
+    try { sheets = JSON.parse(localStorage.getItem(KEY)) || []; } catch { sheets = []; }
+    if (!sheets.length) sheets = seedAll();
   }
-
-  const favStored = localStorage.getItem(FAV_KEY);
-  favorites = new Set(favStored ? JSON.parse(favStored) : []);
+  try { favorites = new Set(JSON.parse(localStorage.getItem(FAV) || '[]')); } catch { favorites = new Set(); }
 }
 
-function saveAll() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(sheets));
-  localStorage.setItem(FAV_KEY, JSON.stringify([...favorites]));
+function save() {
+  localStorage.setItem(KEY, JSON.stringify(sheets));
+  localStorage.setItem(FAV, JSON.stringify([...favorites]));
 }
 
-function addSheet(sheet) {
-  sheet.id = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
-  sheet.createdAt = Date.now();
-  sheets.unshift(sheet);
-  saveAll(); render();
+function getSheet(id) { return sheets.find(s => s.id === id); }
+
+function addSheet(data) {
+  data.id = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+  data.createdAt = Date.now();
+  sheets.unshift(data);
+  save(); render();
 }
 function updateSheet(id, patch) {
   const i = sheets.findIndex(s => s.id === id);
-  if (i >= 0) { sheets[i] = { ...sheets[i], ...patch }; saveAll(); render(); }
+  if (i >= 0) { sheets[i] = { ...sheets[i], ...patch, id }; save(); render(); }
 }
 function deleteSheet(id) {
+  if (!confirm('¿Eliminar esta canción?')) return;
   sheets = sheets.filter(s => s.id !== id);
   favorites.delete(id);
-  saveAll(); render();
+  save(); render();
 }
-function toggleFavorite(id) {
+function toggleFav(id) {
   favorites.has(id) ? favorites.delete(id) : favorites.add(id);
-  saveAll(); render();
+  save(); render();
 }
-function getSheet(id) { return sheets.find(s => s.id === id); }
 
-/* =========================================================
-   RENDER
-   ========================================================= */
+/* ============ RENDER ============ */
+function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
 function render() {
-  const term = document.getElementById('searchInput').value.toLowerCase().trim();
-  const cat  = document.getElementById('categoryFilter').value;
-  const diff = document.getElementById('difficultyFilter').value;
-  const sort = document.getElementById('sortFilter').value;
-
-  let list = sheets.filter(s => {
-    const t = s.title.toLowerCase();
-    const c = (s.composer || '').toLowerCase();
-    const okSearch = !term || t.includes(term) || c.includes(term);
-    const okCat = !cat || s.category === cat;
-    const okDiff = !diff || s.difficulty === diff;
-    const okFav = sort !== 'fav' || favorites.has(s.id);
-    return okSearch && okCat && okDiff && okFav;
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  const list = sheets.filter(s => {
+    if (!q) return true;
+    return (s.title || '').toLowerCase().includes(q) || (s.composer || '').toLowerCase().includes(q);
   });
 
-  if (sort === 'title')    list.sort((a, b) => a.title.localeCompare(b.title));
-  if (sort === 'composer') list.sort((a, b) => (a.composer || '').localeCompare(b.composer || ''));
-  if (sort === 'recent')   list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-
-  const container = document.getElementById('sheetList');
+  const c = document.getElementById('list');
   if (!list.length) {
-    container.innerHTML = `<div class="empty-state">
-      <div class="icon">🎶</div>
-      <h3>No hay partituras aquí</h3>
-      <p>Prueba con otros filtros o añade una nueva</p>
-    </div>`;
+    c.innerHTML = `<div class="empty"><div class="i">🎶</div><h3>No hay canciones aquí</h3><p style="margin-top:6px;font-size:14px">Prueba con otra búsqueda o añade una nueva</p></div>`;
     return;
   }
 
-  container.innerHTML = list.map(s => {
+  c.innerHTML = list.map(s => {
     const fav = favorites.has(s.id);
-    const hasAbc = s.abc && s.abc.trim();
-    return `<div class="sheet-card">
-      <div class="title">${escapeHtml(s.title)}</div>
-      <div class="composer">${escapeHtml(s.composer || '')}</div>
+    const preview = abcToSolfeoPreview(s.solfeo || '');
+    return `<div class="card" data-id="${s.id}">
+      <div class="title">${esc(s.title)}</div>
+      <div class="composer">${esc(s.composer || '')}</div>
+      ${preview ? `<div class="preview">🎵 ${esc(preview).slice(0, 90)}${preview.length > 90 ? '…' : ''}</div>` : ''}
       <div class="meta">
-        <span class="tag category">${escapeHtml(s.category || 'Otro')}</span>
-        <span class="tag difficulty">${escapeHtml(s.difficulty || 'Media')}</span>
-        ${hasAbc ? '<span class="tag abc">🎼 ABC</span>' : ''}
+        <span class="tag cat">${esc(s.category || 'Otro')}</span>
+        <span class="tag diff">${esc(s.difficulty || 'Fácil')}</span>
       </div>
       <div class="actions">
-        <button class="fav-btn ${fav ? 'active' : ''}" data-id="${s.id}" title="Favorita">${fav ? '❤️' : '🤍'}</button>
-        <button class="view-btn" data-id="${s.id}">Ver</button>
-        <button class="edit-btn" data-id="${s.id}" title="Editar">✏️</button>
-        <button class="delete-btn" data-id="${s.id}" title="Eliminar">🗑️</button>
+        <button class="fav ${fav ? 'active' : ''}" data-act="fav" data-id="${s.id}">${fav ? '❤️' : '🤍'}</button>
+        <button data-act="edit" data-id="${s.id}">✏️</button>
+        <button data-act="del" data-id="${s.id}">🗑️</button>
+        <button class="view" data-act="view" data-id="${s.id}">Ver</button>
       </div>
     </div>`;
   }).join('');
 
-  container.querySelectorAll('.fav-btn').forEach(b =>
-    b.onclick = e => { e.stopPropagation(); toggleFavorite(b.dataset.id); });
-  container.querySelectorAll('.view-btn').forEach(b =>
-    b.onclick = () => showDetail(b.dataset.id));
-  container.querySelectorAll('.edit-btn').forEach(b =>
-    b.onclick = () => openEditForm(b.dataset.id));
-  container.querySelectorAll('.delete-btn').forEach(b =>
-    b.onclick = () => { if (confirm('¿Eliminar esta partitura?')) deleteSheet(b.dataset.id); });
-}
-
-function escapeHtml(s) {
-  return String(s ?? '').replace(/[&<>"']/g, c =>
-    ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
-}
-
-/* =========================================================
-   ETIQUETAS DE NOTAS (Do-Re-Mi) — usando el propio parseo de ABCJS
-   ========================================================= */
-const ES_NAMES = { 'C':'Do','D':'Re','E':'Mi','F':'Fa','G':'Sol','A':'La','B':'Si' };
-
-function getPitchesFromAbc(abc) {
-  if (!window.ABCJS || !ABCJS.parseOnly) return [];
-  try {
-    const parsed = ABCJS.parseOnly(abc);
-    const out = [];
-    if (!parsed || !parsed[0]) return out;
-    parsed[0].lines.forEach(line => {
-      (line.staff || []).forEach(staff => {
-        (staff.voices || []).forEach(voice => {
-          (voice || []).forEach(note => {
-            if (note.el_type === 'note' && note.pitches) {
-              note.pitches.forEach(p => out.push({
-                name: p.name,
-                accidental: p.accidental || ''
-              }));
-            }
-          });
-        });
-      });
-    });
-    return out;
-  } catch { return []; }
-}
-
-function addNoteLabels(container, abc) {
-  const svg = container.querySelector('svg');
-  if (!svg) return;
-  svg.querySelectorAll('.note-label').forEach(el => el.remove());
-
-  const pitches = getPitchesFromAbc(abc);
-  const heads = svg.querySelectorAll('.abcjs-notehead');
-  const n = Math.min(pitches.length, heads.length);
-
-  for (let i = 0; i < n; i++) {
-    const p = pitches[i];
-    const head = heads[i];
-    let bbox;
-    try { bbox = head.getBBox(); } catch { continue; }
-    if (!bbox || (!bbox.width && !bbox.height)) continue;
-
-    const acc = p.accidental === '^' ? '#' : p.accidental === '_' ? 'b' : '';
-    const name = ES_NAMES[p.name] || p.name;
-
-    const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    t.setAttribute('x', bbox.x + bbox.width / 2);
-    t.setAttribute('y', bbox.y - 5);
-    t.setAttribute('class', 'note-label');
-    t.textContent = name + acc;
-    svg.appendChild(t);
-  }
-}
-
-/* =========================================================
-   REPRODUCCIÓN (sintetizador de ABCJS)
-   ========================================================= */
-let currentSynth = null;
-let currentTuneVisual = null;
-let isPlaying = false;
-
-async function togglePlay(abc) {
-  const btn = document.getElementById('playBtn');
-  if (!btn) return;
-
-  if (isPlaying && currentSynth) {
-    try { currentSynth.stop(); } catch {}
-    isPlaying = false;
-    btn.textContent = '🔊 Reproducir';
-    btn.classList.remove('playing');
-    return;
-  }
-
-  if (!abc || !abc.trim()) { alert('Esta partitura no tiene notación.'); return; }
-  if (!window.ABCJS || !ABCJS.synth || !ABCJS.synth.CreateSynth) {
-    alert('El sintetizador no está disponible.');
-    return;
-  }
-
-  try {
-    const visual = ABCJS.renderAbc('*', abc)[0];
-    currentTuneVisual = visual;
-    currentSynth = new ABCJS.synth.CreateSynth();
-    await currentSynth.init({ visualObj: visual, audioContext: new (window.AudioContext || window.webkitAudioContext)() });
-    await currentSynth.prime();
-    currentSynth.start();
-    isPlaying = true;
-    btn.textContent = '⏹ Detener';
-    btn.classList.add('playing');
-    currentSynth.onEnded = () => {
-      isPlaying = false;
-      btn.textContent = '🔊 Reproducir';
-      btn.classList.remove('playing');
+  c.querySelectorAll('[data-act]').forEach(btn => {
+    btn.onclick = e => {
+      e.stopPropagation();
+      const { act, id } = btn.dataset;
+      if (act === 'fav') toggleFav(id);
+      else if (act === 'edit') openEdit(id);
+      else if (act === 'del') deleteSheet(id);
+      else if (act === 'view') showDetail(id);
     };
-  } catch (err) {
-    console.error(err);
-    alert('No se pudo reproducir: ' + err.message);
-    isPlaying = false;
-    btn.textContent = '🔊 Reproducir';
-    btn.classList.remove('playing');
-  }
+  });
+  c.querySelectorAll('.card').forEach(card => {
+    card.onclick = () => showDetail(card.dataset.id);
+  });
 }
 
-/* =========================================================
-   DETALLE (visor + zoom + pan)
-   ========================================================= */
-let detail = { id: null, zoom: 1, panX: 0, panY: 0, showNotes: false, dragging: false, sx:0, sy:0, spx:0, spy:0 };
+/* ============ DETALLE ============ */
+let currentAudio = null;
+
+function prettySolfeo(solfeo) {
+  if (!solfeo) return '';
+  return esc(solfeo)
+    .replace(/[|/]/g, '<span class="bar">  /  </span>')
+    .replace(/\n/g, '<br>');
+}
 
 function showDetail(id) {
   const s = getSheet(id);
   if (!s) return;
+  stopAudio();
 
-  detail = { id, zoom: 1, panX: 0, panY: 0, showNotes: false, dragging: false, sx:0, sy:0, spx:0, spy:0 };
-  if (isPlaying && currentSynth) { try { currentSynth.stop(); } catch {} isPlaying = false; }
+  document.getElementById('detailTitle').textContent = '🎵 ' + s.title;
+  const body = document.getElementById('detailBody');
 
-  document.getElementById('detailTitle').textContent = `📄 ${s.title}`;
+  body.innerHTML = `
+    <div class="row-detail"><span class="lbl">Compositor</span><span class="val">${esc(s.composer || '—')}</span></div>
+    <div class="row-detail"><span class="lbl">Dificultad</span><span class="val">${esc(s.difficulty || 'Fácil')}</span></div>
+    ${s.notes ? `<div class="row-detail" style="border:none;display:block;padding:10px 0"><span class="lbl">📝 Notas:</span><div style="margin-top:4px;font-size:14px;line-height:1.6">${esc(s.notes)}</div></div>` : ''}
 
-  const content = document.getElementById('detailContent');
-  content.innerHTML = `
-    <div class="detail-row"><span class="detail-label">Compositor</span><span class="detail-value">${escapeHtml(s.composer||'')}</span></div>
-    <div class="detail-row"><span class="detail-label">Categoría</span><span class="detail-value">${escapeHtml(s.category||'Otro')}</span></div>
-    <div class="detail-row"><span class="detail-label">Dificultad</span><span class="detail-value">${escapeHtml(s.difficulty||'Media')}</span></div>
-    ${s.notes ? `<div class="notes">${escapeHtml(s.notes)}</div>` : ''}
-    <div class="viewer-wrapper" id="viewerWrapper">
-      <div class="viewer" id="viewer"><div class="loading">Cargando partitura...</div></div>
+    <div class="solfeo-block">
+      <div class="lbl">🎼 Notas (solfeo)</div>
+      <div class="txt">${prettySolfeo(s.solfeo) || '(sin notas)'}</div>
     </div>
+
     <div class="controls">
-      <button id="zoomOutBtn">−</button>
-      <span class="zoom-level" id="zoomLevel">100%</span>
-      <button id="zoomInBtn">+</button>
-      <button class="play-btn" id="playBtn">🔊 Reproducir</button>
-      <button class="toggle-btn" id="toggleNotesBtn">🎵 Notas</button>
+      <button class="play" id="playBtn">🔊 Escuchar con flauta</button>
+      <button class="toggle" id="toggleScore">🎼 Ver pentagrama</button>
     </div>
-    <div class="detail-actions">
-      <button class="edit-abc-btn" id="editAbcBtn">✏️ Editar</button>
-    </div>
+
+    <div class="score-wrap" id="scoreWrap"></div>
   `;
 
-  document.getElementById('detailOverlay').classList.add('open');
+  document.getElementById('detailModal').classList.add('open');
 
-  const viewer = document.getElementById('viewer');
-  if (s.abc && s.abc.trim()) {
-    setTimeout(() => {
-      try {
-        viewer.innerHTML = '';
-        ABCJS.renderAbc('viewer', s.abc, {
-          responsive: 'resize', add_classes: true, scale: 1.6,
-          staffwidth: 600, padding: 15, engraver: 'svg'
-        });
-        applyTransform();
-      } catch (e) {
-        viewer.innerHTML = `<div class="abc-error">Error al renderizar: ${escapeHtml(e.message)}</div>`;
-      }
-    }, 100);
-  } else {
-    viewer.innerHTML = '<div class="no-abc">Esta partitura no tiene notación musical.</div>';
+  document.getElementById('playBtn').onclick = () => togglePlay(s);
+  document.getElementById('toggleScore').onclick = () => {
+    const wrap = document.getElementById('scoreWrap');
+    const btn = document.getElementById('toggleScore');
+    if (wrap.classList.contains('show')) {
+      wrap.classList.remove('show');
+      btn.classList.remove('active');
+      btn.textContent = '🎼 Ver pentagrama';
+      return;
+    }
+    wrap.classList.add('show');
+    btn.classList.add('active');
+    btn.textContent = '🎼 Ocultar pentagrama';
+    if (!wrap.dataset.rendered) {
+      wrap.id = 'scoreWrap';
+      ABCJS.renderAbc(wrap, s.abc, { responsive: 'resize', scale: 1.4, staffwidth: 520, padding: 10 });
+      wrap.dataset.rendered = '1';
+    }
+  };
+}
+
+function stopAudio() {
+  if (currentAudio) { try { currentAudio.stop(); } catch {} currentAudio = null; }
+  const b = document.getElementById('playBtn');
+  if (b) { b.classList.remove('playing'); b.textContent = '🔊 Escuchar con flauta'; }
+}
+
+async function togglePlay(s) {
+  const btn = document.getElementById('playBtn');
+  if (currentAudio) { stopAudio(); return; }
+  if (!s.abc) { alert('Esta canción no tiene notas guardadas.'); return; }
+
+  try {
+    const visual = ABCJS.renderAbc('*', s.abc)[0];
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const synth = new ABCJS.synth.CreateSynth();
+    await synth.init({ audioContext: ctx, visualObj: visual, options: { program: 73 } });
+    await synth.prime();
+    synth.start();
+    currentAudio = synth;
+    btn.classList.add('playing');
+    btn.textContent = '⏹ Detener';
+    synth.onEnded = () => { stopAudio(); };
+  } catch (err) {
+    console.error(err);
+    alert('No se pudo reproducir: ' + err.message);
+    stopAudio();
   }
-
-  setupViewerControls(s.abc);
-  document.getElementById('editAbcBtn').onclick = () => { closeModals(); openEditForm(id); };
 }
 
-function setupViewerControls(abc) {
-  const wrapper = document.getElementById('viewerWrapper');
-  const viewer = document.getElementById('viewer');
-
-  document.getElementById('zoomInBtn').onclick = () => {
-    detail.zoom = Math.min(detail.zoom + 0.15, 3);
-    applyTransform();
-  };
-  document.getElementById('zoomOutBtn').onclick = () => {
-    detail.zoom = Math.max(detail.zoom - 0.15, 0.5);
-    applyTransform();
-  };
-  document.getElementById('playBtn').onclick = () => togglePlay(abc);
-
-  document.getElementById('toggleNotesBtn').onclick = () => {
-    detail.showNotes = !detail.showNotes;
-    const btn = document.getElementById('toggleNotesBtn');
-    btn.classList.toggle('active', detail.showNotes);
-    if (detail.showNotes) addNoteLabels(viewer, abc);
-    else viewer.querySelectorAll('.note-label').forEach(el => el.remove());
-  };
-
-  // Zoom con rueda
-  wrapper.addEventListener('wheel', e => {
-    e.preventDefault();
-    detail.zoom = e.deltaY < 0
-      ? Math.min(detail.zoom + 0.1, 3)
-      : Math.max(detail.zoom - 0.1, 0.5);
-    applyTransform();
-  }, { passive: false });
-
-  // Doble clic = reset
-  wrapper.addEventListener('dblclick', () => {
-    detail.zoom = 1; detail.panX = 0; detail.panY = 0; applyTransform();
-  });
-
-  // Drag con mouse
-  wrapper.addEventListener('mousedown', e => {
-    if (e.button !== 0) return;
-    detail.dragging = true;
-    detail.sx = e.clientX; detail.sy = e.clientY;
-    detail.spx = detail.panX; detail.spy = detail.panY;
-    e.preventDefault();
-  });
-  document.addEventListener('mousemove', e => {
-    if (!detail.dragging) return;
-    detail.panX = detail.spx + (e.clientX - detail.sx);
-    detail.panY = detail.spy + (e.clientY - detail.sy);
-    applyTransform();
-  });
-  document.addEventListener('mouseup', () => { detail.dragging = false; });
-
-  // Drag táctil
-  wrapper.addEventListener('touchstart', e => {
-    if (e.touches.length !== 1) return;
-    detail.dragging = true;
-    detail.sx = e.touches[0].clientX; detail.sy = e.touches[0].clientY;
-    detail.spx = detail.panX; detail.spy = detail.panY;
-  }, { passive: true });
-  wrapper.addEventListener('touchmove', e => {
-    if (!detail.dragging || e.touches.length !== 1) return;
-    detail.panX = detail.spx + (e.touches[0].clientX - detail.sx);
-    detail.panY = detail.spy + (e.touches[0].clientY - detail.sy);
-    applyTransform();
-  }, { passive: true });
-  wrapper.addEventListener('touchend', () => { detail.dragging = false; });
-}
-
-function applyTransform() {
-  const viewer = document.getElementById('viewer');
-  if (!viewer) return;
-  viewer.style.transform = `translate(${detail.panX}px, ${detail.panY}px) scale(${detail.zoom})`;
-  const zl = document.getElementById('zoomLevel');
-  if (zl) zl.textContent = Math.round(detail.zoom * 100) + '%';
-}
-
-/* =========================================================
-   FORMULARIO
-   ========================================================= */
-function openAddForm() {
-  document.getElementById('modalTitle').textContent = '📝 Añadir partitura';
+/* ============ EDITAR / AÑADIR ============ */
+function openAdd() {
+  document.getElementById('editTitle').textContent = '📝 Añadir canción';
   document.getElementById('editId').value = '';
   document.getElementById('sheetForm').reset();
-  document.getElementById('formCategory').value = 'Clásica';
-  document.getElementById('formDifficulty').value = 'Fácil';
-  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById('fCategory').value = 'Popular';
+  document.getElementById('fDifficulty').value = 'Fácil';
+  document.getElementById('editModal').classList.add('open');
 }
-function openEditForm(id) {
+function openEdit(id) {
   const s = getSheet(id);
   if (!s) return;
-  document.getElementById('modalTitle').textContent = '✏️ Editar partitura';
+  document.getElementById('editTitle').textContent = '✏️ Editar canción';
   document.getElementById('editId').value = id;
-  document.getElementById('formTitle').value = s.title || '';
-  document.getElementById('formComposer').value = s.composer || '';
-  document.getElementById('formCategory').value = s.category || 'Clásica';
-  document.getElementById('formDifficulty').value = s.difficulty || 'Fácil';
-  document.getElementById('formAbc').value = s.abc || '';
-  document.getElementById('formNotes').value = s.notes || '';
-  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById('fTitle').value = s.title || '';
+  document.getElementById('fComposer').value = s.composer || '';
+  document.getElementById('fCategory').value = s.category || 'Popular';
+  document.getElementById('fDifficulty').value = s.difficulty || 'Fácil';
+  document.getElementById('fSolfeo').value = s.solfeo || '';
+  document.getElementById('fNotes').value = s.notes || '';
+  document.getElementById('editModal').classList.add('open');
 }
 function closeModals() {
-  if (isPlaying && currentSynth) { try { currentSynth.stop(); } catch {} isPlaying = false; }
-  document.getElementById('modalOverlay').classList.remove('open');
-  document.getElementById('detailOverlay').classList.remove('open');
+  stopAudio();
+  document.getElementById('editModal').classList.remove('open');
+  document.getElementById('detailModal').classList.remove('open');
 }
 
 document.getElementById('sheetForm').addEventListener('submit', e => {
   e.preventDefault();
   const id = document.getElementById('editId').value;
-  const data = {
-    title: document.getElementById('formTitle').value.trim(),
-    composer: document.getElementById('formComposer').value.trim(),
-    category: document.getElementById('formCategory').value,
-    difficulty: document.getElementById('formDifficulty').value,
-    abc: document.getElementById('formAbc').value.trim(),
-    notes: document.getElementById('formNotes').value.trim()
-  };
-  if (!data.title || !data.composer) { alert('Título y compositor son obligatorios'); return; }
+  const title = document.getElementById('fTitle').value.trim();
+  const composer = document.getElementById('fComposer').value.trim() || 'Anónimo';
+  const category = document.getElementById('fCategory').value;
+  const difficulty = document.getElementById('fDifficulty').value;
+  const solfeo = document.getElementById('fSolfeo').value.trim();
+  const notes = document.getElementById('fNotes').value.trim();
+
+  if (!title || !solfeo) { alert('Título y notas en solfeo son obligatorios.'); return; }
+
+  const abc = solfeoToAbc(solfeo, { title, composer });
+  const data = { title, composer, category, difficulty, solfeo, notes, abc };
+
   id ? updateSheet(id, data) : addSheet(data);
   closeModals();
 });
 
-/* =========================================================
-   INSTALACIÓN PWA
-   ========================================================= */
-let deferredPrompt = null;
+/* ============ INSTALAR PWA ============ */
+let promptInstall = null;
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
-  deferredPrompt = e;
-  document.getElementById('installBanner').style.display = 'block';
+  promptInstall = e;
+  document.getElementById('installBar').style.display = 'block';
 });
-document.getElementById('installBtn').addEventListener('click', async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    deferredPrompt = null;
-    document.getElementById('installBanner').style.display = 'none';
+document.getElementById('installBtn').onclick = async () => {
+  if (promptInstall) {
+    promptInstall.prompt();
+    await promptInstall.userChoice;
+    promptInstall = null;
+    document.getElementById('installBar').style.display = 'none';
   }
-});
+};
 
-/* =========================================================
-   SERVICE WORKER
-   ========================================================= */
+/* ============ SERVICE WORKER ============ */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(() => console.log('SW registrado'))
-      .catch(err => console.warn('SW fallo:', err));
+    navigator.serviceWorker.register('./sw.js').catch(e => console.warn('SW', e));
   });
 }
 
-/* =========================================================
-   INICIALIZACIÓN
-   ========================================================= */
+/* ============ INIT ============ */
 document.addEventListener('DOMContentLoaded', () => {
-  loadData();
+  load();
   render();
-
   document.getElementById('searchInput').addEventListener('input', render);
-  document.getElementById('categoryFilter').addEventListener('change', render);
-  document.getElementById('difficultyFilter').addEventListener('change', render);
-  document.getElementById('sortFilter').addEventListener('change', render);
-  document.getElementById('addSheetBtn').addEventListener('click', openAddForm);
-  document.getElementById('cancelForm').addEventListener('click', closeModals);
-  document.getElementById('closeDetail').addEventListener('click', closeModals);
-  document.getElementById('modalOverlay').addEventListener('click', e => {
-    if (e.target === e.currentTarget) closeModals();
-  });
-  document.getElementById('detailOverlay').addEventListener('click', e => {
-    if (e.target === e.currentTarget) closeModals();
-  });
+  document.getElementById('addBtn').onclick = openAdd;
+  document.getElementById('cancelBtn').onclick = closeModals;
+  document.getElementById('closeBtn').onclick = closeModals;
+  document.getElementById('editModal').onclick = e => { if (e.target === e.currentTarget) closeModals(); };
+  document.getElementById('detailModal').onclick = e => { if (e.target === e.currentTarget) closeModals(); };
 
-  loadABCJS()
-    .then(() => console.log('✅ ABCJS listo'))
-    .catch(err => {
-      console.error(err);
-      alert('⚠️ No se pudo cargar la librería musical. Conéctate a internet una vez y recarga.');
-    });
+  loadABCJS().then(() => console.log('✅ Listo')).catch(() => {
+    alert('⚠️ No se pudo cargar la librería musical. Conéctate a internet una vez y recarga.');
+  });
 });
 </script>
 </body>
