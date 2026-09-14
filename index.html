@@ -469,7 +469,7 @@ function unlockBody() {
 }
 
 /* =========================================================
-   SOLFEO → ABC
+   SOLFEO → ABC  (%%MIDI program 73 colocado ANTES de K:)
    ========================================================= */
 const MAP = { do:'C', re:'D', mi:'E', fa:'F', sol:'G', la:'A', si:'B' };
 function solfeoToAbc(solfeo, meta = {}) {
@@ -498,14 +498,13 @@ function solfeoToAbc(solfeo, meta = {}) {
     else if (lo) letter = letter + ',';
     notes.push(letter);
   }
-  return `X:1\nT:${title}\nC:${composer}\nM:4/4\nL:1/4\nQ:1/4=95\nK:${key}\n%%MIDI program 73\n${notes.join(' ')} |`;
+  return `X:1\nT:${title}\nC:${composer}\nM:4/4\nL:1/4\nQ:1/4=95\n%%MIDI program 73\nK:${key}\n${notes.join(' ')} |`;
 }
 
 /* =========================================================
-   REPERTORIO — Canciones fáciles y populares para flauta
+   REPERTORIO
    ========================================================= */
 const SEED = [
-  /* --- Clásicos infantiles --- */
   { title:'Estrellita', composer:'Tradicional', category:'Infantil', difficulty:'Fácil',
     solfeo:'Do Do Sol Sol La La Sol / Fa Fa Mi Mi Re Re Do / Sol Sol Fa Fa Mi Mi Re / Sol Sol Fa Fa Mi Mi Re / Do Do Sol Sol La La Sol / Fa Fa Mi Mi Re Re Do' },
 
@@ -524,7 +523,6 @@ const SEED = [
   { title:'Au Clair de la Lune', composer:'Tradicional francesa', category:'Clásica', difficulty:'Fácil',
     solfeo:'Do Do Do Re / Mi Mi Re / Do Re Mi Do / Do Si, Do / Do Do Do Re / Mi Mi Re / Do Re Mi Do / Do Si, Do / Do Do Do Re / Mi Mi Re / Do Re Mi Do / Do Si, Do' },
 
-  /* --- Clásicos populares --- */
   { title:'Himno a la Alegría', composer:'L. van Beethoven', category:'Clásica', difficulty:'Fácil',
     solfeo:'Mi Mi Fa Sol / Sol Fa Mi Re / Do Do Re Mi / Mi Re Re / Mi Mi Fa Sol / Sol Fa Mi Re / Do Do Re Mi / Re Do Do / Re Re Mi Do / Re Mi Fa Mi Do / Re Mi Fa Mi Re Do Re Sol, / Mi Mi Fa Sol / Sol Fa Mi Re / Do Do Re Mi / Re Do Do' },
 
@@ -544,7 +542,6 @@ const SEED = [
   { title:'La Cucaracha', composer:'Tradicional mexicana', category:'Folclórica', difficulty:'Fácil',
     solfeo:'Do Do Do Re / Mi Mi Re / Do Do Do Re / Mi Mi Re / Do Do La, Sol, / Do Re Mi Do / Do Do Do Re / Mi Mi Re / Do Do Do Re / Mi Mi Re / Do Do La, Sol, / Do Re Mi Do' },
 
-  /* --- Navidad --- */
   { title:'Noche de Paz', composer:'F. Gruber', category:'Popular', difficulty:'Fácil',
     solfeo:'Sol La Sol Mi / Sol La Sol Mi / Re* Re* Si / Do* Do* Sol / La La Do* Si La / Sol La Sol Mi / Sol La Sol Mi / Re* Re* Si / Do* Do* Sol / La La Do* Si La / Sol La Sol Mi' },
 
@@ -561,7 +558,6 @@ const SEED = [
     solfeo:'Mi Sol Sol Fa Mi Re Do / Re Mi Fa Mi Re Do Re / Mi Sol Sol Fa Mi Re Do / Re Mi Fa Mi Re Do Re Do',
     notes:'O Tannenbaum' },
 
-  /* --- Del cuaderno de María --- */
   { title:'El Titanic', composer:'James Horner', category:'Bandas Sonoras', difficulty:'Fácil',
     solfeo:'Fa Sol La / Sol Fa Sol Do* / Do* La Fa Re Do / Fa Sol La / Sol Fa Sol Do* / Sol La Sol Do* / Do* Re* Re* Do* Sol',
     notes:'Transcrita del cuaderno de María ✨' },
@@ -706,7 +702,6 @@ function render() {
    DETALLE
    ========================================================= */
 let currentAudio = null;
-let currentAudioStartedAt = 0;
 
 function showDetail(id) {
   const s = getSheet(id);
@@ -768,7 +763,6 @@ function showDetail(id) {
 function stopAudio() {
   const synthToStop = currentAudio;
   currentAudio = null;
-  currentAudioStartedAt = 0;
   if (synthToStop) {
     try { synthToStop.stop(); } catch (e) {}
   }
@@ -790,39 +784,41 @@ async function togglePlay(s) {
   try {
     const visual = ABCJS.renderAbc('*', s.abc)[0];
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+    // ⚠️ CLAVE en móvil: el navegador suspende el audio hasta que hay interacción
+    if (ctx.state === 'suspended') {
+      try { await ctx.resume(); } catch (e) {}
+    }
+
     const synth = new ABCJS.synth.CreateSynth();
 
-    // ✅ El callback onEnded va DENTRO de options (así lo espera ABCJS 6)
-    await synth.init({
-      audioContext: ctx,
-      visualObj: visual,
-      options: {
-        program: 73,
-        onEnded: () => { stopAudio(); }
-      }
-    });
+    // Forma que SÍ funciona en ABCJS 6
+    await synth.init({ audioContext: ctx, visualObj: visual });
     await synth.prime();
 
-    // Fallback: por si la versión de ABCJS ignora options.onEnded
-    try { synth.onEnded = () => { stopAudio(); }; } catch (e) {}
-
     currentAudio = synth;
-    currentAudioStartedAt = Date.now();
     synth.start();
 
     btn.classList.add('playing');
     btn.textContent = '⏹ Detener';
 
-    // Fallback adicional: temporizador según duración estimada
-    const estimatedMs = (visual.getTotalTime ? visual.getTotalTime() * 1000 : 60000) + 800;
-    setTimeout(() => {
-      // Solo detener si sigue siendo el mismo synth y no fue detenido manualmente
-      if (currentAudio === synth) stopAudio();
-    }, estimatedMs);
+    // Detección de fin sin depender de onEnded (sondeo de tiempo)
+    const totalSec = (visual.getTotalTime && visual.getTotalTime()) ? visual.getTotalTime() : 60;
+    const startTs = Date.now();
+    const poll = () => {
+      if (currentAudio !== synth) return; // fue detenido o reemplazado
+      const elapsed = (Date.now() - startTs) / 1000;
+      if (elapsed >= totalSec + 1) {
+        stopAudio();
+      } else {
+        setTimeout(poll, 300);
+      }
+    };
+    poll();
 
   } catch (err) {
-    console.error(err);
-    alert('No se pudo reproducir: ' + err.message);
+    console.error('Error de reproducción:', err);
+    alert('No se pudo reproducir: ' + (err.message || err));
     stopAudio();
   }
 }
