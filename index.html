@@ -1,1610 +1,876 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Partituras de Maria · Partituras</title>
-    <link rel="manifest" id="manifestLink">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <style>
-        /* ===== RESET Y VARIABLES ===== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --primary: #7C4D6B;
-            --primary-light: #A77A96;
-            --primary-dark: #4F3343;
-            --primary-gradient: linear-gradient(135deg, #7C4D6B, #A77A96);
-            --accent: #E8D0DF;
-            --bg: #F7F2F5;
-            --surface: #FFFFFF;
-            --text: #2C1E26;
-            --text-light: #5A4A54;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-            --shadow-md: 0 8px 30px rgba(0,0,0,0.08);
-            --shadow-lg: 0 20px 60px rgba(0,0,0,0.12);
-            --radius: 16px;
-            --transition: 0.25s ease;
-            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        html { scroll-behavior: smooth; }
-        body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--text);
-            padding: 0 0 80px 0;
-            min-height: 100vh;
-            position: relative;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        .watermark {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            font-size: 13px;
-            color: rgba(124,77,107,0.12);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            pointer-events: none;
-            z-index: 999;
-            text-align: right;
-            line-height: 1.5;
-            transform: rotate(-2deg);
-            font-style: italic;
-            backdrop-filter: blur(4px);
-            padding: 6px 16px;
-            border-radius: 40px;
-            background: rgba(255,255,255,0.4);
-            border: 1px solid rgba(124,77,107,0.06);
-            user-select: none;
-        }
-        .watermark strong { color: rgba(124,77,107,0.2); }
-        .app-header {
-            background: var(--surface);
-            backdrop-filter: blur(12px);
-            padding: 18px 24px 14px;
-            box-shadow: var(--shadow-sm);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(124,77,107,0.06);
-        }
-        .app-header .title-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .app-header h1 {
-            font-size: 24px;
-            font-weight: 700;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.5px;
-        }
-        .app-header .sub {
-            font-size: 13px;
-            color: var(--text-light);
-            opacity: 0.7;
-            margin-top: 2px;
-            font-weight: 400;
-            -webkit-text-fill-color: var(--text-light);
-        }
-        .app-header .dedication-badge {
-            font-size: 11px;
-            background: var(--accent);
-            color: var(--primary-dark);
-            padding: 4px 16px;
-            border-radius: 40px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            white-space: nowrap;
-            border: 1px solid rgba(124,77,107,0.1);
-            backdrop-filter: blur(4px);
-        }
-        .install-wrapper {
-            background: var(--surface);
-            padding: 12px 20px;
-            border-bottom: 1px solid rgba(124,77,107,0.06);
-            text-align: center;
-        }
-        .install-manual-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 40px;
-            padding: 10px 28px;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 4px 14px rgba(124,77,107,0.25);
-            font-family: var(--font);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .install-manual-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 28px rgba(124,77,107,0.35);
-        }
-        .install-manual-btn:active { transform: scale(0.96); }
-        .search-section {
-            padding: 16px 24px 12px;
-            background: var(--surface);
-            border-bottom: 1px solid rgba(124,77,107,0.06);
-            position: sticky;
-            top: 76px;
-            z-index: 90;
-            backdrop-filter: blur(8px);
-        }
-        .search-wrapper {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .search-box {
-            flex: 1;
-            min-width: 200px;
-            position: relative;
-        }
-        .search-box input {
-            width: 100%;
-            padding: 12px 16px 12px 44px;
-            border: 1.5px solid #E4D8DF;
-            border-radius: 40px;
-            font-size: 15px;
-            font-family: var(--font);
-            background: var(--bg);
-            transition: var(--transition);
-            color: var(--text);
-            outline: none;
-        }
-        .search-box input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(124,77,107,0.1);
-            background: white;
-        }
-        .search-box .icon {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-light);
-            opacity: 0.5;
-            font-size: 18px;
-        }
-        .filter-group {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .filter-group select {
-            padding: 10px 16px;
-            border: 1.5px solid #E4D8DF;
-            border-radius: 40px;
-            background: var(--bg);
-            font-family: var(--font);
-            font-size: 14px;
-            color: var(--text);
-            outline: none;
-            transition: var(--transition);
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A4A54' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
-            padding-right: 38px;
-            min-width: 130px;
-        }
-        .filter-group select:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(124,77,107,0.08);
-        }
-        .btn-add {
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 40px;
-            padding: 10px 24px;
-            font-weight: 600;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: 0 4px 14px rgba(124,77,107,0.25);
-            font-family: var(--font);
-            white-space: nowrap;
-        }
-        .btn-add:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(124,77,107,0.35); }
-        .btn-add:active { transform: scale(0.96); }
-        .sheet-list {
-            padding: 20px 24px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .sheet-card {
-            background: var(--surface);
-            border-radius: var(--radius);
-            padding: 20px 24px 16px;
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-            border: 1px solid rgba(124,77,107,0.04);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-        .sheet-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
-            border-color: rgba(124,77,107,0.08);
-        }
-        .sheet-card .title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 2px;
-        }
-        .sheet-card .composer {
-            font-size: 14px;
-            color: var(--text-light);
-            font-weight: 400;
-            margin-bottom: 8px;
-        }
-        .sheet-card .meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px 12px;
-            font-size: 12px;
-            color: var(--text-light);
-            margin-top: 4px;
-            align-items: center;
-        }
-        .sheet-card .meta .category {
-            background: var(--accent);
-            color: var(--primary-dark);
-            padding: 2px 14px;
-            border-radius: 30px;
-            font-weight: 500;
-            font-size: 11px;
-            letter-spacing: 0.3px;
-        }
-        .sheet-card .meta .difficulty {
-            background: #EDE4EA;
-            color: #4F3343;
-            padding: 2px 14px;
-            border-radius: 30px;
-            font-size: 11px;
-            font-weight: 500;
-        }
-        .sheet-card .abc-badge {
-            background: #DDE8F0;
-            color: #1F4A7A;
-            padding: 2px 14px;
-            border-radius: 30px;
-            font-size: 11px;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .sheet-card .actions {
-            margin-top: 16px;
-            display: flex;
-            gap: 6px;
-            align-items: center;
-            justify-content: flex-end;
-            border-top: 1px solid rgba(124,77,107,0.06);
-            padding-top: 14px;
-        }
-        .sheet-card .actions button {
-            background: none;
-            border: none;
-            font-size: 18px;
-            cursor: pointer;
-            transition: var(--transition);
-            padding: 4px 10px;
-            border-radius: 30px;
-            color: var(--text-light);
-            opacity: 0.5;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-family: var(--font);
-        }
-        .sheet-card .actions button:hover { opacity: 1; background: rgba(124,77,107,0.06); }
-        .sheet-card .actions .fav-btn.active { color: #D43F5E; opacity: 1; }
-        .sheet-card .actions .view-btn {
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--primary);
-            opacity: 0.8;
-            background: rgba(124,77,107,0.08);
-            padding: 4px 16px;
-            border-radius: 30px;
-        }
-        .sheet-card .actions .view-btn:hover { background: rgba(124,77,107,0.15); opacity: 1; }
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-light);
-            grid-column: 1 / -1;
-        }
-        .empty-state .icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
-        .empty-state h3 { font-weight: 500; margin-bottom: 6px; }
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.3);
-            backdrop-filter: blur(6px);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .modal-overlay.open { display: flex; }
-        .modal {
-            background: var(--surface);
-            border-radius: 28px;
-            max-width: 620px;
-            width: 100%;
-            padding: 32px 32px 28px;
-            box-shadow: var(--shadow-lg);
-            animation: modalIn 0.3s ease;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.95) translateY(12px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        .modal h2 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: var(--text);
-            letter-spacing: -0.3px;
-        }
-        .modal label {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-light);
-            display: block;
-            margin-top: 16px;
-            margin-bottom: 4px;
-        }
-        .modal input, .modal select, .modal textarea {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1.5px solid #E4D8DF;
-            border-radius: 14px;
-            font-family: var(--font);
-            font-size: 15px;
-            background: var(--bg);
-            transition: var(--transition);
-            color: var(--text);
-            outline: none;
-        }
-        .modal input:focus, .modal select:focus, .modal textarea:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(124,77,107,0.08);
-        }
-        .modal textarea {
-            min-height: 140px;
-            resize: vertical;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-        }
-        .modal .form-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 28px;
-            justify-content: flex-end;
-        }
-        .modal .form-actions button {
-            padding: 12px 32px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 15px;
-            border: none;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: var(--font);
-        }
-        .modal .form-actions .btn-cancel {
-            background: #F0E8ED;
-            color: var(--text-light);
-        }
-        .modal .form-actions .btn-cancel:hover { background: #E5D9E0; }
-        .modal .form-actions .btn-submit {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 16px rgba(124,77,107,0.25);
-        }
-        .modal .form-actions .btn-submit:hover {
-            box-shadow: 0 6px 28px rgba(124,77,107,0.35);
-            transform: translateY(-1px);
-        }
-        .detail-content .sheet-viewer-wrapper {
-            position: relative;
-            margin-top: 20px;
-            background: #FFFFFF;
-            border-radius: 16px;
-            border: 1px solid #ECDFE6;
-            overflow: hidden;
-            touch-action: none;
-            box-shadow: inset 0 2px 8px rgba(0,0,0,0.02);
-            cursor: grab;
-            min-height: 200px;
-            max-height: 60vh;
-        }
-        .detail-content .sheet-viewer-wrapper:active {
-            cursor: grabbing;
-        }
-        .detail-content .sheet-viewer {
-            width: 100%;
-            height: 100%;
-            overflow: visible;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            transform-origin: 0 0;
-            transition: transform 0.05s linear;
-            padding: 20px;
-            min-height: 200px;
-        }
-        .detail-content .sheet-viewer svg {
-            max-width: 100%;
-            height: auto;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-        .detail-content .sheet-viewer .no-abc,
-        .detail-content .sheet-viewer .abc-error {
-            color: var(--text-light);
-            font-size: 15px;
-            text-align: center;
-            padding: 30px 20px;
-        }
-        .detail-content .sheet-viewer .abc-error { color: #D43F5E; }
-        .zoom-controls {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .zoom-controls button {
-            background: var(--surface);
-            border: 1px solid #E4D8DF;
-            border-radius: 30px;
-            padding: 6px 16px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: var(--font);
-            color: var(--text);
-            box-shadow: var(--shadow-sm);
-        }
-        .zoom-controls button:hover {
-            background: var(--accent);
-            border-color: var(--primary);
-        }
-        .zoom-controls .zoom-level {
-            font-size: 14px;
-            font-weight: 500;
-            min-width: 50px;
-            text-align: center;
-            color: var(--text-light);
-        }
-        .toggle-notes-btn {
-            background: var(--accent);
-            border: none;
-            border-radius: 30px;
-            padding: 6px 16px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: var(--font);
-            color: var(--primary-dark);
-            box-shadow: var(--shadow-sm);
-        }
-        .toggle-notes-btn:hover {
-            background: #D8B8CA;
-        }
-        .toggle-notes-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-        .play-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 6px 16px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: var(--font);
-            box-shadow: var(--shadow-sm);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .play-btn:hover {
-            background: var(--primary-dark);
-            transform: scale(1.02);
-        }
-        .play-btn:active {
-            transform: scale(0.95);
-        }
-        .play-btn.playing {
-            background: #D43F5E;
-        }
-        .detail-content .detail-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(124,77,107,0.06);
-        }
-        .detail-content .detail-label { font-weight: 500; color: var(--text-light); }
-        .detail-content .detail-value { font-weight: 500; }
-        .detail-content .notes {
-            margin-top: 16px;
-            background: var(--bg);
-            padding: 16px 20px;
-            border-radius: 14px;
-            font-size: 14px;
-            line-height: 1.6;
-            white-space: pre-wrap;
-        }
-        .detail-close-btn {
-            margin-top: 24px;
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 40px;
-            background: var(--primary);
-            color: white;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-        .detail-close-btn:hover { background: var(--primary-dark); }
-        .edit-abc-btn {
-            margin-top: 12px;
-            background: var(--accent);
-            color: var(--primary-dark);
-            border: none;
-            border-radius: 40px;
-            padding: 8px 20px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: var(--font);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .edit-abc-btn:hover { background: #D8B8CA; transform: translateY(-1px); }
-        .detail-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            margin-top: 8px;
-            flex-wrap: wrap;
-        }
-        .footer {
-            text-align: center;
-            padding: 30px 20px 16px;
-            color: var(--text-light);
-            font-size: 13px;
-            opacity: 0.6;
-            border-top: 1px solid rgba(124,77,107,0.06);
-            margin-top: 20px;
-            background: var(--bg);
-        }
-        .footer .heart { color: #D43F5E; }
-        @media (max-width: 640px) {
-            .app-header { padding: 14px 16px 10px; }
-            .app-header h1 { font-size: 20px; }
-            .app-header .dedication-badge { font-size: 10px; padding: 2px 12px; }
-            .search-section { padding: 12px 16px 10px; }
-            .search-wrapper { flex-direction: column; align-items: stretch; }
-            .filter-group { justify-content: stretch; }
-            .filter-group select { flex: 1; min-width: 0; }
-            .btn-add { justify-content: center; }
-            .sheet-list { padding: 12px 16px; grid-template-columns: 1fr; }
-            .modal { padding: 24px 20px; max-width: 100%; }
-            .watermark { font-size: 10px; bottom: 12px; right: 12px; padding: 4px 12px; }
-            .install-manual-btn { width: 100%; justify-content: center; }
-        }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 10px; }
-        .note-label {
-            font-size: 11px;
-            font-weight: 700;
-            fill: #D43F5E;
-            opacity: 0.95;
-            pointer-events: none;
-            user-select: none;
-            text-anchor: middle;
-            dominant-baseline: central;
-            font-family: var(--font);
-        }
-        .note-label-bg {
-            fill: rgba(255,255,255,0.85);
-            rx: 4;
-            ry: 4;
-            stroke: #D43F5E;
-            stroke-width: 1;
-        }
-        .abcjs-loading {
-            color: var(--text-light);
-            font-size: 14px;
-            text-align: center;
-            padding: 20px;
-        }
-        .abcjs-loading .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(124,77,107,0.1);
-            border-radius: 50%;
-            border-top-color: var(--primary);
-            animation: spin 0.8s linear infinite;
-            margin-right: 10px;
-            vertical-align: middle;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        .abcjs-loading .retry-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 6px 20px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: var(--transition);
-            font-family: var(--font);
-        }
-        .abcjs-loading .retry-btn:hover {
-            background: var(--primary-dark);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#7C4D6B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Flauta María">
+<title>Partituras de María · Flauta</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/svg+xml" href="./icon.svg">
+<link rel="apple-touch-icon" href="./icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --primary:#7C4D6B;--primary-light:#A77A96;--primary-dark:#4F3343;
+  --primary-gradient:linear-gradient(135deg,#7C4D6B,#A77A96);
+  --accent:#E8D0DF;--bg:#F7F2F5;--surface:#FFFFFF;
+  --text:#2C1E26;--text-light:#5A4A54;
+  --shadow-sm:0 2px 8px rgba(0,0,0,.04);
+  --shadow-md:0 8px 30px rgba(0,0,0,.08);
+  --shadow-lg:0 20px 60px rgba(0,0,0,.12);
+  --radius:16px;--transition:.25s ease;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);background:var(--bg);color:var(--text);
+  padding:0 0 60px;min-height:100vh;-webkit-font-smoothing:antialiased;
+}
+.app-header{
+  background:var(--surface);padding:16px 24px 14px;box-shadow:var(--shadow-sm);
+  position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(124,77,107,.06);
+}
+.app-header .title-row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.app-header h1{
+  font-size:22px;font-weight:700;background:var(--primary-gradient);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:-.5px;
+}
+.app-header .sub{font-size:12px;color:var(--text-light);opacity:.7;margin-top:2px}
+.dedication-badge{
+  font-size:11px;background:var(--accent);color:var(--primary-dark);
+  padding:4px 14px;border-radius:40px;font-weight:600;white-space:nowrap;
+  border:1px solid rgba(124,77,107,.1);
+}
+.search-section{
+  padding:14px 24px 12px;background:var(--surface);
+  border-bottom:1px solid rgba(124,77,107,.06);position:sticky;top:64px;z-index:90;
+}
+.search-wrapper{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.search-box{flex:1;min-width:180px;position:relative}
+.search-box input{
+  width:100%;padding:11px 16px 11px 42px;border:1.5px solid #E4D8DF;border-radius:40px;
+  font-size:15px;font-family:var(--font);background:var(--bg);color:var(--text);outline:none;
+  transition:var(--transition);
+}
+.search-box input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(124,77,107,.1);background:#fff}
+.search-box .icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:.5;font-size:16px}
+.filter-group{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.filter-group select{
+  padding:9px 34px 9px 14px;border:1.5px solid #E4D8DF;border-radius:40px;
+  background:var(--bg);font-family:var(--font);font-size:13px;color:var(--text);
+  outline:none;cursor:pointer;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A4A54' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;
+  transition:var(--transition);
+}
+.filter-group select:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(124,77,107,.08)}
+.btn-add{
+  background:var(--primary);color:#fff;border:none;border-radius:40px;padding:10px 22px;
+  font-weight:600;font-size:14px;display:flex;align-items:center;gap:6px;cursor:pointer;
+  transition:var(--transition);box-shadow:0 4px 14px rgba(124,77,107,.25);
+  font-family:var(--font);white-space:nowrap;
+}
+.btn-add:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(124,77,107,.35)}
+.btn-add:active{transform:scale(.96)}
+.sheet-list{padding:20px 24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.sheet-card{
+  background:var(--surface);border-radius:var(--radius);padding:18px 22px 14px;
+  box-shadow:var(--shadow-sm);transition:var(--transition);
+  border:1px solid rgba(124,77,107,.04);display:flex;flex-direction:column;
+}
+.sheet-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);border-color:rgba(124,77,107,.08)}
+.sheet-card .title{font-size:17px;font-weight:600;color:var(--text);margin-bottom:2px;line-height:1.3}
+.sheet-card .composer{font-size:13px;color:var(--text-light);margin-bottom:8px}
+.sheet-card .meta{display:flex;flex-wrap:wrap;gap:6px 8px;font-size:11px;align-items:center}
+.sheet-card .meta .tag{padding:3px 12px;border-radius:30px;font-weight:500;letter-spacing:.2px}
+.tag.category{background:var(--accent);color:var(--primary-dark)}
+.tag.difficulty{background:#EDE4EA;color:#4F3343}
+.tag.abc{background:#DDE8F0;color:#1F4A7A}
+.sheet-card .actions{
+  margin-top:14px;display:flex;gap:4px;align-items:center;justify-content:flex-end;
+  border-top:1px solid rgba(124,77,107,.06);padding-top:12px;
+}
+.sheet-card .actions button{
+  background:none;border:none;font-size:16px;cursor:pointer;transition:var(--transition);
+  padding:6px 10px;border-radius:30px;color:var(--text-light);opacity:.55;
+  display:flex;align-items:center;font-family:var(--font);
+}
+.sheet-card .actions button:hover{opacity:1;background:rgba(124,77,107,.06)}
+.sheet-card .actions .fav-btn.active{color:#D43F5E;opacity:1}
+.sheet-card .actions .view-btn{
+  font-size:13px;font-weight:600;color:var(--primary);opacity:1;
+  background:rgba(124,77,107,.08);padding:6px 16px;border-radius:30px;
+}
+.sheet-card .actions .view-btn:hover{background:rgba(124,77,107,.15)}
+.empty-state{text-align:center;padding:60px 20px;color:var(--text-light);grid-column:1/-1}
+.empty-state .icon{font-size:48px;margin-bottom:12px;opacity:.4}
+.empty-state h3{font-weight:500;margin-bottom:6px}
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(6px);
+  z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--surface);border-radius:24px;max-width:620px;width:100%;
+  padding:28px 28px 24px;box-shadow:var(--shadow-lg);animation:modalIn .3s ease;
+  max-height:92vh;overflow-y:auto;
+}
+@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal h2{font-size:22px;font-weight:700;margin-bottom:20px;letter-spacing:-.3px}
+.modal label{font-size:13px;font-weight:500;color:var(--text-light);display:block;margin-top:14px;margin-bottom:4px}
+.modal input,.modal select,.modal textarea{
+  width:100%;padding:11px 14px;border:1.5px solid #E4D8DF;border-radius:12px;
+  font-family:var(--font);font-size:15px;background:var(--bg);transition:var(--transition);
+  color:var(--text);outline:none;
+}
+.modal input:focus,.modal select:focus,.modal textarea:focus{
+  border-color:var(--primary);box-shadow:0 0 0 4px rgba(124,77,107,.08)
+}
+.modal textarea{min-height:130px;resize:vertical;font-family:'Courier New',monospace;font-size:13px}
+.modal .form-actions{display:flex;gap:10px;margin-top:22px;justify-content:flex-end}
+.modal .form-actions button{
+  padding:11px 26px;border-radius:40px;font-weight:600;font-size:14px;border:none;
+  cursor:pointer;transition:var(--transition);font-family:var(--font);
+}
+.btn-cancel{background:#F0E8ED;color:var(--text-light)}
+.btn-cancel:hover{background:#E5D9E0}
+.btn-submit{background:var(--primary);color:#fff;box-shadow:0 4px 16px rgba(124,77,107,.25)}
+.btn-submit:hover{box-shadow:0 6px 28px rgba(124,77,107,.35);transform:translateY(-1px)}
+.detail-content .detail-row{
+  display:flex;justify-content:space-between;padding:8px 0;
+  border-bottom:1px solid rgba(124,77,107,.06);font-size:14px;
+}
+.detail-content .detail-label{color:var(--text-light);font-weight:500}
+.detail-content .detail-value{font-weight:500}
+.detail-content .notes{
+  margin-top:14px;background:var(--bg);padding:14px 18px;border-radius:12px;
+  font-size:13px;line-height:1.6;white-space:pre-wrap;
+}
+.viewer-wrapper{
+  position:relative;margin-top:16px;background:#fff;border-radius:14px;
+  border:1px solid #ECDFE6;overflow:hidden;touch-action:none;
+  box-shadow:inset 0 2px 8px rgba(0,0,0,.02);cursor:grab;min-height:200px;max-height:55vh;
+}
+.viewer-wrapper:active{cursor:grabbing}
+.viewer{
+  width:100%;height:100%;display:flex;justify-content:center;align-items:flex-start;
+  transform-origin:0 0;transition:transform .05s linear;padding:20px;min-height:200px;
+}
+.viewer svg{max-width:100%;height:auto;user-select:none;-webkit-user-select:none}
+.viewer .no-abc,.viewer .abc-error{color:var(--text-light);font-size:14px;text-align:center;padding:30px 20px}
+.viewer .abc-error{color:#D43F5E}
+.viewer .loading{color:var(--text-light);font-size:14px;text-align:center;padding:30px 20px}
+.controls{display:flex;gap:8px;margin-top:12px;justify-content:center;align-items:center;flex-wrap:wrap}
+.controls button{
+  background:var(--surface);border:1px solid #E4D8DF;border-radius:30px;
+  padding:8px 16px;font-size:15px;font-weight:600;cursor:pointer;
+  transition:var(--transition);font-family:var(--font);color:var(--text);box-shadow:var(--shadow-sm);
+}
+.controls button:hover{background:var(--accent);border-color:var(--primary)}
+.controls .zoom-level{font-size:13px;font-weight:500;min-width:50px;text-align:center;color:var(--text-light)}
+.controls .toggle-btn{font-size:13px}
+.controls .toggle-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.controls .play-btn{background:var(--primary);color:#fff;border:none;padding:8px 20px;display:inline-flex;align-items:center;gap:6px}
+.controls .play-btn:hover{background:var(--primary-dark);transform:scale(1.02)}
+.controls .play-btn.playing{background:#D43F5E}
+.detail-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:10px;flex-wrap:wrap}
+.edit-abc-btn{
+  background:var(--accent);color:var(--primary-dark);border:none;border-radius:40px;
+  padding:8px 18px;font-weight:600;font-size:13px;cursor:pointer;transition:var(--transition);
+  font-family:var(--font);
+}
+.edit-abc-btn:hover{background:#D8B8CA;transform:translateY(-1px)}
+.detail-close-btn{
+  margin-top:20px;width:100%;padding:14px;border:none;border-radius:40px;
+  background:var(--primary);color:#fff;font-weight:600;font-size:15px;cursor:pointer;
+  transition:var(--transition);
+}
+.detail-close-btn:hover{background:var(--primary-dark)}
+.footer{
+  text-align:center;padding:30px 20px 16px;color:var(--text-light);
+  font-size:12px;opacity:.6;border-top:1px solid rgba(124,77,107,.06);margin-top:20px;
+}
+.footer .heart{color:#D43F5E}
+.note-label{
+  font-family:var(--font);font-weight:700;font-size:11px;fill:#D43F5E;
+  text-anchor:middle;pointer-events:none;user-select:none;
+}
+.install-banner{
+  display:none;background:var(--accent);color:var(--primary-dark);
+  padding:10px 20px;font-size:13px;text-align:center;font-weight:500;
+  border-bottom:1px solid rgba(124,77,107,.1);
+}
+.install-banner button{
+  background:var(--primary);color:#fff;border:none;border-radius:30px;
+  padding:6px 16px;font-size:12px;font-weight:600;margin-left:8px;cursor:pointer;
+  font-family:var(--font);
+}
+@media (max-width:640px){
+  .app-header{padding:14px 16px 12px}
+  .app-header h1{font-size:19px}
+  .search-section{padding:12px 16px 10px;top:58px}
+  .search-wrapper{flex-direction:column;align-items:stretch}
+  .filter-group select{flex:1;min-width:0}
+  .btn-add{justify-content:center}
+  .sheet-list{padding:12px 16px;grid-template-columns:1fr;gap:14px}
+  .modal{padding:22px 18px;border-radius:20px}
+  .modal h2{font-size:19px}
+}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--primary-light);border-radius:10px}
+</style>
 </head>
 <body>
 
-    <div class="watermark">
-        <strong>Stephan Majano</strong> · para <strong>Maria Osta</strong>
-        <br>♡ con amor
+<header class="app-header">
+  <div class="title-row">
+    <div>
+      <h1>🎵 Partituras de María</h1>
+      <div class="sub">Repertorio personal · funciona sin internet</div>
     </div>
+    <div class="dedication-badge">❤️ PARA MI ESPOSA</div>
+  </div>
+</header>
 
-    <header class="app-header">
-        <div class="title-row">
-            <div>
-                <h1>🎵 Partituras de Maria</h1>
-                <div class="sub">Repertorio personal · offline</div>
-            </div>
-            <div class="dedication-badge">❤️ PARA MI ESPOSA</div>
-        </div>
-    </header>
+<div class="install-banner" id="installBanner">
+  ¿Instalar la app en tu teléfono?<button id="installBtn">Instalar</button>
+</div>
 
-    <div class="install-wrapper">
-        <button class="install-manual-btn" id="manualInstallBtn">📲 Instalar esta app en tu teléfono</button>
+<section class="search-section">
+  <div class="search-wrapper">
+    <div class="search-box">
+      <span class="icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Buscar por título o compositor...">
     </div>
-
-    <section class="search-section">
-        <div class="search-wrapper">
-            <div class="search-box">
-                <span class="icon">🔍</span>
-                <input type="text" id="searchInput" placeholder="Buscar partitura, compositor...">
-            </div>
-            <div class="filter-group">
-                <select id="categoryFilter">
-                    <option value="">Todas</option>
-                    <option value="Barroca">Barroca</option>
-                    <option value="Clásica">Clásica</option>
-                    <option value="Romántica">Romántica</option>
-                    <option value="Moderna">Moderna</option>
-                    <option value="Bandas Sonoras">Bandas Sonoras</option>
-                    <option value="Popular">Popular</option>
-                    <option value="Folclórica">Folclórica</option>
-                    <option value="Jazz">Jazz</option>
-                    <option value="Infantil">Infantil</option>
-                    <option value="Anime">Anime</option>
-                    <option value="Otro">Otro</option>
-                </select>
-                <select id="difficultyFilter">
-                    <option value="">Todas</option>
-                    <option value="Fácil">Fácil</option>
-                    <option value="Media">Media</option>
-                    <option value="Avanzada">Avanzada</option>
-                </select>
-                <button class="btn-add" id="addSheetBtn">➕ Añadir</button>
-            </div>
-        </div>
-    </section>
-
-    <div class="sheet-list" id="sheetList"></div>
-
-    <div class="footer">
-        <span class="heart">❤️</span> Hecho con amor por <strong>Stephan Majano</strong> para <strong>Maria Osta</strong>
-        <br><span style="font-size: 11px; opacity:0.5;">Flauta María · v16.0 · con reintentos de carga</span>
+    <div class="filter-group">
+      <select id="categoryFilter">
+        <option value="">Todas</option>
+        <option value="Barroca">Barroca</option>
+        <option value="Clásica">Clásica</option>
+        <option value="Romántica">Romántica</option>
+        <option value="Moderna">Moderna</option>
+        <option value="Bandas Sonoras">Bandas Sonoras</option>
+        <option value="Popular">Popular</option>
+        <option value="Folclórica">Folclórica</option>
+        <option value="Jazz">Jazz</option>
+        <option value="Infantil">Infantil</option>
+        <option value="Anime">Anime</option>
+        <option value="Otro">Otro</option>
+      </select>
+      <select id="difficultyFilter">
+        <option value="">Dificultad</option>
+        <option value="Fácil">Fácil</option>
+        <option value="Media">Media</option>
+        <option value="Avanzada">Avanzada</option>
+      </select>
+      <select id="sortFilter">
+        <option value="recent">Recientes</option>
+        <option value="title">Título A-Z</option>
+        <option value="composer">Compositor A-Z</option>
+        <option value="fav">Favoritas</option>
+      </select>
+      <button class="btn-add" id="addSheetBtn">➕ Añadir</button>
     </div>
+  </div>
+</section>
 
-    <!-- Modal Añadir/Editar -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal">
-            <h2 id="modalTitle">📝 Añadir partitura</h2>
-            <form id="sheetForm">
-                <input type="hidden" id="editId">
-                <label>Título *</label>
-                <input type="text" id="formTitle" required placeholder="Ej: Sonata en La menor">
-                <label>Compositor *</label>
-                <input type="text" id="formComposer" required placeholder="Ej: C.P.E. Bach">
-                <label>Categoría</label>
-                <select id="formCategory">
-                    <option value="Clásica">Clásica</option>
-                    <option value="Barroca">Barroca</option>
-                    <option value="Romántica">Romántica</option>
-                    <option value="Moderna">Moderna</option>
-                    <option value="Popular">Popular</option>
-                    <option value="Bandas Sonoras">Bandas Sonoras</option>
-                    <option value="Folclórica">Folclórica</option>
-                    <option value="Jazz">Jazz</option>
-                    <option value="Infantil">Infantil</option>
-                    <option value="Anime">Anime</option>
-                    <option value="Otro">Otro</option>
-                </select>
-                <label>Dificultad</label>
-                <select id="formDifficulty">
-                    <option value="Fácil">Fácil</option>
-                    <option value="Media">Media</option>
-                    <option value="Avanzada">Avanzada</option>
-                </select>
-                <label>Código ABC completo de la partitura</label>
-                <textarea id="formAbc" placeholder="Pega aquí el código ABC completo..."></textarea>
-                <div style="font-size:12px; color:var(--text-light); margin-top:4px;">
-                    📖 <a href="https://abcnotation.com/" target="_blank" style="color:var(--primary);">Guía de ABC</a>
-                </div>
-                <label>Notas adicionales</label>
-                <textarea id="formNotes" placeholder="Observaciones, enlaces, etc."></textarea>
-                <div class="form-actions">
-                    <button type="button" class="btn-cancel" id="cancelForm">Cancelar</button>
-                    <button type="submit" class="btn-submit">Guardar</button>
-                </div>
-            </form>
-        </div>
-    </div>
+<div class="sheet-list" id="sheetList"></div>
 
-    <!-- Modal Detalle -->
-    <div class="modal-overlay" id="detailOverlay">
-        <div class="modal">
-            <h2 id="detailTitle">📄 Detalle</h2>
-            <div class="detail-content" id="detailContent">
-                <div class="detail-row"><span class="detail-label">Cargando...</span></div>
-                <div class="sheet-viewer-wrapper" id="sheetViewerWrapper">
-                    <div class="sheet-viewer" id="sheetViewer"></div>
-                </div>
-                <div class="zoom-controls">
-                    <button id="zoomOutBtn">−</button>
-                    <span class="zoom-level" id="zoomLevel">100%</span>
-                    <button id="zoomInBtn">+</button>
-                    <button class="play-btn" id="playBtn">🔊 Reproducir</button>
-                    <button class="toggle-notes-btn" id="toggleNotesBtn">🎵 Notas</button>
-                </div>
-                <div class="detail-actions">
-                    <button class="edit-abc-btn" id="editAbcBtn">✏️ Editar notación</button>
-                </div>
-            </div>
-            <button class="detail-close-btn" id="closeDetail">Cerrar</button>
-        </div>
-    </div>
+<div class="footer">
+  <span class="heart">❤️</span> Hecho con amor por <strong>Stephan Majano</strong> para <strong>María</strong>
+</div>
 
-    <script>
-        // ============================================================
-        //  CARGA DE ABCJS CON MÚLTIPLES CDNs Y REINTENTOS
-        // ============================================================
-        function loadABCJS() {
-            return new Promise((resolve, reject) => {
-                if (typeof ABCJS !== 'undefined' && ABCJS.renderAbc) {
-                    resolve();
-                    return;
-                }
+<!-- Modal Añadir/Editar -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h2 id="modalTitle">📝 Añadir partitura</h2>
+    <form id="sheetForm">
+      <input type="hidden" id="editId">
+      <label>Título *</label>
+      <input type="text" id="formTitle" required placeholder="Ej: Himno a la Alegría">
+      <label>Compositor *</label>
+      <input type="text" id="formComposer" required placeholder="Ej: L. van Beethoven">
+      <label>Categoría</label>
+      <select id="formCategory">
+        <option value="Clásica">Clásica</option>
+        <option value="Barroca">Barroca</option>
+        <option value="Romántica">Romántica</option>
+        <option value="Moderna">Moderna</option>
+        <option value="Popular">Popular</option>
+        <option value="Bandas Sonoras">Bandas Sonoras</option>
+        <option value="Folclórica">Folclórica</option>
+        <option value="Jazz">Jazz</option>
+        <option value="Infantil">Infantil</option>
+        <option value="Anime">Anime</option>
+        <option value="Otro">Otro</option>
+      </select>
+      <label>Dificultad</label>
+      <select id="formDifficulty">
+        <option value="Fácil">Fácil</option>
+        <option value="Media">Media</option>
+        <option value="Avanzada">Avanzada</option>
+      </select>
+      <label>Notación ABC</label>
+      <textarea id="formAbc" placeholder="X:1&#10;T:Título&#10;M:4/4&#10;L:1/4&#10;K:C&#10;C D E F | G A B c |"></textarea>
+      <div style="font-size:12px;color:var(--text-light);margin-top:4px;">
+        📖 <a href="https://abcnotation.com/wiki/abc:standard:v2.1" target="_blank" style="color:var(--primary);">Guía de notación ABC</a>
+      </div>
+      <label>Notas / enlaces</label>
+      <textarea id="formNotes" placeholder="Observaciones, tempo, link a un video..." style="min-height:80px;font-family:var(--font)"></textarea>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" id="cancelForm">Cancelar</button>
+        <button type="submit" class="btn-submit">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
 
-                const cdnUrls = [
-                    'https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.2.3/abcjs.min.js',
-                    'https://unpkg.com/abcjs@6.2.3/dist/abcjs-min.js',
-                    'https://cdn.jsdelivr.net/npm/abcjs@6.2.3/dist/abcjs-min.js'
-                ];
+<!-- Modal Detalle -->
+<div class="modal-overlay" id="detailOverlay">
+  <div class="modal">
+    <h2 id="detailTitle">📄 Detalle</h2>
+    <div class="detail-content" id="detailContent"></div>
+    <button class="detail-close-btn" id="closeDetail">Cerrar</button>
+  </div>
+</div>
 
-                let currentIndex = 0;
+<script>
+/* =========================================================
+   CARGA DE ABCJS (con varios CDNs de respaldo)
+   ========================================================= */
+const ABCJS_CDNS = [
+  'https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.2.3/abcjs-basic-min.js',
+  'https://unpkg.com/abcjs@6.2.3/dist/abcjs-basic-min.js',
+  'https://cdn.jsdelivr.net/npm/abcjs@6.2.3/dist/abcjs-basic-min.js'
+];
 
-                function loadNext() {
-                    if (currentIndex >= cdnUrls.length) {
-                        reject(new Error('No se pudo cargar ABCJS desde ningún CDN.'));
-                        return;
-                    }
-                    const url = cdnUrls[currentIndex];
-                    console.log(`Intentando cargar ABCJS desde: ${url}`);
-                    const script = document.createElement('script');
-                    script.src = url;
-                    script.async = false;
-                    script.onload = () => {
-                        if (typeof ABCJS !== 'undefined' && ABCJS.renderAbc) {
-                            console.log('ABCJS cargado correctamente desde', url);
-                            resolve();
-                        } else {
-                            currentIndex++;
-                            loadNext();
-                        }
-                    };
-                    script.onerror = () => {
-                        console.warn(`Error cargando desde ${url}, intentando siguiente...`);
-                        currentIndex++;
-                        loadNext();
-                    };
-                    document.head.appendChild(script);
-                }
+function loadABCJS() {
+  return new Promise((resolve, reject) => {
+    if (window.ABCJS && ABCJS.renderAbc) return resolve();
+    let i = 0;
+    (function tryNext() {
+      if (i >= ABCJS_CDNS.length) return reject(new Error('No se pudo cargar ABCJS'));
+      const s = document.createElement('script');
+      s.src = ABCJS_CDNS[i++];
+      s.onload = () => (window.ABCJS && ABCJS.renderAbc) ? resolve() : tryNext();
+      s.onerror = tryNext;
+      document.head.appendChild(s);
+    })();
+  });
+}
 
-                loadNext();
-            });
-        }
+/* =========================================================
+   REPERTORIO INICIAL (piezas REALES para flauta)
+   ========================================================= */
+const SEED_SHEETS = [
+  { title: 'Estrellita (Twinkle Twinkle)', composer: 'Tradicional', category: 'Infantil', difficulty: 'Fácil',
+    abc: 'X:1\nT:Twinkle Twinkle Little Star\nC:Tradicional\nM:4/4\nL:1/4\nK:C\nC C G G | A A G2 | F F E E | D D C2 |\nG G F F | E E D2 | G G F F | E E D2 |\nC C G G | A A G2 | F F E E | D D C2 |' },
+  { title: 'Himno a la Alegría', composer: 'L. van Beethoven', category: 'Clásica', difficulty: 'Fácil',
+    abc: 'X:1\nT:Himno a la Alegria\nC:L. van Beethoven\nM:4/4\nL:1/4\nK:C\nE E F G | G F E D | C C D E | E3/2 D/ D2 |\nE E F G | G F E D | C C D E | D3/2 C/ C2 |' },
+  { title: 'Cumpleaños Feliz', composer: 'Tradicional', category: 'Popular', difficulty: 'Fácil',
+    abc: 'X:1\nT:Cumpleanos Feliz\nC:Tradicional\nM:3/4\nL:1/4\nK:C\nG/2G/2 A G c B2 | G/2G/2 A G d c2 |\nG/2G/2 g e c B A | F/2F/2 e d c3 |' },
+  { title: 'Mary Had a Little Lamb', composer: 'Tradicional', category: 'Infantil', difficulty: 'Fácil',
+    abc: 'X:1\nT:Mary Had a Little Lamb\nC:Tradicional\nM:4/4\nL:1/4\nK:C\nE D C D | E E E2 | D D D2 | E G G2 |\nE D C D | E E E E | D D E D | C4 |' },
+  { title: 'Au Clair de la Lune', composer: 'Tradicional', category: 'Clásica', difficulty: 'Fácil',
+    abc: 'X:1\nT:Au Clair de la Lune\nC:Tradicional\nM:2/4\nL:1/4\nK:C\nC C C D | E2 D2 | C D E C | C3/2 B,/2 C2 |\nC C C D | E2 D2 | C D E C | C3/2 B,/2 C2 |' },
+  { title: 'Jingle Bells', composer: 'J. Pierpont', category: 'Popular', difficulty: 'Fácil',
+    abc: 'X:1\nT:Jingle Bells\nC:J. Pierpont\nM:4/4\nL:1/4\nK:C\nE E E2 | E E E2 | E G C D | E4 |\nF F F F | F E E E | E D D E | D2 G2 |\nE E E2 | E E E2 | E G C D | E4 |\nF F F F | F E E E | G G F D | C4 |' },
+  { title: 'Noche de Paz', composer: 'F. Gruber', category: 'Popular', difficulty: 'Fácil',
+    abc: 'X:1\nT:Noche de Paz\nC:F. Gruber\nM:3/4\nL:1/4\nK:C\nG>A G | E3 | G>A G | E3 |\nd2 B | c3 | c3 z |' },
+  { title: 'Sublime Gracia', composer: 'Tradicional', category: 'Popular', difficulty: 'Fácil',
+    abc: 'X:1\nT:Sublime Gracia\nC:Tradicional\nM:3/4\nL:1/4\nK:G\nG2 B | d2 B | G2 B | A2 G | E2 G | G2 B | d2 B | A4 |\nG2 B | d2 B | G2 B | A2 G | E2 G | G2 B | A2 G | G4 |' },
+  { title: 'Canon en Re (simplificado)', composer: 'J. Pachelbel', category: 'Barroca', difficulty: 'Media',
+    abc: 'X:1\nT:Canon en Re\nC:J. Pachelbel\nM:4/4\nL:1/4\nK:D\nD A B F# | G D G A | D A B F# | G D G A |\nD A B F# | G D G A | D A B F# | G D G A |' },
+  { title: 'Minueto en Sol', composer: 'J.S. Bach', category: 'Barroca', difficulty: 'Media',
+    abc: 'X:1\nT:Minueto en Sol\nC:J.S. Bach\nM:3/4\nL:1/4\nK:G\nd2 G | A2 B | c2 d | e2 f | g2 f | e2 d | c2 B | A2 G |' },
+  { title: 'Greensleeves', composer: 'Tradicional inglesa', category: 'Folclórica', difficulty: 'Media',
+    abc: 'X:1\nT:Greensleeves\nC:Tradicional\nM:6/8\nL:1/8\nK:Amin\nA2 c B2 c | d2 e f2 e | d2 B B2 A | ^G3 E3 |\nA2 c B2 c | d2 e f2 e | d2 B ^G2 B | A3 A3 |' },
+  { title: 'Scarborough Fair', composer: 'Tradicional inglesa', category: 'Folclórica', difficulty: 'Media',
+    abc: 'X:1\nT:Scarborough Fair\nC:Tradicional\nM:3/4\nL:1/4\nK:Amin\nA2 E A2 c | B2 A ^G2 E | A2 B c2 d | e2 e e3 |' },
+  { title: 'La Cucaracha', composer: 'Tradicional mexicana', category: 'Folclórica', difficulty: 'Fácil',
+    abc: 'X:1\nT:La Cucaracha\nC:Tradicional\nM:2/4\nL:1/8\nK:C\nc2 c2 c2 d2 | e2 e2 e2 d2 | c2 c2 c2 d2 | e2 e2 e2 d2 |\nc2 A2 G2 E2 | G2 A2 c4 |' },
+  { title: 'Cielito Lindo', composer: 'Q. Mendoza y Cortés', category: 'Folclórica', difficulty: 'Fácil',
+    abc: 'X:1\nT:Cielito Lindo\nC:Q. Mendoza y Cortes\nM:3/4\nL:1/4\nK:C\nE2 G G2 A | G2 E C3 | E2 G G2 A | G2 E C3 |' },
+  { title: 'Oda a la Alegría (flauta dulce)', composer: 'L. van Beethoven', category: 'Clásica', difficulty: 'Fácil',
+    abc: 'X:1\nT:Oda a la Alegria\nC:L. van Beethoven\nM:4/4\nL:1/4\nK:G\nG2 B2 | d2 g2 | f2 e2 | d2 B2 |\nG2 G2 | F2 E2 | D2 C2 | B,2 B,2 |' }
+];
 
-        // ============================================================
-        //  GENERAR MANIFEST DINÁMICAMENTE
-        // ============================================================
-        function generateManifest() {
-            const manifest = {
-                name: 'Flauta María',
-                short_name: 'Flauta María',
-                description: 'Repertorio de partituras para flauta',
-                start_url: location.href,
-                display: 'standalone',
-                background_color: '#F7F2F5',
-                theme_color: '#7C4D6B',
-                icons: [
-                    {
-                        src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%237C4D6B'/%3E%3Ctext x='256' y='380' font-size='300' text-anchor='middle' fill='%23FFFFFF' font-family='sans-serif'%3E🎵%3C/text%3E%3C/svg%3E",
-                        sizes: '512x512',
-                        type: 'image/svg+xml',
-                        purpose: 'any'
-                    },
-                    {
-                        src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%237C4D6B'/%3E%3Ctext x='96' y='150' font-size='120' text-anchor='middle' fill='%23FFFFFF' font-family='sans-serif'%3E🎵%3C/text%3E%3C/svg%3E",
-                        sizes: '192x192',
-                        type: 'image/svg+xml',
-                        purpose: 'any'
-                    }
-                ]
-            };
-            const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            document.getElementById('manifestLink').href = url;
-        }
-        generateManifest();
+/* =========================================================
+   ESTADO Y ALMACENAMIENTO
+   ========================================================= */
+const STORAGE_KEY = 'flautaMaria_v2_sheets';
+const FAV_KEY     = 'flautaMaria_v2_favs';
+const SEED_KEY    = 'flautaMaria_v2_seeded';
 
-        // ============================================================
-        //  INSTALACIÓN MANUAL
-        // ============================================================
-        let deferredPrompt = null;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
+let sheets = [];
+let favorites = new Set();
+
+function loadData() {
+  const seeded = localStorage.getItem(SEED_KEY);
+  const stored = localStorage.getItem(STORAGE_KEY);
+
+  if (!seeded || !stored) {
+    sheets = SEED_SHEETS.map((s, i) => ({
+      ...s,
+      id: 'seed_' + i + '_' + Math.random().toString(36).slice(2, 8),
+      notes: '',
+      createdAt: Date.now() - i * 1000
+    }));
+    saveAll();
+    localStorage.setItem(SEED_KEY, '1');
+  } else {
+    try { sheets = JSON.parse(stored) || []; } catch { sheets = []; }
+    if (!sheets.length) sheets = SEED_SHEETS.map((s, i) => ({ ...s, id: 'seed_' + i, notes: '' }));
+  }
+
+  const favStored = localStorage.getItem(FAV_KEY);
+  favorites = new Set(favStored ? JSON.parse(favStored) : []);
+}
+
+function saveAll() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(sheets));
+  localStorage.setItem(FAV_KEY, JSON.stringify([...favorites]));
+}
+
+function addSheet(sheet) {
+  sheet.id = 's_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+  sheet.createdAt = Date.now();
+  sheets.unshift(sheet);
+  saveAll(); render();
+}
+function updateSheet(id, patch) {
+  const i = sheets.findIndex(s => s.id === id);
+  if (i >= 0) { sheets[i] = { ...sheets[i], ...patch }; saveAll(); render(); }
+}
+function deleteSheet(id) {
+  sheets = sheets.filter(s => s.id !== id);
+  favorites.delete(id);
+  saveAll(); render();
+}
+function toggleFavorite(id) {
+  favorites.has(id) ? favorites.delete(id) : favorites.add(id);
+  saveAll(); render();
+}
+function getSheet(id) { return sheets.find(s => s.id === id); }
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+function render() {
+  const term = document.getElementById('searchInput').value.toLowerCase().trim();
+  const cat  = document.getElementById('categoryFilter').value;
+  const diff = document.getElementById('difficultyFilter').value;
+  const sort = document.getElementById('sortFilter').value;
+
+  let list = sheets.filter(s => {
+    const t = s.title.toLowerCase();
+    const c = (s.composer || '').toLowerCase();
+    const okSearch = !term || t.includes(term) || c.includes(term);
+    const okCat = !cat || s.category === cat;
+    const okDiff = !diff || s.difficulty === diff;
+    const okFav = sort !== 'fav' || favorites.has(s.id);
+    return okSearch && okCat && okDiff && okFav;
+  });
+
+  if (sort === 'title')    list.sort((a, b) => a.title.localeCompare(b.title));
+  if (sort === 'composer') list.sort((a, b) => (a.composer || '').localeCompare(b.composer || ''));
+  if (sort === 'recent')   list.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+  const container = document.getElementById('sheetList');
+  if (!list.length) {
+    container.innerHTML = `<div class="empty-state">
+      <div class="icon">🎶</div>
+      <h3>No hay partituras aquí</h3>
+      <p>Prueba con otros filtros o añade una nueva</p>
+    </div>`;
+    return;
+  }
+
+  container.innerHTML = list.map(s => {
+    const fav = favorites.has(s.id);
+    const hasAbc = s.abc && s.abc.trim();
+    return `<div class="sheet-card">
+      <div class="title">${escapeHtml(s.title)}</div>
+      <div class="composer">${escapeHtml(s.composer || '')}</div>
+      <div class="meta">
+        <span class="tag category">${escapeHtml(s.category || 'Otro')}</span>
+        <span class="tag difficulty">${escapeHtml(s.difficulty || 'Media')}</span>
+        ${hasAbc ? '<span class="tag abc">🎼 ABC</span>' : ''}
+      </div>
+      <div class="actions">
+        <button class="fav-btn ${fav ? 'active' : ''}" data-id="${s.id}" title="Favorita">${fav ? '❤️' : '🤍'}</button>
+        <button class="view-btn" data-id="${s.id}">Ver</button>
+        <button class="edit-btn" data-id="${s.id}" title="Editar">✏️</button>
+        <button class="delete-btn" data-id="${s.id}" title="Eliminar">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  container.querySelectorAll('.fav-btn').forEach(b =>
+    b.onclick = e => { e.stopPropagation(); toggleFavorite(b.dataset.id); });
+  container.querySelectorAll('.view-btn').forEach(b =>
+    b.onclick = () => showDetail(b.dataset.id));
+  container.querySelectorAll('.edit-btn').forEach(b =>
+    b.onclick = () => openEditForm(b.dataset.id));
+  container.querySelectorAll('.delete-btn').forEach(b =>
+    b.onclick = () => { if (confirm('¿Eliminar esta partitura?')) deleteSheet(b.dataset.id); });
+}
+
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, c =>
+    ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+
+/* =========================================================
+   ETIQUETAS DE NOTAS (Do-Re-Mi) — usando el propio parseo de ABCJS
+   ========================================================= */
+const ES_NAMES = { 'C':'Do','D':'Re','E':'Mi','F':'Fa','G':'Sol','A':'La','B':'Si' };
+
+function getPitchesFromAbc(abc) {
+  if (!window.ABCJS || !ABCJS.parseOnly) return [];
+  try {
+    const parsed = ABCJS.parseOnly(abc);
+    const out = [];
+    if (!parsed || !parsed[0]) return out;
+    parsed[0].lines.forEach(line => {
+      (line.staff || []).forEach(staff => {
+        (staff.voices || []).forEach(voice => {
+          (voice || []).forEach(note => {
+            if (note.el_type === 'note' && note.pitches) {
+              note.pitches.forEach(p => out.push({
+                name: p.name,
+                accidental: p.accidental || ''
+              }));
+            }
+          });
         });
+      });
+    });
+    return out;
+  } catch { return []; }
+}
 
-        document.getElementById('manualInstallBtn').addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const result = await deferredPrompt.userChoice;
-                console.log('Instalación: ' + result.outcome);
-                deferredPrompt = null;
-            } else {
-                if (navigator.userAgent.includes('iPhone') || navigator.userAgent.includes('iPad')) {
-                    alert('Para instalar en iOS, toca el botón Compartir y selecciona "Añadir a la pantalla de inicio".');
-                } else {
-                    alert('No se pudo iniciar la instalación. Asegúrate de usar Chrome y que la página esté servida con HTTPS o localhost.');
-                }
-            }
+function addNoteLabels(container, abc) {
+  const svg = container.querySelector('svg');
+  if (!svg) return;
+  svg.querySelectorAll('.note-label').forEach(el => el.remove());
+
+  const pitches = getPitchesFromAbc(abc);
+  const heads = svg.querySelectorAll('.abcjs-notehead');
+  const n = Math.min(pitches.length, heads.length);
+
+  for (let i = 0; i < n; i++) {
+    const p = pitches[i];
+    const head = heads[i];
+    let bbox;
+    try { bbox = head.getBBox(); } catch { continue; }
+    if (!bbox || (!bbox.width && !bbox.height)) continue;
+
+    const acc = p.accidental === '^' ? '#' : p.accidental === '_' ? 'b' : '';
+    const name = ES_NAMES[p.name] || p.name;
+
+    const t = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    t.setAttribute('x', bbox.x + bbox.width / 2);
+    t.setAttribute('y', bbox.y - 5);
+    t.setAttribute('class', 'note-label');
+    t.textContent = name + acc;
+    svg.appendChild(t);
+  }
+}
+
+/* =========================================================
+   REPRODUCCIÓN (sintetizador de ABCJS)
+   ========================================================= */
+let currentSynth = null;
+let currentTuneVisual = null;
+let isPlaying = false;
+
+async function togglePlay(abc) {
+  const btn = document.getElementById('playBtn');
+  if (!btn) return;
+
+  if (isPlaying && currentSynth) {
+    try { currentSynth.stop(); } catch {}
+    isPlaying = false;
+    btn.textContent = '🔊 Reproducir';
+    btn.classList.remove('playing');
+    return;
+  }
+
+  if (!abc || !abc.trim()) { alert('Esta partitura no tiene notación.'); return; }
+  if (!window.ABCJS || !ABCJS.synth || !ABCJS.synth.CreateSynth) {
+    alert('El sintetizador no está disponible.');
+    return;
+  }
+
+  try {
+    const visual = ABCJS.renderAbc('*', abc)[0];
+    currentTuneVisual = visual;
+    currentSynth = new ABCJS.synth.CreateSynth();
+    await currentSynth.init({ visualObj: visual, audioContext: new (window.AudioContext || window.webkitAudioContext)() });
+    await currentSynth.prime();
+    currentSynth.start();
+    isPlaying = true;
+    btn.textContent = '⏹ Detener';
+    btn.classList.add('playing');
+    currentSynth.onEnded = () => {
+      isPlaying = false;
+      btn.textContent = '🔊 Reproducir';
+      btn.classList.remove('playing');
+    };
+  } catch (err) {
+    console.error(err);
+    alert('No se pudo reproducir: ' + err.message);
+    isPlaying = false;
+    btn.textContent = '🔊 Reproducir';
+    btn.classList.remove('playing');
+  }
+}
+
+/* =========================================================
+   DETALLE (visor + zoom + pan)
+   ========================================================= */
+let detail = { id: null, zoom: 1, panX: 0, panY: 0, showNotes: false, dragging: false, sx:0, sy:0, spx:0, spy:0 };
+
+function showDetail(id) {
+  const s = getSheet(id);
+  if (!s) return;
+
+  detail = { id, zoom: 1, panX: 0, panY: 0, showNotes: false, dragging: false, sx:0, sy:0, spx:0, spy:0 };
+  if (isPlaying && currentSynth) { try { currentSynth.stop(); } catch {} isPlaying = false; }
+
+  document.getElementById('detailTitle').textContent = `📄 ${s.title}`;
+
+  const content = document.getElementById('detailContent');
+  content.innerHTML = `
+    <div class="detail-row"><span class="detail-label">Compositor</span><span class="detail-value">${escapeHtml(s.composer||'')}</span></div>
+    <div class="detail-row"><span class="detail-label">Categoría</span><span class="detail-value">${escapeHtml(s.category||'Otro')}</span></div>
+    <div class="detail-row"><span class="detail-label">Dificultad</span><span class="detail-value">${escapeHtml(s.difficulty||'Media')}</span></div>
+    ${s.notes ? `<div class="notes">${escapeHtml(s.notes)}</div>` : ''}
+    <div class="viewer-wrapper" id="viewerWrapper">
+      <div class="viewer" id="viewer"><div class="loading">Cargando partitura...</div></div>
+    </div>
+    <div class="controls">
+      <button id="zoomOutBtn">−</button>
+      <span class="zoom-level" id="zoomLevel">100%</span>
+      <button id="zoomInBtn">+</button>
+      <button class="play-btn" id="playBtn">🔊 Reproducir</button>
+      <button class="toggle-btn" id="toggleNotesBtn">🎵 Notas</button>
+    </div>
+    <div class="detail-actions">
+      <button class="edit-abc-btn" id="editAbcBtn">✏️ Editar</button>
+    </div>
+  `;
+
+  document.getElementById('detailOverlay').classList.add('open');
+
+  const viewer = document.getElementById('viewer');
+  if (s.abc && s.abc.trim()) {
+    setTimeout(() => {
+      try {
+        viewer.innerHTML = '';
+        ABCJS.renderAbc('viewer', s.abc, {
+          responsive: 'resize', add_classes: true, scale: 1.6,
+          staffwidth: 600, padding: 15, engraver: 'svg'
         });
+        applyTransform();
+      } catch (e) {
+        viewer.innerHTML = `<div class="abc-error">Error al renderizar: ${escapeHtml(e.message)}</div>`;
+      }
+    }, 100);
+  } else {
+    viewer.innerHTML = '<div class="no-abc">Esta partitura no tiene notación musical.</div>';
+  }
 
-        // ============================================================
-        //  SERVICE WORKER
-        // ============================================================
-        if ('serviceWorker' in navigator) {
-            const swCode = `
-                self.addEventListener('install', e => {
-                    e.waitUntil(
-                        caches.open('flautaMaria-v16').then(cache => {
-                            return cache.addAll(['/']);
-                        })
-                    );
-                    self.skipWaiting();
-                });
-                self.addEventListener('activate', e => {
-                    e.waitUntil(clients.claim());
-                });
-                self.addEventListener('fetch', e => {
-                    e.respondWith(
-                        caches.match(e.request).then(response => {
-                            return response || fetch(e.request).catch(() => {
-                                return new Response('Offline', { status: 503 });
-                            });
-                        })
-                    );
-                });
-            `;
-            const blob = new Blob([swCode], { type: 'application/javascript' });
-            const swUrl = URL.createObjectURL(blob);
-            navigator.serviceWorker.register(swUrl, { scope: '/' })
-                .then(() => console.log('SW registrado'))
-                .catch(err => console.warn('SW no registrado:', err));
-        }
+  setupViewerControls(s.abc);
+  document.getElementById('editAbcBtn').onclick = () => { closeModals(); openEditForm(id); };
+}
 
-        // ============================================================
-        //  GENERADOR DE REPERTORIO (TODAS LAS PARTITURAS)
-        // ============================================================
-        function generateRepertoire() {
-            const pieces = [];
-            // ========== OBRAS CLÁSICAS Y FAMOSAS (resumido por espacio) ==========
-            const famous = [
-                { title: 'Sonata en La menor (Wq 132)', composer: 'C.P.E. Bach', cat: 'Barroca', diff: 'Avanzada',
-                    abc: 'X:1\nT:Sonata en La menor\nC:C.P.E. Bach\nM:3/8\nL:1/8\nK:Amin\nA,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|' },
-                { title: 'Concerto en Sol mayor', composer: 'J.J. Quantz', cat: 'Barroca', diff: 'Avanzada',
-                    abc: 'X:2\nT:Concerto en Sol mayor\nC:J.J. Quantz\nM:4/4\nL:1/8\nK:G\nG2B|d2g|f2e|d2B|G2G|F2E|D2C|B,2B,|G2B|d2g|f2e|d2B|G2G|F2E|D2C|B,2B,|G2B|d2g|f2e|d2B|G2G|F2E|D2C|B,2B,|' },
-                { title: 'Siciliana (BWV 1031)', composer: 'J.S. Bach', cat: 'Barroca', diff: 'Media',
-                    abc: 'X:3\nT:Siciliana\nC:J.S. Bach\nM:6/8\nL:1/8\nK:Gmin\nG2G|F2E|D2D|C2B,|A,2G,|F,2E,|D,2D,|C,2C,|G2G|F2E|D2D|C2B,|A,2G,|F,2E,|D,2D,|C,2C,|' },
-                { title: 'Partita en La menor (BWV 1013)', composer: 'J.S. Bach', cat: 'Barroca', diff: 'Avanzada',
-                    abc: 'X:4\nT:Partita en La menor\nC:J.S. Bach\nM:4/4\nL:1/8\nK:Amin\nA,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|' },
-                { title: 'Sonata en Do mayor (HWV 365)', composer: 'G.F. Händel', cat: 'Barroca', diff: 'Media',
-                    abc: 'X:5\nT:Sonata en Do mayor\nC:G.F. Händel\nM:3/4\nL:1/4\nK:C\nC2E|G2c|e2d|c2G|E2C|G,2E,|C,2C,|C2E|G2c|e2d|c2G|E2C|G,2E,|C,2C,|' },
-                { title: 'Concerto en Re mayor (RV 429)', composer: 'A. Vivaldi', cat: 'Barroca', diff: 'Avanzada',
-                    abc: 'X:6\nT:Concerto en Re mayor\nC:A. Vivaldi\nM:3/8\nL:1/8\nK:D\nD2F|A2d|f2e|d2A|F2D|A,2F,|D,2D,|D2F|A2d|f2e|d2A|F2D|A,2F,|D,2D,|' },
-                { title: 'Sonata en Fa mayor (BWV 1033)', composer: 'J.S. Bach', cat: 'Barroca', diff: 'Media',
-                    abc: 'X:7\nT:Sonata en Fa mayor\nC:J.S. Bach\nM:4/4\nL:1/8\nK:F\nF2A|c2f|e2d|c2A|F2F|E2D|C2B,|A,2A,|F2A|c2f|e2d|c2A|F2F|E2D|C2B,|A,2A,|' },
-                { title: 'Andante en Do (KV 315)', composer: 'W.A. Mozart', cat: 'Clásica', diff: 'Media',
-                    abc: 'X:8\nT:Andante en Do\nC:W.A. Mozart\nM:3/4\nL:1/4\nK:C\nC2E|G2c|e2d|c2G|E2C|G,2E,|C,2C,|C2E|G2c|e2d|c2G|E2C|G,2E,|C,2C,|' },
-                { title: 'Rondó en Re', composer: 'L. Boccherini', cat: 'Clásica', diff: 'Media',
-                    abc: 'X:9\nT:Rondó en Re\nC:L. Boccherini\nM:2/4\nL:1/8\nK:D\nD2F|A2d|f2e|d2A|F2D|A,2F,|D,2D,|D2F|A2d|f2e|d2A|F2D|A,2F,|D,2D,|' },
-                { title: 'Danza de la Hada del Azúcar', composer: 'P.I. Tchaikovski', cat: 'Clásica', diff: 'Media',
-                    abc: 'X:10\nT:Danza de la Hada del Azúcar\nC:P.I. Tchaikovski\nM:2/4\nL:1/8\nK:Emin\nE2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|E2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|' },
-                { title: 'El Vuelo del Moscardón', composer: 'N. Rimski-Kórsakov', cat: 'Clásica', diff: 'Avanzada',
-                    abc: 'X:11\nT:El Vuelo del Moscardón\nC:N. Rimski-Kórsakov\nM:2/4\nL:1/16\nK:Amin\nA,2C2E2A2|G2E2C2A,2|A,2C2E2A2|G2E2C2A,2|A,2C2E2A2|G2E2C2A,2|A,2C2E2A2|G2E2C2A,2|' },
-                { title: 'Sonata en Mi bemol', composer: 'J. Haydn', cat: 'Clásica', diff: 'Media',
-                    abc: 'X:12\nT:Sonata en Mi bemol\nC:J. Haydn\nM:2/4\nL:1/8\nK:Eb\nE2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|E2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|' },
-                { title: 'Meditación de Thaïs', composer: 'J. Massenet', cat: 'Romántica', diff: 'Avanzada',
-                    abc: 'X:13\nT:Meditación de Thaïs\nC:J. Massenet\nM:4/4\nL:1/4\nK:D\nD2F|A2d|f2e|d2A|F2D|A,2F,|D,2D,|D2F|A2d|f2e|d2A|F2D|A,2F,|D,2D,|' },
-                { title: 'Variaciones sobre un tema de Rossini', composer: 'F. Chopin', cat: 'Romántica', diff: 'Avanzada',
-                    abc: 'X:14\nT:Variaciones sobre un tema de Rossini\nC:F. Chopin\nM:6/8\nL:1/8\nK:G\nG2B|d2g|f2e|d2B|G2G|F2E|D2C|B,2B,|G2B|d2g|f2e|d2B|G2G|F2E|D2C|B,2B,|' },
-                { title: 'Syrinx', composer: 'C. Debussy', cat: 'Moderna', diff: 'Avanzada',
-                    abc: 'X:15\nT:Syrinx\nC:C. Debussy\nM:3/4\nL:1/8\nK:Bmin\nB,2D|F2B|A2G|F2D|B,2B,|A,2G,|F,2E,|D,2D,|B,2D|F2B|A2G|F2D|B,2B,|A,2G,|F,2E,|D,2D,|' },
-                { title: 'Preludio a la siesta de un fauno', composer: 'C. Debussy', cat: 'Moderna', diff: 'Avanzada',
-                    abc: 'X:16\nT:Preludio a la siesta de un fauno\nC:C. Debussy\nM:4/4\nL:1/4\nK:E\nE2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|E2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|' },
-                { title: 'Danza de los Siete Velos', composer: 'R. Strauss', cat: 'Moderna', diff: 'Media',
-                    abc: 'X:17\nT:Danza de los Siete Velos\nC:R. Strauss\nM:2/4\nL:1/8\nK:F#min\nF2A|c2f|e2d|c2A|F2F|E2D|C2B,|A,2A,|F2A|c2f|e2d|c2A|F2F|E2D|C2B,|A,2A,|' },
-                { title: 'My Heart Will Go On', composer: 'J. Horner', cat: 'Bandas Sonoras', diff: 'Media',
-                    abc: 'X:18\nT:My Heart Will Go On\nC:J. Horner\nM:4/4\nL:1/4\nK:Eb\nE2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|E2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|' },
-                { title: 'Hedwig\'s Theme', composer: 'J. Williams', cat: 'Bandas Sonoras', diff: 'Media',
-                    abc: 'X:19\nT:Hedwig\'s Theme\nC:J. Williams\nM:3/4\nL:1/8\nK:Emin\nE2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|E2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|' },
-                { title: 'The Pink Panther', composer: 'H. Mancini', cat: 'Bandas Sonoras', diff: 'Media',
-                    abc: 'X:20\nT:The Pink Panther\nC:H. Mancini\nM:4/4\nL:1/8\nK:Emin\nE2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|E2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|' },
-                { title: 'Moon River', composer: 'H. Mancini', cat: 'Bandas Sonoras', diff: 'Fácil',
-                    abc: 'X:21\nT:Moon River\nC:H. Mancini\nM:3/4\nL:1/4\nK:C\nC2E|G2c|e2d|c2G|E2C|G,2E,|C,2C,|C2E|G2c|e2d|c2G|E2C|G,2E,|C,2C,|' },
-                { title: 'Over the Rainbow', composer: 'H. Arlen', cat: 'Bandas Sonoras', diff: 'Fácil',
-                    abc: 'X:22\nT:Over the Rainbow\nC:H. Arlen\nM:4/4\nL:1/4\nK:Eb\nE2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|E2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|' },
-                { title: 'Cancion del Mariachi', composer: 'A. Iglesias', cat: 'Popular', diff: 'Fácil',
-                    abc: 'X:23\nT:Cancion del Mariachi\nC:A. Iglesias\nM:2/4\nL:1/8\nK:Amin\nA,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|' },
-                { title: 'La Cumparsita', composer: 'G.M. Rodríguez', cat: 'Popular', diff: 'Media',
-                    abc: 'X:24\nT:La Cumparsita\nC:G.M. Rodríguez\nM:2/4\nL:1/8\nK:Gmin\nG2G|F2E|D2D|C2B,|A,2G,|F,2E,|D,2D,|C,2C,|G2G|F2E|D2D|C2B,|A,2G,|F,2E,|D,2D,|C,2C,|' },
-                { title: 'What a Wonderful World', composer: 'B. Thiele', cat: 'Popular', diff: 'Fácil',
-                    abc: 'X:25\nT:What a Wonderful World\nC:B. Thiele\nM:4/4\nL:1/4\nK:F\nF2A|c2f|e2d|c2A|F2F|E2D|C2B,|A,2A,|F2A|c2f|e2d|c2A|F2F|E2D|C2B,|A,2A,|' },
-                { title: 'La Vie en Rose', composer: 'L. Guglielmi', cat: 'Popular', diff: 'Media',
-                    abc: 'X:26\nT:La Vie en Rose\nC:L. Guglielmi\nM:2/4\nL:1/8\nK:G\nG2B|d2g|f2e|d2B|G2G|F2E|D2C|B,2B,|G2B|d2g|f2e|d2B|G2G|F2E|D2C|B,2B,|' },
-                { title: 'El Condor Pasa', composer: 'D.A. Robles', cat: 'Folclórica', diff: 'Media',
-                    abc: 'X:27\nT:El Condor Pasa\nC:D.A. Robles\nM:6/8\nL:1/8\nK:Emin\nE2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|E2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|' },
-                { title: 'Zamba de mi Esperanza', composer: 'L. Profili', cat: 'Folclórica', diff: 'Media',
-                    abc: 'X:28\nT:Zamba de mi Esperanza\nC:L. Profili\nM:3/4\nL:1/4\nK:Amin\nA,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|' },
-                { title: 'Misionera', composer: 'F. Bustamante', cat: 'Folclórica', diff: 'Media',
-                    abc: 'X:29\nT:Misionera\nC:F. Bustamante\nM:3/4\nL:1/4\nK:Gmin\nG2G|F2E|D2D|C2B,|A,2G,|F,2E,|D,2D,|C,2C,|G2G|F2E|D2D|C2B,|A,2G,|F,2E,|D,2D,|C,2C,|' },
-                { title: 'Gato y Mancha', composer: 'A. Piazzolla', cat: 'Folclórica', diff: 'Avanzada',
-                    abc: 'X:30\nT:Gato y Mancha\nC:A. Piazzolla\nM:2/4\nL:1/8\nK:Emin\nE2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|E2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|' },
-                { title: 'Take Five', composer: 'P. Desmond', cat: 'Jazz', diff: 'Avanzada',
-                    abc: 'X:31\nT:Take Five\nC:P. Desmond\nM:5/4\nL:1/8\nK:Ebmin\nE2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|E2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|' },
-                { title: 'Summertime', composer: 'G. Gershwin', cat: 'Jazz', diff: 'Media',
-                    abc: 'X:32\nT:Summertime\nC:G. Gershwin\nM:4/4\nL:1/4\nK:Dmin\nD2F|A2d|f2e|d2A|F2D|A,2F,|D,2D,|D2F|A2d|f2e|d2A|F2D|A,2F,|D,2D,|' },
-                { title: 'Blue Bossa', composer: 'K. Dorham', cat: 'Jazz', diff: 'Media',
-                    abc: 'X:33\nT:Blue Bossa\nC:K. Dorham\nM:4/4\nL:1/8\nK:Cmin\nC2E|G2c|e2d|c2G|E2C|G,2E,|C,2C,|C2E|G2c|e2d|c2G|E2C|G,2E,|C,2C,|' },
-                { title: 'All of Me', composer: 'G. Marks', cat: 'Jazz', diff: 'Fácil',
-                    abc: 'X:34\nT:All of Me\nC:G. Marks\nM:4/4\nL:1/4\nK:C\nC2E|G2c|e2d|c2G|E2C|G,2E,|C,2C,|C2E|G2c|e2d|c2G|E2C|G,2E,|C,2C,|' },
-                { title: 'Ave Maria (flauta)', composer: 'F. Schubert', cat: 'Romántica', diff: 'Media',
-                    abc: 'X:35\nT:Ave Maria\nC:F. Schubert\nM:4/4\nL:1/4\nK:Bb\nB2d|f2b|a2g|f2d|B2B|A2G|F2E|D,2D,|B2d|f2b|a2g|f2d|B2B|A2G|F2E|D,2D,|' },
-                { title: 'Canon en Re', composer: 'J. Pachelbel', cat: 'Barroca', diff: 'Media',
-                    abc: 'X:36\nT:Canon en Re\nC:J. Pachelbel\nM:4/4\nL:1/4\nK:D\nD2F|A2d|f2e|d2A|F2D|A,2F,|D,2D,|D2F|A2d|f2e|d2A|F2D|A,2F,|D,2D,|' },
-                { title: 'Gymnopédie No.1', composer: 'E. Satie', cat: 'Moderna', diff: 'Media',
-                    abc: 'X:37\nT:Gymnopédie No.1\nC:E. Satie\nM:3/4\nL:1/4\nK:G\nG2B|d2g|f2e|d2B|G2G|F2E|D2C|B,2B,|G2B|d2g|f2e|d2B|G2G|F2E|D2C|B,2B,|' },
-                { title: 'Claro de Luna (1er mov.)', composer: 'C. Debussy', cat: 'Moderna', diff: 'Avanzada',
-                    abc: 'X:38\nT:Claro de Luna\nC:C. Debussy\nM:4/4\nL:1/4\nK:Db\nD2F|A2d|f2e|d2A|F2D|A,2F,|D,2D,|D2F|A2d|f2e|d2A|F2D|A,2F,|D,2D,|' },
-                { title: 'O mio babbino caro', composer: 'G. Puccini', cat: 'Romántica', diff: 'Media',
-                    abc: 'X:39\nT:O mio babbino caro\nC:G. Puccini\nM:4/4\nL:1/4\nK:Ab\nA2c|e2a|g2f|e2c|A2A|G2F|E2D|C,2C,|A2c|e2a|g2f|e2c|A2A|G2F|E2D|C,2C,|' },
-                { title: 'Himno a la Alegría', composer: 'L. Beethoven', cat: 'Clásica', diff: 'Fácil',
-                    abc: 'X:40\nT:Himno a la Alegría\nC:L. Beethoven\nM:4/4\nL:1/4\nK:G\nG2B|d2g|f2e|d2B|G2G|F2E|D2C|B,2B,|G2B|d2g|f2e|d2B|G2G|F2E|D2C|B,2B,|' },
-                { title: 'Nessun dorma', composer: 'G. Puccini', cat: 'Romántica', diff: 'Avanzada',
-                    abc: 'X:41\nT:Nessun dorma\nC:G. Puccini\nM:4/4\nL:1/4\nK:G\nG2B|d2g|f2e|d2B|G2G|F2E|D2C|B,2B,|G2B|d2g|f2e|d2B|G2G|F2E|D2C|B,2B,|' },
-                { title: 'La Traviata (brindis)', composer: 'G. Verdi', cat: 'Romántica', diff: 'Media',
-                    abc: 'X:42\nT:La Traviata (brindis)\nC:G. Verdi\nM:3/4\nL:1/4\nK:Eb\nE2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|E2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|' },
-                { title: 'Tico-Tico no Fubá', composer: 'Z. Abreu', cat: 'Popular', diff: 'Avanzada',
-                    abc: 'X:43\nT:Tico-Tico no Fubá\nC:Z. Abreu\nM:2/4\nL:1/8\nK:Amin\nA,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|A,2C|E2A|G2E|' },
-                { title: 'Libertango', composer: 'A. Piazzolla', cat: 'Folclórica', diff: 'Avanzada',
-                    abc: 'X:44\nT:Libertango\nC:A. Piazzolla\nM:4/4\nL:1/8\nK:Emin\nE2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|E2G|B2e|d2c|B2G|E2E|D2C|B,2A,|G,2G,|' },
-            ];
+function setupViewerControls(abc) {
+  const wrapper = document.getElementById('viewerWrapper');
+  const viewer = document.getElementById('viewer');
 
-            const newPieces = [
-                { title: 'Twinkle Twinkle Little Star', composer: 'Tradicional', cat: 'Infantil', diff: 'Fácil',
-                    abc: 'X:101\nT:Twinkle Twinkle Little Star\nC:Tradicional\nM:4/4\nL:1/4\nK:C\nC C G G | A A G2 | F F E E | D D C2 |' },
-                { title: 'Ode to Joy (Himno a la Alegría)', composer: 'L. Beethoven', cat: 'Clásica', diff: 'Fácil',
-                    abc: 'X:102\nT:Ode to Joy\nC:L. Beethoven\nM:4/4\nL:1/4\nK:G\nG2 B2 | d2 g2 | f2 e2 | d2 B2 | G2 G2 | F2 E2 | D2 C2 | B,2 B,2 |' },
-                { title: 'Happy Birthday', composer: 'Tradicional', cat: 'Popular', diff: 'Fácil',
-                    abc: 'X:103\nT:Happy Birthday\nC:Tradicional\nM:3/4\nL:1/4\nK:G\nG2 A2 | G2 C2 | B2 A2 | G2 G2 | D2 D2 | E2 C2 |' },
-                { title: 'Amazing Grace', composer: 'Tradicional', cat: 'Popular', diff: 'Fácil',
-                    abc: 'X:104\nT:Amazing Grace\nC:Tradicional\nM:3/4\nL:1/4\nK:G\nG2 B2 | d2 g2 | f2 e2 | d2 B2 | G2 G2 | F2 E2 | D2 C2 | B,2 B,2 |' },
-                { title: 'Greensleeves', composer: 'Tradicional', cat: 'Popular', diff: 'Media',
-                    abc: 'X:105\nT:Greensleeves\nC:Tradicional\nM:6/8\nL:1/8\nK:Emin\nE2 G | B2 e | d2 c | B2 G | E2 E | D2 C | B,2 A, | G,2 G, |' },
-                { title: 'Binks\' Sake (One Piece)', composer: 'Kohei Tanaka', cat: 'Anime', diff: 'Media',
-                    abc: 'X:106\nT:Binks\' Sake\nC:Kohei Tanaka\nM:3/4\nL:1/4\nK:G\nG2 B | d2 g | f2 e | d2 B | G2 G | F2 E | D2 C | B,2 B, |' },
-                { title: 'We Are! (One Piece)', composer: 'Kohei Tanaka', cat: 'Anime', diff: 'Media',
-                    abc: 'X:107\nT:We Are!\nC:Kohei Tanaka\nM:4/4\nL:1/8\nK:Eb\nE2 G | B2 e | d2 c | B2 G | E2 E | D2 C | B,2 A, | G,2 G, |' },
-                { title: 'Guren no Yumiya (Attack on Titan)', composer: 'Hiroyuki Sawano', cat: 'Anime', diff: 'Avanzada',
-                    abc: 'X:108\nT:Guren no Yumiya\nC:Hiroyuki Sawano\nM:4/4\nL:1/8\nK:Emin\nE2 G | B2 e | d2 c | B2 G | E2 E | D2 C | B,2 A, | G,2 G, |' },
-                { title: 'Unravel (Tokyo Ghoul)', composer: 'TK', cat: 'Anime', diff: 'Avanzada',
-                    abc: 'X:109\nT:Unravel\nC:TK\nM:4/4\nL:1/8\nK:F#min\nF2 A | c2 f | e2 d | c2 A | F2 F | E2 D | C2 B, | A,2 A, |' },
-                { title: 'Lemon (Kenshi Yonezu)', composer: 'Kenshi Yonezu', cat: 'Popular', diff: 'Media',
-                    abc: 'X:110\nT:Lemon\nC:Kenshi Yonezu\nM:4/4\nL:1/4\nK:Eb\nE2 G | B2 e | d2 c | B2 G | E2 E | D2 C | B,2 A, | G,2 G, |' },
-                { title: 'Hikaru Nara (Your Lie in April)', composer: 'Goose house', cat: 'Anime', diff: 'Media',
-                    abc: 'X:111\nT:Hikaru Nara\nC:Goose house\nM:4/4\nL:1/8\nK:G\nG2 B | d2 g | f2 e | d2 B | G2 G | F2 E | D2 C | B,2 B, |' },
-                { title: 'Zen Zen Zense (Kimi no Na wa)', composer: 'Radwimps', cat: 'Anime', diff: 'Media',
-                    abc: 'X:112\nT:Zen Zen Zense\nC:Radwimps\nM:4/4\nL:1/8\nK:D\nD2 F | A2 d | f2 e | d2 A | F2 D | A,2 F, | D,2 D, |' },
-                { title: 'Haruka Kanata (Naruto)', composer: 'Asian Kung-Fu Generation', cat: 'Anime', diff: 'Media',
-                    abc: 'X:113\nT:Haruka Kanata\nC:Asian Kung-Fu Generation\nM:4/4\nL:1/8\nK:E\nE2 G | B2 e | d2 c | B2 G | E2 E | D2 C | B,2 A, | G,2 G, |' },
-                { title: 'The Loneliest (Måneskin)', composer: 'Måneskin', cat: 'Popular', diff: 'Media',
-                    abc: 'X:114\nT:The Loneliest\nC:Måneskin\nM:4/4\nL:1/8\nK:Gmin\nG2 G | F2 E | D2 D | C2 B, | A,2 G, | F,2 E, | D,2 D, | C,2 C, |' },
-                { title: 'Shape of You (Ed Sheeran)', composer: 'Ed Sheeran', cat: 'Popular', diff: 'Media',
-                    abc: 'X:115\nT:Shape of You\nC:Ed Sheeran\nM:4/4\nL:1/8\nK:C#min\nC2 E | G2 c | e2 d | c2 G | E2 C | G,2 E, | C,2 C, |' },
-                { title: 'Bohemian Rhapsody (Queen)', composer: 'Queen', cat: 'Popular', diff: 'Avanzada',
-                    abc: 'X:116\nT:Bohemian Rhapsody\nC:Queen\nM:4/4\nL:1/8\nK:Bb\nB2 d | f2 b | a2 g | f2 d | B2 B | A2 G | F2 E | D,2 D, |' },
-                { title: 'La La Land (Epilogue)', composer: 'Justin Hurwitz', cat: 'Bandas Sonoras', diff: 'Media',
-                    abc: 'X:117\nT:La La Land (Epilogue)\nC:Justin Hurwitz\nM:4/4\nL:1/8\nK:F\nF2 A | c2 f | e2 d | c2 A | F2 F | E2 D | C2 B, | A,2 A, |' },
-                { title: 'Interstellar (Main Theme)', composer: 'Hans Zimmer', cat: 'Bandas Sonoras', diff: 'Avanzada',
-                    abc: 'X:118\nT:Interstellar (Main Theme)\nC:Hans Zimmer\nM:4/4\nL:1/8\nK:C\nC2 E | G2 c | e2 d | c2 G | E2 C | G,2 E, | C,2 C, |' },
-                { title: 'Pirates of the Caribbean (He\'s a Pirate)', composer: 'Hans Zimmer', cat: 'Bandas Sonoras', diff: 'Avanzada',
-                    abc: 'X:119\nT:He\'s a Pirate\nC:Hans Zimmer\nM:6/8\nL:1/8\nK:Dmin\nD2 F | A2 d | f2 e | d2 A | F2 D | A,2 F, | D,2 D, |' },
-                { title: 'Star Wars (Main Theme)', composer: 'John Williams', cat: 'Bandas Sonoras', diff: 'Avanzada',
-                    abc: 'X:120\nT:Star Wars Main Theme\nC:John Williams\nM:4/4\nL:1/8\nK:Eb\nE2 G | B2 e | d2 c | B2 G | E2 E | D2 C | B,2 A, | G,2 G, |' },
-                { title: 'El Choclo (Tango)', composer: 'Ángel Villoldo', cat: 'Popular', diff: 'Media',
-                    abc: 'X:121\nT:El Choclo\nC:Ángel Villoldo\nM:2/4\nL:1/8\nK:Dmin\nD2 F | A2 d | f2 e | d2 A | F2 D | A,2 F, | D,2 D, |' },
-                { title: 'La Bamba (Tradicional)', composer: 'Tradicional', cat: 'Folclórica', diff: 'Fácil',
-                    abc: 'X:122\nT:La Bamba\nC:Tradicional\nM:2/4\nL:1/8\nK:G\nG2 B | d2 g | f2 e | d2 B | G2 G | F2 E | D2 C | B,2 B, |' },
-                { title: 'Guantanamera', composer: 'Tradicional', cat: 'Folclórica', diff: 'Fácil',
-                    abc: 'X:123\nT:Guantanamera\nC:Tradicional\nM:4/4\nL:1/8\nK:G\nG2 B | d2 g | f2 e | d2 B | G2 G | F2 E | D2 C | B,2 B, |' },
-            ];
+  document.getElementById('zoomInBtn').onclick = () => {
+    detail.zoom = Math.min(detail.zoom + 0.15, 3);
+    applyTransform();
+  };
+  document.getElementById('zoomOutBtn').onclick = () => {
+    detail.zoom = Math.max(detail.zoom - 0.15, 0.5);
+    applyTransform();
+  };
+  document.getElementById('playBtn').onclick = () => togglePlay(abc);
 
-            const all = [...famous, ...newPieces];
+  document.getElementById('toggleNotesBtn').onclick = () => {
+    detail.showNotes = !detail.showNotes;
+    const btn = document.getElementById('toggleNotesBtn');
+    btn.classList.toggle('active', detail.showNotes);
+    if (detail.showNotes) addNoteLabels(viewer, abc);
+    else viewer.querySelectorAll('.note-label').forEach(el => el.remove());
+  };
 
-            // Añadir variaciones generadas
-            const tonalities = ['C', 'G', 'D', 'A', 'E', 'B', 'F', 'Bb', 'Eb', 'Ab'];
-            const categories = ['Clásica', 'Barroca', 'Romántica', 'Moderna', 'Popular', 'Folclórica', 'Jazz', 'Bandas Sonoras', 'Infantil', 'Anime'];
-            const difficulties = ['Fácil', 'Media', 'Avanzada'];
-            const titles = ['Sonata', 'Concerto', 'Fantasía', 'Capricho', 'Estudio', 'Preludio', 'Nocturno', 'Minueto', 'Gavota', 'Bourrée', 'Sarabanda', 'Aria', 'Canción', 'Danza', 'Rondó', 'Marcha', 'Vals', 'Polonesa', 'Mazurca', 'Balada', 'Improvisación'];
-            const composers = ['Anónimo', 'Tradicional', 'M. Praetorius', 'J. Dowland', 'G. Sanz', 'S.L. Weiss', 'D. Scarlatti', 'J.C. Bach', 'C.W. Gluck', 'J.N. Hummel', 'L. Spohr', 'F. Doppler', 'A. Dvořák', 'E. Grieg', 'J. Sibelius', 'C. Nielsen', 'E. Granados', 'M. de Falla', 'H. Villa-Lobos', 'A. Ginastera'];
+  // Zoom con rueda
+  wrapper.addEventListener('wheel', e => {
+    e.preventDefault();
+    detail.zoom = e.deltaY < 0
+      ? Math.min(detail.zoom + 0.1, 3)
+      : Math.max(detail.zoom - 0.1, 0.5);
+    applyTransform();
+  }, { passive: false });
 
-            all.forEach(p => {
-                pieces.push({ id: 'p' + pieces.length, title: p.title, composer: p.composer, category: p.cat, difficulty: p.diff, abc: p.abc, notes: '' });
-            });
+  // Doble clic = reset
+  wrapper.addEventListener('dblclick', () => {
+    detail.zoom = 1; detail.panX = 0; detail.panY = 0; applyTransform();
+  });
 
-            for (let i = 0; i < 80; i++) {
-                const cat = categories[i % categories.length];
-                const ton = tonalities[i % tonalities.length];
-                const diff = difficulties[i % difficulties.length];
-                const title = titles[i % titles.length] + ' en ' + ton + ' (flauta)';
-                const composer = composers[i % composers.length];
-                const abc = `X:${200+i}\nT:${title}\nC:${composer}\nM:4/4\nL:1/8\nK:${ton}\n` +
-                    'A2B|c2d|e2f|g2a|a2g|f2e|d2c|B2A|' +
-                    'A2B|c2d|e2f|g2a|a2g|f2e|d2c|B2A|' +
-                    'A2B|c2d|e2f|g2a|a2g|f2e|d2c|B2A|' +
-                    'A2B|c2d|e2f|g2a|a2g|f2e|d2c|B2A|';
-                pieces.push({ id: 'g' + i, title: title, composer: composer, category: cat, difficulty: diff, abc: abc, notes: 'Generado automáticamente' });
-            }
-            return pieces;
-        }
+  // Drag con mouse
+  wrapper.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
+    detail.dragging = true;
+    detail.sx = e.clientX; detail.sy = e.clientY;
+    detail.spx = detail.panX; detail.spy = detail.panY;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!detail.dragging) return;
+    detail.panX = detail.spx + (e.clientX - detail.sx);
+    detail.panY = detail.spy + (e.clientY - detail.sy);
+    applyTransform();
+  });
+  document.addEventListener('mouseup', () => { detail.dragging = false; });
 
-        // ============================================================
-        //  ALMACENAMIENTO LOCAL Y ESTADO
-        // ============================================================
-        const STORAGE_KEY = 'flautaMaria_sheets';
-        const FAV_KEY = 'flautaMaria_favs';
-        const VERSION_KEY = 'flautaMaria_version';
-        const CURRENT_VERSION = '16.0';
+  // Drag táctil
+  wrapper.addEventListener('touchstart', e => {
+    if (e.touches.length !== 1) return;
+    detail.dragging = true;
+    detail.sx = e.touches[0].clientX; detail.sy = e.touches[0].clientY;
+    detail.spx = detail.panX; detail.spy = detail.panY;
+  }, { passive: true });
+  wrapper.addEventListener('touchmove', e => {
+    if (!detail.dragging || e.touches.length !== 1) return;
+    detail.panX = detail.spx + (e.touches[0].clientX - detail.sx);
+    detail.panY = detail.spy + (e.touches[0].clientY - detail.sy);
+    applyTransform();
+  }, { passive: true });
+  wrapper.addEventListener('touchend', () => { detail.dragging = false; });
+}
 
-        let sheets = [];
-        let favorites = new Set();
+function applyTransform() {
+  const viewer = document.getElementById('viewer');
+  if (!viewer) return;
+  viewer.style.transform = `translate(${detail.panX}px, ${detail.panY}px) scale(${detail.zoom})`;
+  const zl = document.getElementById('zoomLevel');
+  if (zl) zl.textContent = Math.round(detail.zoom * 100) + '%';
+}
 
-        function loadData() {
-            const storedVersion = localStorage.getItem(VERSION_KEY);
-            if (storedVersion !== CURRENT_VERSION) {
-                const generated = generateRepertoire();
-                sheets = generated.map(s => ({ ...s, id: s.id || 'd_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6) }));
-                saveToStorage();
-                localStorage.setItem(VERSION_KEY, CURRENT_VERSION);
-                favorites = new Set();
-                localStorage.setItem(FAV_KEY, JSON.stringify([]));
-                return;
-            }
-            const stored = localStorage.getItem(STORAGE_KEY);
-            if (stored) {
-                try { sheets = JSON.parse(stored); } catch (e) { sheets = []; }
-            }
-            if (!sheets || sheets.length === 0) {
-                const generated = generateRepertoire();
-                sheets = generated.map(s => ({ ...s, id: s.id || 'd_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6) }));
-                saveToStorage();
-            }
-            const favStored = localStorage.getItem(FAV_KEY);
-            if (favStored) {
-                try { favorites = new Set(JSON.parse(favStored)); } catch (e) { favorites = new Set(); }
-            }
-        }
+/* =========================================================
+   FORMULARIO
+   ========================================================= */
+function openAddForm() {
+  document.getElementById('modalTitle').textContent = '📝 Añadir partitura';
+  document.getElementById('editId').value = '';
+  document.getElementById('sheetForm').reset();
+  document.getElementById('formCategory').value = 'Clásica';
+  document.getElementById('formDifficulty').value = 'Fácil';
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function openEditForm(id) {
+  const s = getSheet(id);
+  if (!s) return;
+  document.getElementById('modalTitle').textContent = '✏️ Editar partitura';
+  document.getElementById('editId').value = id;
+  document.getElementById('formTitle').value = s.title || '';
+  document.getElementById('formComposer').value = s.composer || '';
+  document.getElementById('formCategory').value = s.category || 'Clásica';
+  document.getElementById('formDifficulty').value = s.difficulty || 'Fácil';
+  document.getElementById('formAbc').value = s.abc || '';
+  document.getElementById('formNotes').value = s.notes || '';
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModals() {
+  if (isPlaying && currentSynth) { try { currentSynth.stop(); } catch {} isPlaying = false; }
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.getElementById('detailOverlay').classList.remove('open');
+}
 
-        function saveToStorage() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(sheets));
-            localStorage.setItem(FAV_KEY, JSON.stringify([...favorites]));
-        }
+document.getElementById('sheetForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const id = document.getElementById('editId').value;
+  const data = {
+    title: document.getElementById('formTitle').value.trim(),
+    composer: document.getElementById('formComposer').value.trim(),
+    category: document.getElementById('formCategory').value,
+    difficulty: document.getElementById('formDifficulty').value,
+    abc: document.getElementById('formAbc').value.trim(),
+    notes: document.getElementById('formNotes').value.trim()
+  };
+  if (!data.title || !data.composer) { alert('Título y compositor son obligatorios'); return; }
+  id ? updateSheet(id, data) : addSheet(data);
+  closeModals();
+});
 
-        function addSheet(sheet) {
-            sheet.id = 's_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
-            sheets.push(sheet);
-            saveToStorage();
-            render();
-        }
+/* =========================================================
+   INSTALACIÓN PWA
+   ========================================================= */
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installBanner').style.display = 'block';
+});
+document.getElementById('installBtn').addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    document.getElementById('installBanner').style.display = 'none';
+  }
+});
 
-        function updateSheet(id, updated) {
-            const index = sheets.findIndex(s => s.id === id);
-            if (index !== -1) {
-                sheets[index] = { ...sheets[index], ...updated };
-                saveToStorage();
-                render();
-            }
-        }
+/* =========================================================
+   SERVICE WORKER
+   ========================================================= */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(() => console.log('SW registrado'))
+      .catch(err => console.warn('SW fallo:', err));
+  });
+}
 
-        function deleteSheet(id) {
-            sheets = sheets.filter(s => s.id !== id);
-            favorites.delete(id);
-            saveToStorage();
-            render();
-        }
+/* =========================================================
+   INICIALIZACIÓN
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+  loadData();
+  render();
 
-        function toggleFavorite(id) {
-            if (favorites.has(id)) favorites.delete(id);
-            else favorites.add(id);
-            saveToStorage();
-            render();
-        }
+  document.getElementById('searchInput').addEventListener('input', render);
+  document.getElementById('categoryFilter').addEventListener('change', render);
+  document.getElementById('difficultyFilter').addEventListener('change', render);
+  document.getElementById('sortFilter').addEventListener('change', render);
+  document.getElementById('addSheetBtn').addEventListener('click', openAddForm);
+  document.getElementById('cancelForm').addEventListener('click', closeModals);
+  document.getElementById('closeDetail').addEventListener('click', closeModals);
+  document.getElementById('modalOverlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeModals();
+  });
+  document.getElementById('detailOverlay').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeModals();
+  });
 
-        function getSheet(id) {
-            return sheets.find(s => s.id === id);
-        }
-
-        // ============================================================
-        //  RENDERIZADO
-        // ============================================================
-        function render() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-            const category = document.getElementById('categoryFilter').value;
-            const difficulty = document.getElementById('difficultyFilter').value;
-
-            let filtered = sheets.filter(s => {
-                const matchTitle = s.title.toLowerCase().includes(searchTerm);
-                const matchComposer = s.composer.toLowerCase().includes(searchTerm);
-                const matchCategory = category === '' || s.category === category;
-                const matchDifficulty = difficulty === '' || s.difficulty === difficulty;
-                return (matchTitle || matchComposer) && matchCategory && matchDifficulty;
-            });
-
-            const list = document.getElementById('sheetList');
-            if (filtered.length === 0) {
-                list.innerHTML = `<div class="empty-state"><div class="icon">🎶</div><h3>No se encontraron partituras</h3><p>Intenta con otros filtros o añade una nueva</p></div>`;
-                return;
-            }
-
-            list.innerHTML = filtered.map(s => {
-                const isFav = favorites.has(s.id);
-                const hasAbc = s.abc && s.abc.trim().length > 0;
-                return `
-                    <div class="sheet-card" data-id="${s.id}">
-                        <div class="title">${s.title}</div>
-                        <div class="composer">${s.composer}</div>
-                        <div class="meta">
-                            <span class="category">${s.category || 'Otro'}</span>
-                            <span class="difficulty">${s.difficulty || 'Media'}</span>
-                            ${hasAbc ? `<span class="abc-badge">🎼 ABC</span>` : ''}
-                        </div>
-                        <div class="actions">
-                            <button class="fav-btn ${isFav ? 'active' : ''}" data-id="${s.id}" title="Favorito">${isFav ? '❤️' : '🤍'}</button>
-                            <button class="view-btn" data-id="${s.id}" title="Ver detalles">Ver</button>
-                            <button class="edit-btn" data-id="${s.id}" title="Editar">✏️</button>
-                            <button class="delete-btn" data-id="${s.id}" title="Eliminar">🗑️</button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            list.querySelectorAll('.fav-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    toggleFavorite(btn.dataset.id);
-                });
-            });
-            list.querySelectorAll('.view-btn').forEach(btn => {
-                btn.addEventListener('click', () => showDetail(btn.dataset.id));
-            });
-            list.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', () => openEditForm(btn.dataset.id));
-            });
-            list.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (confirm('¿Eliminar esta partitura?')) {
-                        deleteSheet(btn.dataset.id);
-                    }
-                });
-            });
-        }
-
-        // ============================================================
-        //  ETIQUETAS DE NOTAS
-        // ============================================================
-        const noteNames = { 'C': 'Do', 'D': 'Re', 'E': 'Mi', 'F': 'Fa', 'G': 'Sol', 'A': 'La', 'B': 'Si', 'c': 'Do', 'd': 'Re', 'e': 'Mi', 'f': 'Fa', 'g': 'Sol', 'a': 'La', 'b': 'Si' };
-
-        function addNoteLabels(svgElement) {
-            const notes = svgElement.querySelectorAll('.abcjs-note, .abcjs-note-head, .abcjs-note-stem');
-            notes.forEach(note => {
-                let pitch = note.getAttribute('data-pitch');
-                if (!pitch) {
-                    const text = note.textContent.trim();
-                    if (text) {
-                        const match = text.match(/[A-Ga-g]/);
-                        if (match) pitch = match[0];
-                    }
-                }
-                if (!pitch) return;
-                const name = noteNames[pitch] || pitch;
-                const bbox = note.getBBox();
-                if (bbox.width === 0 || bbox.height === 0) return;
-                const x = bbox.x + bbox.width / 2;
-                const y = bbox.y - 6;
-                const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-                g.setAttribute('class', 'note-label-group');
-                const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-                rect.setAttribute('x', x - 14);
-                rect.setAttribute('y', y - 10);
-                rect.setAttribute('width', 28);
-                rect.setAttribute('height', 18);
-                rect.setAttribute('rx', 4);
-                rect.setAttribute('ry', 4);
-                rect.setAttribute('class', 'note-label-bg');
-                g.appendChild(rect);
-                const textEl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-                textEl.setAttribute('x', x);
-                textEl.setAttribute('y', y + 2);
-                textEl.setAttribute('class', 'note-label');
-                textEl.textContent = name;
-                g.appendChild(textEl);
-                note.parentNode.insertBefore(g, note.nextSibling);
-            });
-        }
-
-        // ============================================================
-        //  REPRODUCCIÓN
-        // ============================================================
-        let synth = null;
-        let isPlaying = false;
-
-        function playABC(abcCode) {
-            if (!abcCode || !abcCode.trim()) {
-                alert('Esta partitura no tiene notación ABC para reproducir.');
-                return;
-            }
-            if (typeof ABCJS === 'undefined' || typeof ABCJS.synth === 'undefined') {
-                alert('El sintetizador de ABCJS no está disponible. Intenta recargar la página.');
-                return;
-            }
-
-            const playBtn = document.getElementById('playBtn');
-            if (isPlaying) {
-                if (synth) { try { synth.stop(); } catch (e) {} }
-                synth = null;
-                isPlaying = false;
-                playBtn.textContent = '🔊 Reproducir';
-                playBtn.classList.remove('playing');
-                return;
-            }
-
-            try {
-                synth = new ABCJS.synth.Synth();
-                synth.init({ el: document.createElement('div') })
-                    .then(() => synth.load(abcCode))
-                    .then(() => {
-                        isPlaying = true;
-                        playBtn.textContent = '⏹ Detener';
-                        playBtn.classList.add('playing');
-                        synth.play();
-                        synth.on('ended', () => {
-                            isPlaying = false;
-                            playBtn.textContent = '🔊 Reproducir';
-                            playBtn.classList.remove('playing');
-                            synth = null;
-                        });
-                    })
-                    .catch(err => {
-                        console.error('Error al reproducir:', err);
-                        alert('Error al reproducir: ' + err.message);
-                        isPlaying = false;
-                        playBtn.textContent = '🔊 Reproducir';
-                        playBtn.classList.remove('playing');
-                        synth = null;
-                    });
-            } catch (e) {
-                console.error('Error al iniciar reproducción:', e);
-                alert('Error al iniciar la reproducción: ' + e.message);
-                isPlaying = false;
-                playBtn.textContent = '🔊 Reproducir';
-                playBtn.classList.remove('playing');
-                synth = null;
-            }
-        }
-
-        // ============================================================
-        //  DETALLE
-        // ============================================================
-        let currentDetailId = null;
-        let currentZoom = 1.0;
-        let showNoteLabels = false;
-        let panX = 0, panY = 0;
-        let isDragging = false;
-        let startX, startY, startPanX, startPanY;
-
-        function showDetail(id) {
-            const s = getSheet(id);
-            if (!s) return;
-            if (typeof ABCJS === 'undefined' || typeof ABCJS.renderAbc === 'undefined') {
-                alert('La biblioteca musical no está disponible. Recarga la página.');
-                return;
-            }
-
-            currentDetailId = id;
-            currentZoom = 1.0;
-            panX = 0;
-            panY = 0;
-            showNoteLabels = false;
-
-            if (isPlaying && synth) { try { synth.stop(); } catch (e) {} synth = null; isPlaying = false; }
-
-            document.getElementById('detailTitle').textContent = `📄 ${s.title}`;
-            const container = document.getElementById('detailContent');
-
-            let viewerHtml = `<div class="sheet-viewer" id="sheetViewer"><div class="no-abc">Sin notación musical disponible.</div></div>`;
-            if (s.abc && s.abc.trim().length > 0) {
-                viewerHtml = `<div class="sheet-viewer" id="sheetViewer"><div style="padding:20px;color:var(--text-light);">Cargando partitura...</div></div>`;
-            }
-
-            container.innerHTML = `
-                <div class="detail-row"><span class="detail-label">Compositor</span><span class="detail-value">${s.composer}</span></div>
-                <div class="detail-row"><span class="detail-label">Categoría</span><span class="detail-value">${s.category || 'Otro'}</span></div>
-                <div class="detail-row"><span class="detail-label">Dificultad</span><span class="detail-value">${s.difficulty || 'Media'}</span></div>
-                ${s.notes ? `<div class="notes">${s.notes}</div>` : ''}
-                <div class="sheet-viewer-wrapper" id="sheetViewerWrapper">${viewerHtml}</div>
-                <div class="zoom-controls">
-                    <button id="zoomOutBtn">−</button>
-                    <span class="zoom-level" id="zoomLevel">100%</span>
-                    <button id="zoomInBtn">+</button>
-                    <button class="play-btn" id="playBtn">🔊 Reproducir</button>
-                    <button class="toggle-notes-btn" id="toggleNotesBtn">🎵 Notas</button>
-                </div>
-                <div class="detail-actions"><button class="edit-abc-btn" id="editAbcBtn">✏️ Editar notación</button></div>
-            `;
-
-            document.getElementById('detailOverlay').classList.add('open');
-            setupZoomAndPan();
-
-            if (s.abc && s.abc.trim().length > 0) {
-                setTimeout(() => {
-                    const viewer = document.getElementById('sheetViewer');
-                    if (!viewer) return;
-                    try {
-                        viewer.innerHTML = '';
-                        ABCJS.renderAbc('sheetViewer', s.abc, { responsive: 'resize', add_classes: true, scale: 1.8, staffwidth: 600, padding: 20, engraver: 'svg' });
-                        if (showNoteLabels) {
-                            const svg = viewer.querySelector('svg');
-                            if (svg) setTimeout(() => addNoteLabels(svg), 300);
-                        }
-                        updateZoomAndPan();
-                    } catch (e) {
-                        viewer.innerHTML = `<div class="abc-error">Error al renderizar: ${e.message}</div>`;
-                    }
-                }, 300);
-            }
-
-            document.getElementById('editAbcBtn').addEventListener('click', () => {
-                if (currentDetailId) { closeModal(); openEditForm(currentDetailId); }
-            });
-
-            document.getElementById('toggleNotesBtn').addEventListener('click', () => {
-                showNoteLabels = !showNoteLabels;
-                const btn = document.getElementById('toggleNotesBtn');
-                btn.classList.toggle('active');
-                btn.textContent = showNoteLabels ? '🔊 Notas ON' : '🎵 Notas';
-                const viewer = document.getElementById('sheetViewer');
-                if (viewer) {
-                    const svg = viewer.querySelector('svg');
-                    if (svg) {
-                        svg.querySelectorAll('.note-label-group').forEach(el => el.remove());
-                        if (showNoteLabels) setTimeout(() => addNoteLabels(svg), 100);
-                    }
-                }
-            });
-
-            document.getElementById('playBtn').addEventListener('click', () => {
-                const s_play = getSheet(currentDetailId);
-                if (s_play && s_play.abc) playABC(s_play.abc);
-                else alert('No hay notación ABC para esta partitura.');
-            });
-        }
-
-        function setupZoomAndPan() {
-            const wrapper = document.getElementById('sheetViewerWrapper');
-            const viewer = document.getElementById('sheetViewer');
-            if (!wrapper || !viewer) return;
-
-            document.getElementById('zoomInBtn').addEventListener('click', () => {
-                currentZoom = Math.min(currentZoom + 0.1, 3.0);
-                updateZoomAndPan();
-            });
-            document.getElementById('zoomOutBtn').addEventListener('click', () => {
-                currentZoom = Math.max(currentZoom - 0.1, 0.5);
-                updateZoomAndPan();
-            });
-
-            wrapper.addEventListener('mousedown', startDrag);
-            wrapper.addEventListener('touchstart', startDragTouch, { passive: false });
-            document.addEventListener('mousemove', drag);
-            document.addEventListener('touchmove', dragTouch, { passive: false });
-            document.addEventListener('mouseup', endDrag);
-            document.addEventListener('touchend', endDrag);
-
-            wrapper.addEventListener('wheel', (e) => {
-                e.preventDefault();
-                currentZoom = e.deltaY < 0 ? Math.min(currentZoom + 0.1, 3.0) : Math.max(currentZoom - 0.1, 0.5);
-                updateZoomAndPan();
-            }, { passive: false });
-
-            wrapper.addEventListener('dblclick', () => { currentZoom = 1.0; panX = 0; panY = 0; updateZoomAndPan(); });
-        }
-
-        function startDrag(e) { if (e.button !== 0) return; isDragging = true; startX = e.clientX; startY = e.clientY; startPanX = panX; startPanY = panY; document.getElementById('sheetViewerWrapper').style.cursor = 'grabbing'; e.preventDefault(); }
-        function startDragTouch(e) { const touch = e.touches[0]; if (!touch) return; isDragging = true; startX = touch.clientX; startY = touch.clientY; startPanX = panX; startPanY = panY; e.preventDefault(); }
-        function drag(e) { if (!isDragging) return; panX = startPanX + (e.clientX - startX); panY = startPanY + (e.clientY - startY); updateZoomAndPan(); e.preventDefault(); }
-        function dragTouch(e) { if (!isDragging) return; const touch = e.touches[0]; if (!touch) return; panX = startPanX + (touch.clientX - startX); panY = startPanY + (touch.clientY - startY); updateZoomAndPan(); e.preventDefault(); }
-        function endDrag() { isDragging = false; const wrapper = document.getElementById('sheetViewerWrapper'); if (wrapper) wrapper.style.cursor = 'grab'; }
-        function updateZoomAndPan() { const viewer = document.getElementById('sheetViewer'); if (!viewer) return; viewer.style.transform = `translate(${panX}px, ${panY}px) scale(${currentZoom})`; document.getElementById('zoomLevel').textContent = Math.round(currentZoom * 100) + '%'; }
-
-        // ============================================================
-        //  FORMULARIO
-        // ============================================================
-        function openAddForm() {
-            document.getElementById('modalTitle').textContent = '📝 Añadir partitura';
-            document.getElementById('editId').value = '';
-            document.getElementById('formTitle').value = '';
-            document.getElementById('formComposer').value = '';
-            document.getElementById('formCategory').value = 'Clásica';
-            document.getElementById('formDifficulty').value = 'Media';
-            document.getElementById('formAbc').value = '';
-            document.getElementById('formNotes').value = '';
-            document.getElementById('modalOverlay').classList.add('open');
-        }
-
-        function openEditForm(id) {
-            const s = getSheet(id);
-            if (!s) return;
-            document.getElementById('modalTitle').textContent = '✏️ Editar partitura';
-            document.getElementById('editId').value = id;
-            document.getElementById('formTitle').value = s.title;
-            document.getElementById('formComposer').value = s.composer;
-            document.getElementById('formCategory').value = s.category || 'Clásica';
-            document.getElementById('formDifficulty').value = s.difficulty || 'Media';
-            document.getElementById('formAbc').value = s.abc || '';
-            document.getElementById('formNotes').value = s.notes || '';
-            document.getElementById('modalOverlay').classList.add('open');
-            setTimeout(() => document.getElementById('formAbc').focus(), 100);
-        }
-
-        function closeModal() {
-            if (isPlaying && synth) { try { synth.stop(); } catch (e) {} synth = null; isPlaying = false; const btn = document.getElementById('playBtn'); if (btn) { btn.textContent = '🔊 Reproducir'; btn.classList.remove('playing'); } }
-            document.getElementById('modalOverlay').classList.remove('open');
-            document.getElementById('detailOverlay').classList.remove('open');
-        }
-
-        document.getElementById('sheetForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const id = document.getElementById('editId').value;
-            const title = document.getElementById('formTitle').value.trim();
-            const composer = document.getElementById('formComposer').value.trim();
-            const category = document.getElementById('formCategory').value;
-            const difficulty = document.getElementById('formDifficulty').value;
-            const abc = document.getElementById('formAbc').value.trim();
-            const notes = document.getElementById('formNotes').value.trim();
-
-            if (!title || !composer) { alert('Título y compositor son obligatorios.'); return; }
-            const data = { title, composer, category, difficulty, abc, notes };
-            if (id) updateSheet(id, data);
-            else addSheet(data);
-            closeModal();
-            render();
-        });
-
-        // ============================================================
-        //  INICIALIZACIÓN
-        // ============================================================
-        document.addEventListener('DOMContentLoaded', () => {
-            // Intentar cargar ABCJS primero
-            loadABCJS()
-                .then(() => {
-                    console.log('ABCJS cargado correctamente');
-                    loadData();
-                    render();
-                })
-                .catch(err => {
-                    console.error('Error cargando ABCJS:', err);
-                    alert('⚠️ No se pudo cargar la biblioteca musical. Verifica tu conexión a Internet y recarga la página.');
-                });
-
-            document.getElementById('searchInput').addEventListener('input', render);
-            document.getElementById('categoryFilter').addEventListener('change', render);
-            document.getElementById('difficultyFilter').addEventListener('change', render);
-
-            document.getElementById('addSheetBtn').addEventListener('click', openAddForm);
-            document.getElementById('cancelForm').addEventListener('click', closeModal);
-            document.getElementById('modalOverlay').addEventListener('click', (e) => {
-                if (e.target === e.currentTarget) closeModal();
-            });
-            document.getElementById('detailOverlay').addEventListener('click', (e) => {
-                if (e.target === e.currentTarget) closeModal();
-            });
-            document.getElementById('closeDetail').addEventListener('click', closeModal);
-
-            console.log('✅ App lista. Intentando cargar biblioteca musical...');
-        });
-    </script>
-
+  loadABCJS()
+    .then(() => console.log('✅ ABCJS listo'))
+    .catch(err => {
+      console.error(err);
+      alert('⚠️ No se pudo cargar la librería musical. Conéctate a internet una vez y recarga.');
+    });
+});
+</script>
 </body>
 </html>
