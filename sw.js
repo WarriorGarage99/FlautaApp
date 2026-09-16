@@ -1,4 +1,4 @@
-const CACHE = 'flauta-maria-v8';
+const CACHE = 'flauta-maria-v9';
 const ASSETS = [
   './',
   './index.html',
@@ -24,12 +24,10 @@ self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   const url = new URL(e.request.url);
 
-  // Nunca cachear fuentes de Google, CDN, etc. (deja que el navegador las maneje)
-  if (url.origin !== location.origin) {
-    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
-    return;
-  }
+  // Recursos externos (CDN, fuentes): dejar pasar sin interceptar
+  if (url.origin !== location.origin) return;
 
+  // Recursos propios: caché primero, red como respaldo
   e.respondWith(
     caches.match(e.request).then(cached => {
       return cached || fetch(e.request).then(resp => {
