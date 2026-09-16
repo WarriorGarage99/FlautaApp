@@ -429,13 +429,14 @@ body.no-scroll{position:fixed;overflow:hidden;width:100%;left:0;right:0}
 
 <script>
 /* =========================================================
-   ABCJS — versión COMPLETA (incluye sintetizador)
-   URLs con "abcjs-min.js" (con guion), no "abcjs.min.js"
+   ABCJS — con 5 URLs de respaldo por si alguna falla
    ========================================================= */
 const CDNS = [
-  'https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.2.3/abcjs-min.js',
-  'https://unpkg.com/abcjs@6.2.3/dist/abcjs-min.js',
-  'https://cdn.jsdelivr.net/npm/abcjs@6.2.3/dist/abcjs-min.js'
+  'https://cdn.jsdelivr.net/npm/abcjs@6.2.3/dist/abcjs-basic-min.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.2.3/abcjs-basic-min.js',
+  'https://unpkg.com/abcjs@6.2.3/dist/abcjs-basic-min.js',
+  'https://cdn.jsdelivr.net/npm/abcjs@6.2.3/dist/abcjs-min.js',
+  'https://unpkg.com/abcjs@6.2.3/dist/abcjs-min.js'
 ];
 function loadABCJS() {
   return new Promise((res, rej) => {
@@ -925,8 +926,8 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModals();
   };
 
-  loadABCJS().then(() => console.log('✅ Listo')).catch(() => {
-    alert('⚠️ No se pudo cargar la librería musical. Conéctate a internet una vez y recarga.');
+  loadABCJS().then(() => console.log('✅ ABCJS cargado')).catch(() => {
+    alert('⚠️ No se pudo cargar la librería musical. Verifica tu conexión a internet.');
   });
 });
 </script>
